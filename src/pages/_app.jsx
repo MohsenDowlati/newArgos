@@ -4,8 +4,6 @@ import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { store } from "../store/index";
 import 'react-toastify/dist/ReactToastify.css';
-import * as gtag from '../lib/gtag'
-
 import {useRouter} from "next/router";
 import {useEffect} from "react";
 import Script from "next/script";
