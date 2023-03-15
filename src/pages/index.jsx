@@ -1,20 +1,11 @@
-import Head from 'next/head'
-
+// Import
+import Login from './login';
+import React from 'react';
 
 export default function Home() {
+  
+    return (
+        <Login/>
+    )
 
-  return (
-    <>
-      <Head>
-        <title>xfxfund</title>
-        <meta
-          name="description"
-          content="By leveraging insights from our network of industry insiders, you’ll know exactly when to buy to maximize profit, and exactly when to sell to avoid painful losses."
-        />
-      </Head>
-      <main>
-
-      </main>
-    </>
-  )
 }
