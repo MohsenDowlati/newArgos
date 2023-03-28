@@ -86,19 +86,21 @@ const Login = () => {
                 init={particlesInit}
                 options={particlesSettings}
             />
-            <div className="absolute h-1/3 w-1/5 bg-white-p flex-col items-center justify-left rounded-xl drop-shadow-xl">
-                <div className="text-4xl ml-10 mt-10">
-                    Webportal Login
+            <div className="h-1/4 w-1/7 bg-white-p rounded-xl drop-shadow-xl">
+                <div className="px-5 h-full flex flex-col justify-around">
+                    <div className="text-3xl">
+                        Webportal Login
+                    </div>
+                    <div className="">
+                        <input class="drop-shadow-md appearance-none border rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username"/>
+                    </div>
+                    <div className="">
+                        <input class="drop-shadow-md appearance-none border rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Password"/>
+                    </div>
+                    <button onClick={loginPress} class="w-1/4 text-lg bg-silver rounded-md drop-shadow-lg hover:bg-black-p">
+                        Login
+                    </button>
                 </div>
-                <div className="mx-10 my-7">
-                    <input class="drop-shadow-md appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username"/>
-                </div>
-                <div className="mx-10 my-7">
-                    <input class="drop-shadow-md appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Password"/>
-                </div>
-                <button onClick={loginPress} class="absolute text-xl mx-10 mt-2 py-1 px-4 bg-silver rounded-md drop-shadow-lg">
-                    Login
-                </button>
             </div>
         </div>
     );
