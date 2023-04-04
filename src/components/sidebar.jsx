@@ -27,7 +27,8 @@ const Sidebar = () => {
     // Function call when the login button is pressed
     function logoutPress() {
         // Clear the cookies
-        Cookies.remove();
+        cookie.remove("firstName");
+        cookie.remove("lastName");
 
         // Go the root directory
         router.push('/');
