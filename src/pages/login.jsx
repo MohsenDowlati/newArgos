@@ -1,8 +1,10 @@
 // Imports
+import { ToastContainer, toast } from 'react-toastify';
+import { loadSlim } from "tsparticles-slim";
 import Particles from "react-tsparticles";
 import { useRouter } from 'next/router';
-import { loadSlim } from "tsparticles-slim";
 import { useCallback } from "react";
+import cookie from 'js-cookie';
 import React from "react";
 
 // Login Page definitions
@@ -73,10 +75,87 @@ const Login = () => {
         await loadSlim(engine);
     }, []);
 
-    // Function call when the login button is pressed
-    function loginPress() {
-        router.push('/dashboard/home')
+    // Fucntion for error
+    const errorToaster = (message) => {
+        // Toast exeuction
+        toast.error(message, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+            theme: "light",
+        });
     }
+
+    // Function call when the login button is pressed
+    const loginPress = async () => {
+        // Try to login
+        try {
+            // Send API request
+            const res = await fetch(
+                'http://localhost:8000/api/v1/auth/login/',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(
+                        {
+                            "email": document.getElementById('email').value,
+                            "password": document.getElementById('password').value,
+                        }
+                    ),
+                }
+            );
+
+            // Turn API request result into JSON
+            const data = await res.json();
+            
+            // DEBUG: print response information
+            console.log(data);
+            
+            // Check if the response is not OK
+            if (!res.ok) {
+                // Check if the email has any issues
+                if (Array.isArray(data['email'])) {
+                    // Print email's issue
+                    errorToaster("Email: " + data['email'][0]);
+                }
+
+                // Check if the password has any issues
+                if (Array.isArray(data['password'])) {
+                    // Print password's issue
+                    errorToaster("Password: " + data['password'][0]);
+                }
+                
+                // Check if details appear in the response
+                if ('detail' in data) {
+                    // Check if the 
+                    errorToaster(data['detail']);
+                }
+            }
+
+            // If the login was a sucess, move to the dashboard and 
+            // store information into a cookie
+            else {
+                // Store basic information into a cookie
+                cookie.set('firstName', data['firstname']);
+                cookie.set('lastName', data['lastname']);
+
+                // Move to the dashboard
+                router.push('/dashboard/home');
+            }
+
+        // Catch any errors
+        } catch (err) {
+            // Print errors
+            console.log(err);
+        }
+    };
 
     // Component return
     return (
@@ -92,16 +171,28 @@ const Login = () => {
                         Webportal Login
                     </div>
                     <div className="">
-                        <input class="drop-shadow-md appearance-none border rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username"/>
+                        <input className="drop-shadow-md appearance-none border rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text" placeholder="Email"/>
                     </div>
                     <div className="">
-                        <input class="drop-shadow-md appearance-none border rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Password"/>
+                        <input type="password" className="drop-shadow-md appearance-none border rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" placeholder="Password"/>
                     </div>
-                    <button onClick={loginPress} class="w-1/4 text-lg bg-silver rounded-md drop-shadow-lg hover:bg-black-p">
+                    <button onClick={loginPress} className="w-1/4 text-lg bg-silver rounded-md drop-shadow-lg hover:bg-black-p">
                         Login
                     </button>
                 </div>
             </div>
+            <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
         </div>
     );
 };

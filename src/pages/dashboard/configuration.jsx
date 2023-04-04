@@ -9,7 +9,7 @@ const Configuration = () => {
     return (
         <div className="relative flex h-full flex-row">
             <Sidebar></Sidebar>
-            <div className=" m-10 h-full w-full">
+            <div className=" m-10 w-full">
                 Configuration
             </div>
         </div>

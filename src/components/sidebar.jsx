@@ -8,8 +8,11 @@ import {
     AiOutlineBook,
     AiOutlineTeam
 } from 'react-icons/ai'
+import { useState, useEffect } from 'react';
 import { IconContext } from "react-icons";
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
+import cookie from 'js-cookie';
 import React from "react";
 
 // Login Page definitions
@@ -22,7 +25,11 @@ const Sidebar = () => {
     const router = useRouter();
 
     // Function call when the login button is pressed
-    function loginPress() {
+    function logoutPress() {
+        // Clear the cookies
+        Cookies.remove();
+
+        // Go the root directory
         router.push('/');
     }
 
@@ -66,31 +73,42 @@ const Sidebar = () => {
         </button>
     ));
 
+    // Create variables to store the first and last names
+    const [firstName, setFirstDate] = useState(null);
+    const [lastName, setLastDate] = useState(null);
+    
+    // Make the changes to the name variables
+    useEffect(() => {   
+        setFirstDate(cookie.get('firstName'))
+        setLastDate(cookie.get('lastName'))
+    }, []);
+    
+
     // Component return
     return (
-    <div className="h-full bg-black w-1/6 rounded-r-md">
-        <div className="h-full flex flex-col justify-between">
-            <div className="grid justify-items-center">
-                <div className="text-white-p font-boldVazir text-3.5xl mt-10 mb-12">
-                    ARGOS Vision
-                </div>
-                {sidebarList}
-            </div>
-            <div className="bg-white-p m-4 p-3 rounded-lg">
-                <div className="flex justify-between items-center">
-                    <div className="flex items-center">
-                        <div className="bg-silver w-8 h-8 mr-2 rounded-full"/>
-                        <div className="text-black text-xl">
-                            John Doe
-                        </div>
+        <div className="h-full bg-black w-1/6 rounded-r-md">
+            <div className="h-full flex flex-col justify-between">
+                <div className="grid justify-items-center">
+                    <div className="text-white-p font-boldVazir text-3.5xl mt-10 mb-12">
+                        ARGOS Vision
                     </div>
-                    <button onClick={loginPress}>
-                        <BiLogOut color="#C92626" size="2em"/>
-                    </button>
+                    {sidebarList}
+                </div>
+                <div className="bg-white-p m-4 p-3 rounded-lg">
+                    <div className="flex justify-between items-center">
+                        <div className="flex items-center">
+                            <div className="bg-silver w-8 h-8 mr-2 rounded-full"/>
+                            <div className="text-black text-sm">
+                                {`${firstName} ${lastName}`}   
+                            </div>
+                        </div>
+                        <button onClick={logoutPress}>
+                            <BiLogOut color="#C92626" size="2em"/>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     );
 }
 
