@@ -12,23 +12,51 @@ import { useState, useEffect } from 'react';
 import { IconContext } from "react-icons";
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
-import cookie from 'js-cookie';
 import React from "react";
 
 // Login Page definitions
 const Sidebar = () => {
-
     // Get current path
     const { asPath } = useRouter();
 
     // Variable declaration and initialization
     const router = useRouter();
 
+    // Reroute user to the login page if the 
+    // refresh or access tokens are not present
+    useEffect(() => {
+        const refresh = Cookies.get('refresh');
+        if (!refresh || refresh === 'undefined') {
+            Cookies.set('noTokens', true);
+            router.push('/');
+        }
+    }, []);
+
     // Function call when the login button is pressed
-    function logoutPress() {
+    const logoutPress = async () => {
+        // Call the logout api endpoint
+        await fetch(
+            'http://localhost:8000/api/v1/auth/logout/',
+            {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${Cookies.get('access')}`
+                },
+                body: JSON.stringify(
+                    {
+                        "refresh": Cookies.get('refresh'),
+                    }
+                ),
+            }
+        );
+
         // Clear the cookies
-        cookie.remove("firstName");
-        cookie.remove("lastName");
+        Cookies.remove("firstName");
+        Cookies.remove("lastName");
+        Cookies.remove("refresh");
+        Cookies.remove("access");
 
         // Go the root directory
         router.push('/');
@@ -80,14 +108,14 @@ const Sidebar = () => {
     
     // Make the changes to the name variables
     useEffect(() => {   
-        setFirstDate(cookie.get('firstName'))
-        setLastDate(cookie.get('lastName'))
+        setFirstDate(Cookies.get('firstName'))
+        setLastDate(Cookies.get('lastName'))
     }, []);
     
 
     // Component return
     return (
-        <div className="h-full bg-black w-1/6 rounded-r-md">
+        <div className="h-full bg-black w-1/6 rounded-r-md drop-shadow-xl">
             <div className="h-full flex flex-col justify-between">
                 <div className="grid justify-items-center">
                     <div className="text-white-p font-boldVazir text-3.5xl mt-10 mb-12">

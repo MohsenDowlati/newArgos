@@ -1,15 +1,15 @@
 // Imports
 import { ToastContainer, toast } from 'react-toastify';
 import { loadSlim } from "tsparticles-slim";
+import { useEffect } from 'react';
 import Particles from "react-tsparticles";
 import { useRouter } from 'next/router';
 import { useCallback } from "react";
-import cookie from 'js-cookie';
+import Cookies from 'js-cookie';
 import React from "react";
 
 // Login Page definitions
 const Login = () => {
-
     // Variable declaration and initialization
     const router = useRouter();
 
@@ -90,6 +90,15 @@ const Login = () => {
         });
     }
 
+    // Pop toaster message if noTokens cookie is present
+    useEffect(() => {
+        const refresh = Cookies.get('noTokens');
+        if (refresh === 'true') {
+            Cookies.set('noTokens', false);
+            errorToaster('Login to access your dashboard');
+        }
+    }, []);
+
     // Function call when the login button is pressed
     const loginPress = async () => {
         // Try to login
@@ -142,9 +151,13 @@ const Login = () => {
             // If the login was a sucess, move to the dashboard and 
             // store information into a cookie
             else {
+                // Expiration for the 
+
                 // Store basic information into a cookie
-                cookie.set('firstName', data['firstname']);
-                cookie.set('lastName', data['lastname']);
+                Cookies.set('firstName', data['firstname']);
+                Cookies.set('lastName', data['lastname']);
+                Cookies.set('refresh', data['tokens']['refresh'])
+                Cookies.set('access', data['tokens']['access'])
 
                 // Move to the dashboard
                 router.push('/dashboard/home');
