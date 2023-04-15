@@ -1,5 +1,6 @@
 // Imports
 import { ToastContainer, toast } from 'react-toastify';
+import { errorToaster } from '@/components/toasters';
 import { loadSlim } from "tsparticles-slim";
 import { useEffect } from 'react';
 import Particles from "react-tsparticles";
@@ -75,27 +76,12 @@ const Login = () => {
         await loadSlim(engine);
     }, []);
 
-    // Fucntion for error
-    const errorToaster = (message) => {
-        // Toast exeuction
-        toast.error(message, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: false,
-            progress: undefined,
-            theme: "light",
-        });
-    }
-
     // Pop toaster message if noTokens cookie is present
     useEffect(() => {
         const refresh = Cookies.get('noTokens');
         if (refresh === 'true') {
             Cookies.set('noTokens', false);
-            errorToaster('Login to access your dashboard');
+            errorToaster('Login to access your dashboard', 'top-center');
         }
     }, []);
 
@@ -124,9 +110,6 @@ const Login = () => {
             // Turn API request result into JSON
             const data = await res.json();
             
-            // DEBUG: print response information
-            console.log(data);
-            
             // Check if the response is not OK
             if (!res.ok) {
                 // Check if the email has any issues
@@ -151,13 +134,12 @@ const Login = () => {
             // If the login was a sucess, move to the dashboard and 
             // store information into a cookie
             else {
-                // Expiration for the 
-
                 // Store basic information into a cookie
                 Cookies.set('firstName', data['firstname']);
                 Cookies.set('lastName', data['lastname']);
-                Cookies.set('refresh', data['tokens']['refresh'])
-                Cookies.set('access', data['tokens']['access'])
+                Cookies.set('refresh', data['tokens']['refresh']);
+                Cookies.set('access', data['tokens']['access']);
+                Cookies.set('success', "");
 
                 // Move to the dashboard
                 router.push('/dashboard/home');

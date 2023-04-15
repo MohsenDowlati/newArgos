@@ -1,6 +1,6 @@
 // Imports
 import { BiLogOut } from 'react-icons/bi';
-import { 
+import {
     AiOutlineHome, 
     AiOutlineCamera, 
     AiOutlineSetting, 
@@ -16,10 +16,8 @@ import React from "react";
 
 // Login Page definitions
 const Sidebar = () => {
-    // Get current path
+    // Get current path and router
     const { asPath } = useRouter();
-
-    // Variable declaration and initialization
     const router = useRouter();
 
     // Reroute user to the login page if the 
@@ -85,18 +83,18 @@ const Sidebar = () => {
             icon: <AiOutlineBook/>
         },
         {
-            title: "Users",
+            title: "Organizations",
             icon: <AiOutlineTeam/>
         }
     ]
 
     // Render the list
     const sidebarList = items.map(item => (
-        <button className={`${(asPath == `/dashboard/${item.title.toLocaleLowerCase()}`) ? "bg-white-p" : "hover:bg-silver"} px-3 py-2 my-1 mx-2 w-10/12 flex justify-start items-center rounded-lg`} onClick={() => router.push(`/dashboard/${item.title.toLocaleLowerCase()}`)}>
-            <IconContext.Provider value={{color: (asPath == `/dashboard/${item.title.toLocaleLowerCase()}`) ? "#000000" : "#FFFFFF", size: "1.5em", className: "mr-2"}}>
+        <button key={`${item.title.toLocaleLowerCase()}`} className={`${(asPath.includes(`/dashboard/${item.title.toLocaleLowerCase()}`)) ? "bg-white-p" : "hover:bg-silver"} px-3 py-2 my-1 mx-2 w-10/12 flex justify-start items-center rounded-lg`} onClick={() => router.push(`/dashboard/${item.title.toLocaleLowerCase()}`)}>
+            <IconContext.Provider value={{color: (asPath.includes(`/dashboard/${item.title.toLocaleLowerCase()}`)) ? "#000000" : "#FFFFFF", size: "1.5em", className: "mr-2"}}>
                 {item.icon}
             </IconContext.Provider>
-            <div className={`text-${(asPath == `/dashboard/${item.title.toLocaleLowerCase()}`) ? "black" : "white-p"} text-lg`}>
+            <div className={`text-${(asPath.includes(`/dashboard/${item.title.toLocaleLowerCase()}`)) ? "black" : "white-p"} text-lg`}>
                 {item.title}
             </div>
         </button>
@@ -118,7 +116,7 @@ const Sidebar = () => {
         <div className="h-full bg-black w-1/6 rounded-r-md drop-shadow-xl">
             <div className="h-full flex flex-col justify-between">
                 <div className="grid justify-items-center">
-                    <div className="text-white-p font-boldVazir text-3.5xl mt-10 mb-12">
+                    <div className="text-white-p font-boldVazir text-3xl mt-10 mb-12">
                         ARGOS Vision
                     </div>
                     {sidebarList}

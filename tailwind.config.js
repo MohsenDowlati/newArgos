@@ -10,7 +10,6 @@ module.exports = {
       'white-p': '#ffffff',
       'white-h1': '#f2f5f8',
       'black-p': '#a3a3a3',
-      'gray': '#EDEDED',
       'silver': '#919191',
       'black-h1': '#3f3f3f',
       'black': '#111111',
