@@ -135,12 +135,13 @@ const Login = () => {
             // store information into a cookie
             else {
                 // Store basic information into a cookie
-                Cookies.set('firstName', data['firstname']);
-                Cookies.set('lastName', data['lastname']);
+                cookie.set('firstName', data['firstname']);
+                cookie.set('lastName', data['lastname']);
+                cookie.set('profileImage', data['profile_image']);
                 Cookies.set('refresh', data['tokens']['refresh']);
                 Cookies.set('access', data['tokens']['access']);
                 Cookies.set('success', "");
-
+                
                 // Move to the dashboard
                 router.push('/dashboard/home');
             }

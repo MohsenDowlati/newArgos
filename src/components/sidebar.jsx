@@ -103,11 +103,13 @@ const Sidebar = () => {
     // Create variables to store the first and last names
     const [firstName, setFirstDate] = useState(null);
     const [lastName, setLastDate] = useState(null);
+    const [profileImage, setProfileImage] = useState(null);
     
     // Make the changes to the name variables
     useEffect(() => {   
-        setFirstDate(Cookies.get('firstName'))
-        setLastDate(Cookies.get('lastName'))
+        setFirstDate(cookie.get('firstName'))
+        setLastDate(cookie.get('lastName'))
+        setProfileImage(cookie.get('profileImage'))
     }, []);
     
 
@@ -124,7 +126,9 @@ const Sidebar = () => {
                 <div className="bg-white-p m-4 p-3 rounded-lg">
                     <div className="flex justify-between items-center">
                         <div className="flex items-center">
-                            <div className="bg-silver w-8 h-8 mr-2 rounded-full"/>
+                            <div className="bg-silver w-8 h-8 mr-2 rounded-full">
+                                <img src={`http://localhost:8000/mediafiles/${profileImage}`}></img>
+                            </div>
                             <div className="text-black text-sm">
                                 {`${firstName} ${lastName}`}   
                             </div>
