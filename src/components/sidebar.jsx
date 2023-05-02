@@ -23,11 +23,11 @@ const Sidebar = () => {
     // Reroute user to the login page if the 
     // refresh or access tokens are not present
     useEffect(() => {
-        const refresh = Cookies.get('refresh');
-        if (!refresh || refresh === 'undefined') {
-            Cookies.set('noTokens', true);
-            router.push('/');
-        }
+        // const refresh = Cookies.get('refresh');
+        // if (!refresh || refresh === 'undefined') {
+        //     Cookies.set('noTokens', true);
+        //     router.push('/');
+        // }
     }, []);
 
     // Function call when the login button is pressed
@@ -90,7 +90,7 @@ const Sidebar = () => {
 
     // Render the list
     const sidebarList = items.map(item => (
-        <button key={`${item.title.toLocaleLowerCase()}`} className={`${(asPath.includes(`/dashboard/${item.title.toLocaleLowerCase()}`)) ? "bg-white-p" : "hover:bg-silver"} px-3 py-2 my-1 mx-2 w-10/12 flex justify-start items-center rounded-lg`} onClick={() => router.push(`/dashboard/${item.title.toLocaleLowerCase()}`)}>
+        <button key={`${item.title.toLocaleLowerCase()}`} className={`${(asPath.includes(`/dashboard/${item.title.toLocaleLowerCase()}`)) ? "bg-white-p" : "hover:bg-silver"} px-3 py-2 my-1 mx-2 w-full flex justify-start items-center `} onClick={() => router.push(`/dashboard/${item.title.toLocaleLowerCase()}`)}>
             <IconContext.Provider value={{color: (asPath.includes(`/dashboard/${item.title.toLocaleLowerCase()}`)) ? "#000000" : "#FFFFFF", size: "1.5em", className: "mr-2"}}>
                 {item.icon}
             </IconContext.Provider>
@@ -107,20 +107,22 @@ const Sidebar = () => {
     
     // Make the changes to the name variables
     useEffect(() => {   
-        setFirstDate(cookie.get('firstName'))
-        setLastDate(cookie.get('lastName'))
-        setProfileImage(cookie.get('profileImage'))
+        // setFirstDate(cookie.get('firstName'))
+        // setLastDate(cookie.get('lastName'))
+        // setProfileImage(cookie.get('profileImage'))
     }, []);
     
 
     // Component return
     return (
-        <div className="h-full bg-black w-1/6 rounded-r-md drop-shadow-xl">
+        <div className="h-full bg-[#26283b] w-[320px]  drop-shadow-xl">
             <div className="h-full flex flex-col justify-between">
                 <div className="grid justify-items-center">
-                    <div className="text-white-p font-boldVazir text-3xl mt-10 mb-12">
-                        ARGOS Vision
+                    <div className="text-white-p tracking-wide text-2xl mt-10 mb-10">
+                       <p>ARGOS VISION</p>
+                       <p className='text-sm text-gray-300 font-thin'>Dashboard</p>
                     </div>
+                
                     {sidebarList}
                 </div>
                 <div className="bg-white-p m-4 p-3 rounded-lg">

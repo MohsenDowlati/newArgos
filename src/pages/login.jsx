@@ -8,6 +8,8 @@ import { useRouter } from 'next/router';
 import { useCallback } from "react";
 import Cookies from 'js-cookie';
 import React from "react";
+import {GiBleedingEye} from 'react-icons/gi'
+import { BiLogInCircle } from 'react-icons/bi';
 
 // Login Page definitions
 const Login = () => {
@@ -18,9 +20,9 @@ const Login = () => {
     const particlesSettings = {
         background: {
             color: {
-                value: "#0d47a1",
+                value: "#24273b",
             },
-            opacity: 0
+            opacity: 1
         },
         fpsLimit: 120,
         interactivity: {
@@ -39,7 +41,7 @@ const Login = () => {
         },
         particles: {
             color: {
-                value: "#808080",
+                value: "#00eeff",
             },
             move: {
                 directions: "none",
@@ -59,13 +61,13 @@ const Login = () => {
                 value: 300,
             },
             opacity: {
-                value: 0.5,
+                value: 1,
             },
             shape: {
                 type: "circle",
             },
             size: {
-                value: { min: 1, max: 5 },
+                value: { min: 1, max: 3 },
             },
         },
         detectRetina: true,
@@ -87,6 +89,7 @@ const Login = () => {
 
     // Function call when the login button is pressed
     const loginPress = async () => {
+        router.push('/dashboard/home')
         // Try to login
         try {
             // Send API request
@@ -155,28 +158,45 @@ const Login = () => {
 
     // Component return
     return (
-        <div className="relative h-full bg-gradient-to-tr from-black to-white-p flex items-center justify-center">
-            <Particles
+        <div className="relative h-full flex items-center  justify-center">
+             <Particles
                 id="tsparticles"
                 init={particlesInit}
                 options={particlesSettings}
             />
-            <div className="h-1/4 w-1/7 bg-white-p rounded-xl drop-shadow-xl">
-                <div className="px-5 h-full flex flex-col justify-around">
-                    <div className="text-3xl">
-                        Webportal Login
+            <div className='w-full h-screen '>
+                <div className='w-full flex justify-center'>
+                    <div className='mt-[240px] w-full h-[500px] text-white-p bg-blue-400  rounded-md bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0  '>
+                        <div className='flex items-center justify-center text-3xl mt-10 font-boldVazir '>
+                            <div className='text-center  flex items-center'>
+                            <p>ARG</p>
+                                <GiBleedingEye className='w-[60px] h-[60px]'/>
+                            </div>
+                            <p>S VISION</p>
+                        </div>
+                        <div className='flex w-full  justify-center'>
+                            <p className='mt-2 font-thin tracking-wider border-b border-[#5ddaf0]'>LOGIN PANEL</p>
+                        </div>
+                        <div className='flex w-full justify-center'>
+                            <div>
+                                    <div>
+                                        <input className='mt-4 w-[300px] h-[40px] bg-transparent border-b border-[#515152] focus:border-[#5ddaf0] placeholder:text-gray-300 text-white-p outline-none' placeholder='Email'></input>
+                                    </div>
+                                    <div>
+                                        <input className='mt-4 w-[300px] h-[40px] bg-transparent border-b border-[#515152]  focus:border-[#5ddaf0] placeholder:text-gray-300 text-white-p outline-none' placeholder='Password'></input>
+                                    </div>
+                            </div>
+                        </div>
+                        <div className='flex w-full justify-center'>
+                            <button className='mt-10 w-[200px] flex rounded-md items-center justify-center h-[50px] bg-[#4097a7] font-thin'>
+                                <BiLogInCircle className='w-[25px] mr-2 h-[25px]'/>
+                                <p className='text-lg'>Login</p>
+                            </button>
+                        </div>
+                       
                     </div>
-                    <div className="">
-                        <input className="drop-shadow-md appearance-none border rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text" placeholder="Email"/>
-                    </div>
-                    <div className="">
-                        <input type="password" className="drop-shadow-md appearance-none border rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password" placeholder="Password"/>
-                    </div>
-                    <button onClick={loginPress} className="w-1/4 text-lg bg-silver rounded-md drop-shadow-lg hover:bg-black-p">
-                        Login
-                    </button>
                 </div>
-            </div>
+       
             <ToastContainer
                 position="top-center"
                 autoClose={5000}
@@ -189,6 +209,9 @@ const Login = () => {
                 pauseOnHover
                 theme="dark"
             />
+
+            </div>
+          
         </div>
     );
 };
