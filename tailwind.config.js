@@ -1,30 +1,11 @@
+
 const defaultTheme = require('tailwindcss/defaultTheme')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{js,jsx}'],
   theme: {
-    colors: {
-      transparent: 'transparent',
-      current: 'currentColor',
-      'white-p': '#ffffff',
-      'white-h1': '#f2f5f8',
-      'black-p': '#a3a3a3',
-      'silver': '#919191',
-      'black-h1': '#3f3f3f',
-      'black': '#111111',
-      'sky': '#60a5fa',
-      'persian-indigo': '#32127a',
-      'midnight': '#581560',
-      'byzantium': '#6b1753',
-      'pansy-purple': '#7d1846',
-      'crimson-ua': '#a31b2c',
-      'venetian-red': '#c81d11',
-      'dark-cornflower': '#263781',
-      'lapis-lazuli': '#195c87',
-      'metallic-seaweed': '#0d818d',
-      'persian-green': '#00a693',
-    },
+   
     container: {
       center: true
     },
@@ -49,8 +30,10 @@ module.exports = {
         '22': '5.5rem'
       },
       animation: {
+
+        'blink' : 'blink 10s ease 0s infinite normal forwards',
         'fade-in': 'fade-in 0.5s linear forwards',
-        marquee: 'marquee var(--marquee-duration) linear infinite',
+        'marquee': 'marquee var(--marquee-duration) linear infinite',
         'spin-slow': 'spin 4s linear infinite',
         'spin-slower': 'spin 6s linear infinite',
         'spin-reverse': 'spin-reverse 1s linear infinite',
@@ -88,6 +71,33 @@ module.exports = {
             transform: 'rotate(-360deg)',
           },
         },
+        'blink' : {
+          '0%'
+          :{
+            opacity: 1
+          },
+          '50%'
+          :{
+            opacity: 1
+          },
+          '100%'
+          :{
+            opacity: 1
+          },
+          '25%'
+          :{
+            opacity: 0
+          },
+          '75%'
+          :{
+            opacity: 0
+          }
+        },
+
+ 
+
+
+
       },
       maxWidth: {
         '2xl': '40rem',

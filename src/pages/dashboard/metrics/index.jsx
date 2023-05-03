@@ -3,21 +3,39 @@ import PageTitle from "@/components/pageTitle";
 import Sidebar from "@/components/sidebar";
 import MapWrapper from '@/components/Map/map';
 import React from "react";
+import { HiOutlineStatusOnline } from "react-icons/hi";
+import NavigationBar from "@/components/NavigationSection/NavigationBar";
+import { GiBleedingEye } from "react-icons/gi";
+import { useRouter } from "next/router";
 
 // Login Page definitions
 export default function Metrics() {    
-
+    const router = useRouter()
+    const path = router.pathname
+    const imgsrc = 'https://www.maxpixel.net/static/photo/1x/Young-Smile-Portrait-Ai-Generated-Man-Teeth-7833751.jpg'
     // Component return
     return (
-        <div className="relative flex h-full flex-row">
-            <Sidebar></Sidebar>
-            <div className="m-10 w-full">
-                <div className="font-boldVazir text-3.5xl mb-16">
-                    {PageTitle()}
+        <div className="">
+        <div className="flex w-full justify-between items-center pt-5 shadow-md pb-4 ">
+            <div className="ml-10">
+                <div className="flex  text-2xl items-center">
+                    <p>ARG</p>
+                    <GiBleedingEye className="w-[40px] h-[40px] text-red-600"/>
+                    <p>OS VISION</p>
                 </div>
-                <MapWrapper/>         
+                <p className="text-sm uppercase text-gray-500">{path.slice(1,10) + ' > ' + path.slice(11,20)}</p>
             </div>
+            <div className="mr-10 flex items-center">
+                <HiOutlineStatusOnline className="w-[25px] h-[25px] mr-2 animate-blink text-green-500"/>
+                <p>Welcome Partiya !</p>
+                <img src={imgsrc} className="w-[60px] h-[60px] border rounded-full ml-3 object-cover"></img>
+            </div>
+
         </div>
+        <div className=" mt-10">
+                <NavigationBar/>
+        </div>
+     </div>
     );
 }
 
