@@ -52,5 +52,5 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
-            docker pull ghcr.io/mehranfarhdi/arogos_front:latest
+            docker pull ghcr.io/argos-vision/arogos_front:latest
             docker-compose -f /opt/argos-deploy/argos_front/docker-compose.yml up -d --force-recreate --remove-orphans
