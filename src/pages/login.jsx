@@ -115,14 +115,14 @@ const Login = () => {
                 <div className='w-full flex justify-center'>
                     <div className=' w-full pt-[200px] h-screen text-white-p bg-blue-400  rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-0  '>
                         <div className='flex items-center justify-center text-3xl mt-10 font-boldVazir '>
-                            <div className='text-center  flex items-center'>
+                            <div className='text-center text-white flex items-center'>
                             <p>ARG</p>
                                 <GiBleedingEye className='w-[60px] h-[60px]'/>
                             </div>
-                            <p>S VISION</p>
+                            <p className='text-white'>S VISION</p>
                         </div>
                         <div className='flex w-full  justify-center'>
-                            <p className='mt-2 font-thin tracking-wider border-b border-[#5ddaf0]'>DASHBOARD LOGIN</p>
+                            <p className='mt-2 font-thin tracking-wider border-b text-white border-[#5ddaf0]'>DASHBOARD LOGIN</p>
                         </div>
                         <div className='flex w-full justify-center'>
                             <div>
@@ -135,7 +135,7 @@ const Login = () => {
                             </div>
                         </div>
                         <div className='flex w-full justify-center'>
-                            <button onClick={loginPress} className='mt-10 w-[200px] flex rounded-md items-center justify-center h-[50px] bg-[#4097a7] font-thin'>
+                            <button onClick={loginPress} className='mt-10 w-[200px] text-white flex rounded-md items-center justify-center h-[50px] bg-[#4097a7] font-thin'>
                                 <BiLogInCircle className='w-[25px] mr-2 h-[25px]'/>
                                 <p className='text-lg'>Login</p>
                             </button>
