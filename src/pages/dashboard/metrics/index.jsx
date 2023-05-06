@@ -1,7 +1,5 @@
 // Imports
-import PageTitle from "@/components/pageTitle";
-import Sidebar from "@/components/sidebar";
-import MapWrapper from '@/components/Map/map';
+
 import React from "react";
 import { HiOutlineStatusOnline } from "react-icons/hi";
 import NavigationBar from "@/components/NavigationSection/NavigationBar";

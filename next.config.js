@@ -4,7 +4,7 @@ const withVideos = require('next-videos')
 const withImages = require('next-images')
 
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   images: {
     disableStaticImages: true
   },

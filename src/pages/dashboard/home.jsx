@@ -9,13 +9,38 @@ import {BsFillPeopleFill} from 'react-icons/bs';
 import {HiOutlineStatusOnline} from 'react-icons/hi'
 import NavigationBar from "@/components/NavigationSection/NavigationBar";
 import { useRouter } from "next/router";
+import 'mapbox-gl/dist/mapbox-gl.css';
+import mapboxgl from 'mapbox-gl'; // or "const mapboxgl = require('mapbox-gl');"
+import CircularProgress from "@/components/Progressbar/CircularProgress";
+
+import { useState } from "react";
+import { useRef } from "react";
+import { useEffect } from "react";
+
 // Login Page definitions
 const Home = () => {
  const imgsrc = 'https://www.maxpixel.net/static/photo/1x/Young-Smile-Portrait-Ai-Generated-Man-Teeth-7833751.jpg'
  const date = new Date()
  const router = useRouter()
  const path = router.pathname
+
+
     // Component return
+    mapboxgl.accessToken = 'pk.eyJ1IjoicGFydGl5YTAyMTAiLCJhIjoiY2xoYzVjODlnMDlhbzNtbnZyNzdvZDV0NSJ9.pENwwnr9suPHN1Liq2izQA';
+    const mapContainer = useRef(null);
+    const map = useRef(null);
+    const [lng, setLng] = useState(-70.9);
+    const [lat, setLat] = useState(42.35);
+    const [zoom, setZoom] = useState(7);
+    useEffect(() => {
+        if (map.current) return; // initialize map only once
+        map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [lng, lat],
+        zoom: zoom
+        });
+        });
     return (
         <div className="">
             <div className="flex w-full justify-between items-center pt-5 shadow-md pb-4 ">
@@ -37,7 +62,45 @@ const Home = () => {
             <div className=" mt-10">
                     <NavigationBar/>
             </div>
+            <div className="w-full flex justify-center mt-10">
+                <hr className="w-3/4"></hr>
+            </div>
+            <div className="flex items-center w-full justify-center mt-5">
+                <CircularProgress  
+          
+                DetailText={'This graph is showing you  the number of live cameras     '} 
+                BgColor={'bg-green-500'} trailColor={'#00a851'} 
+                Title={'Active cameras'} 
+                value={7} 
+                maxValue={10} 
+                />
+                <CircularProgress  
+                DetailText={'This graph is showing you  the number of disabled cameras    '} 
+                BgColor={'bg-red-500'} trailColor={'#9e022e'} 
+                Title={'Out of service'} 
+                value={2} 
+                maxValue={10} 
+                />
+                <CircularProgress  
+                DetailText={'This graph is showing you  the number of calibrated cameras     '} 
+                BgColor={'bg-orange-500'} trailColor={'#9e5302'} 
+                Title={'Calibrated'} 
+                value={10} 
+                maxValue={10} 
+                />
+            </div>
+            <div className="mt-10 pb-10 flex items-center w-full justify-center">
+                {/* MAP CONTAINER  */}
+                <div ref={mapContainer} className='h-[600px] w-1/3 rounded-tl-xl rounded-bl-xl' />
+                <div className=" h-[600px] w-1/2 rounded-tr-xl rounded-br-xl  shadow-lg">
+                    <div className="p-4">
+                        <p className="border-b w-fit border-blue-400">Camera's status table </p>
+                    </div>
+                </div>
+            </div>
+            
          </div>
+         
      
     );
 }
