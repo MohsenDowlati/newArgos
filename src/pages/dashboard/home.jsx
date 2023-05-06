@@ -3,19 +3,21 @@ import NavigationCard from "@/components/cards/NavigationCards";
 import Sidebar from "@/components/sidebar";
 import React from "react";
 import { AiOutlineSetting } from "react-icons/ai";
-import { BiBarChart, BiCamera } from "react-icons/bi";
+import { BiBarChart, BiCamera, BiSearch } from "react-icons/bi";
 import { GiBleedingEye, GiLog, GiNotebook } from "react-icons/gi";
 import {BsFillPeopleFill} from 'react-icons/bs';
 import {HiOutlineStatusOnline} from 'react-icons/hi'
 import NavigationBar from "@/components/NavigationSection/NavigationBar";
 import { useRouter } from "next/router";
 import 'mapbox-gl/dist/mapbox-gl.css';
+import {RiRadioButtonLine} from 'react-icons/ri'
 import mapboxgl from 'mapbox-gl'; // or "const mapboxgl = require('mapbox-gl');"
 import CircularProgress from "@/components/Progressbar/CircularProgress";
 
 import { useState } from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
+import Table from "@/components/Table/Table";
 
 // Login Page definitions
 const Home = () => {
@@ -92,11 +94,7 @@ const Home = () => {
             <div className="mt-10 pb-10 flex items-center w-full justify-center">
                 {/* MAP CONTAINER  */}
                 <div ref={mapContainer} className='h-[600px] w-1/3 rounded-tl-xl rounded-bl-xl' />
-                <div className=" h-[600px] w-1/2 rounded-tr-xl rounded-br-xl  shadow-lg">
-                    <div className="p-4">
-                        <p className="border-b w-fit border-blue-400">Camera's status table </p>
-                    </div>
-                </div>
+                <Table/>
             </div>
             
          </div>
