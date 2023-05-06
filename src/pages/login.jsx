@@ -115,11 +115,7 @@ const Login = () => {
                 <div className='w-full flex justify-center'>
                     <div className=' w-full pt-[200px] h-screen text-white-p bg-blue-400  rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-0  '>
                         <div className='flex items-center justify-center text-3xl mt-10 font-boldVazir '>
-                            <div className='text-center text-white flex items-center'>
-                            <p>ARG</p>
-                                <GiBleedingEye className='w-[60px] h-[60px]'/>
-                            </div>
-                            <p className='text-white'>S VISION</p>
+                            <img src='https://i.ibb.co/Xk0MPxS/Argos-Logo.png' className='object-contain w-[200px] h-[100px]'></img>
                         </div>
                         <div className='flex w-full  justify-center'>
                             <p className='mt-2 font-thin tracking-wider border-b text-white border-[#5ddaf0]'>DASHBOARD LOGIN</p>

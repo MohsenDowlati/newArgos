@@ -48,11 +48,9 @@ const Home = () => {
             <div className="flex w-full justify-between items-center pt-5 shadow-md pb-4 ">
                 <div className="ml-10">
                     <div className="flex  text-2xl items-center">
-                        <p>ARG</p>
-                        <GiBleedingEye className="w-[40px] h-[40px] text-red-600"/>
-                        <p>OS VISION</p>
+                        <img src="https://i.ibb.co/swKsNv1/output-onlinepngtools.png" className="object-contain w-[150px] h-[50px]"></img>
                     </div>
-                    <p className="text-sm uppercase text-gray-500">{path.slice(1,10) + ' > ' + path.slice(11,15)}</p>
+                    <p className="text-sm uppercase text-gray-500 ml-3 mt-3">{path.slice(1,10) + ' > ' + path.slice(11,15)}</p>
                 </div>
                 <div className="mr-10 flex items-center">
                     <HiOutlineStatusOnline className="w-[25px] h-[25px] mr-2 animate-blink text-green-500"/>
