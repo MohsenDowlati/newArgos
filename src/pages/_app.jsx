@@ -5,10 +5,13 @@ import 'focus-visible'
 import { decodeToken } from '@/utils/DecodeToken';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
+
 // Function to run App
 export default function App({ Component, pageProps }) {
+    const router =useRouter()
     useEffect (() => {
-        
+      
         try {
             const token = localStorage.getItem("AccessToken");
             if (token) {
@@ -17,6 +20,7 @@ export default function App({ Component, pageProps }) {
 
                 if (decodedToken.payload.exp < dateNow) {
                     localStorage.removeItem("AccessToken");
+                    router.push('/')
                 }
             }
         } catch (e) {

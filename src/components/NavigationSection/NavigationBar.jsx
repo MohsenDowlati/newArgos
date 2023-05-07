@@ -9,60 +9,52 @@ import NavigationCard from '../cards/NavigationCards';
 function NavigationBar() {
     const router = useRouter()
     return (
-        <div className='flex items-center w-full justify-center flex-shrink '>
+        <div className=' items-center  justify-center  '>
              <NavigationCard
-                    Icon={<AiOutlineHome className="text-indigo-600  w-[40px] h-[40px]"/>}
+                    Icon={<AiOutlineHome className="text-blue-300  w-[40px] h-[40px]"/>}
                     Title={'Home'}
+                    hoverColor={'shadow-blue-500'}
                     onClick={()=>router.push('/dashboard/home')}
-                    importantColor={'text-indigo-500'}
-                    Details_1={'Main Route of your  '}
-                    importantText={'Dashboard'}
-                    Details_2={'is home'}
+                    Details={'Navigate to your home'}
                 />
                  <NavigationCard
-                    Icon={<AiOutlineSetting className="text-orange-600  w-[40px] h-[40px]"/>}
+                    Icon={<AiOutlineSetting className="text-orange-300   w-[40px] h-[40px]"/>}
                     Title={'Configurations'}
+                    hoverColor={'shadow-white'}
                     onClick={()=>router.push('/dashboard/configuration')}
-                    importantColor={'text-orange-500'}
-                    Details_1={'You can customize your '}
-                    importantText={'configurations'}
-                    Details_2={'from here'}
+                  
+
+                    Details={'Navigate to Configuration'}
                 />
                      <NavigationCard
-                    Icon={<BiCamera className="text-blue-600  w-[40px] h-[40px]"/>}
+                    Icon={<BiCamera className="text-indigo-300 w-[40px] h-[40px]"/>}
                     Title={'Cameras'}
                     onClick={()=>router.push('/dashboard/cameras')}
-                    importantColor={'text-blue-400'}
-                    Details_1={'All things related to '}
-                    importantText={'Cameras'}
-                    Details_2={'will be here for you to play with'}
+                    Details={'Navigate to Cameras'}
+                    bgColor={'bg-blue-600'}
+                  
                 />
                     <NavigationCard
-                    Icon={<BiBarChart className="text-red-600  w-[40px] h-[40px]"/>}
+                    Icon={<BiBarChart className="text-red-300  w-[40px] h-[40px]"/>}
                     Title={'Metrics'}
                     onClick={()=>router.push('/dashboard/metrics')}
-                    importantColor={'text-red-400'}
-                    Details_1={'Charts and other  '}
-                    importantText={'Analytics'}
-                    Details_2={'will be here'}
+                    Details={'Navigate to Metrics'}
+                    bgColor={'bg-red-600'}
                 />
                      <NavigationCard
-                    Icon={<GiNotebook className="text-cyan-600    w-[40px] h-[40px]"/>}
+                    Icon={<GiNotebook className="text-cyan-300    w-[40px] h-[40px]"/>}
                     Title={'Logs'}
                     onClick={()=>router.push('/dashboard/logs')}
-                    importantColor={'text-cyan-500'}
-                    Details_1={'You can see logs of your   '}
-                    importantText={'Cameras'}
-                    Details_2={'Here'}
+                    Details={'Navigate to Logs'}
+                    bgColor={'bg-cyan-600'}
+                  
                 />
                      <NavigationCard
-                    Icon={<BsFillPeopleFill className="text-green-600    w-[40px] h-[40px]"/>}
+                    Icon={<BsFillPeopleFill className="text-green-300   w-[40px] h-[40px]"/>}
                     Title={'Organizations'}
                     onClick={()=>router.push('/dashboard/organizations')}
-                    importantColor={'text-green-500'}
-                    Details_1={'See all    '}
-                    importantText={'Organizations'}
-                    Details_2={'and connect with them here'}
+                    bgColor={'bg-green-500'}
+                    Details={'Navigate to Organizations'}
                 />
         </div>
      );
