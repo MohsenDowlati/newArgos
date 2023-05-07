@@ -10,7 +10,7 @@ import Cookies from 'js-cookie';
 import React from "react";
 import {GiBleedingEye} from 'react-icons/gi'
 import { BiLogInCircle } from 'react-icons/bi';
-import { loginService } from '@/services/userServices';
+import { loginService, registerService } from '@/services/userServices';
 
 // Login Page definitions
 const Login = () => {
@@ -18,7 +18,14 @@ const Login = () => {
     const router = useRouter();
     const [email,setEmail] = useState();
     const [password,setPassword] = useState();
-
+    try {
+        const token = localStorage.getItem('AccessToken')
+        if(token){
+            router.push('/dashboard/home')
+        }
+    } catch (error) {
+        
+    }
     // Particle settings 
     const particlesSettings = {
         background: {
@@ -92,14 +99,29 @@ const Login = () => {
 
     // Function call when the login button is pressed
     const loginPress = async () => {
-        router.push('/dashboard/home')
+        // router.push('/dashboard/home')
         const payload = {
             email : email,
             password : password
         }
-        console.log('payload === > ' ,payload)
+        
         const {data,status} = await loginService(payload)
-        console.log(data,status)
+        
+        if(status === 200){
+            localStorage.setItem('User_data',JSON.stringify(data))
+            localStorage.setItem('AccessToken',JSON.stringify(data.tokens.access))
+            localStorage.setItem('Refresh',JSON.stringify(data.tokens.refresh))
+            router.push('/dashboard/home')
+        }else{
+            toast.error("کد تایید معتبر نیست", {
+
+                position: "top-right",
+                closeOnClick: true,
+            });
+        }
+        
+       
+        
        
     };
 
@@ -120,7 +142,7 @@ const Login = () => {
                         <div className='flex w-full  justify-center'>
                             <p className='mt-2 font-thin tracking-wider border-b text-white border-[#5ddaf0]'>DASHBOARD LOGIN</p>
                         </div>
-                        <div className='flex w-full justify-center'>
+                        <div className='flex w-full text-white justify-center'>
                             <div>
                                     <div>
                                         <input onChange={(e)=>setEmail(e.currentTarget.value)} className='mt-4 w-[300px] h-[40px] bg-transparent border-b border-[#515152] focus:border-[#5ddaf0] placeholder:text-gray-300 text-white-p outline-none' placeholder='Email'></input>

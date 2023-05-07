@@ -8,3 +8,6 @@ export const counselingService = user => {
 export const loginService = data => {
     return http.post(`${config.api}/auth/login/`, data)
 }
+export const registerService = data => {
+    return http.post(`${config.api}/auth/register/`, data)
+}
