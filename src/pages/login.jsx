@@ -102,12 +102,12 @@ const Login = () => {
         const {data,status} = await loginService(payload)
         
         if(status === 200){
-            localStorage.setItem('User_data',JSON.stringify(data))
-            localStorage.setItem('AccessToken',JSON.stringify(data.tokens.access))
-            localStorage.setItem('Refresh',JSON.stringify(data.tokens.refresh))
+            // localStorage.setItem('User_data',JSON.stringify(data))
+            // localStorage.setItem('AccessToken',JSON.stringify(data.tokens.access))
+            // localStorage.setItem('Refresh',JSON.stringify(data.tokens.refresh))
             router.push('/dashboard/home')
         }else{
-            toast.error("کد تایید معتبر نیست", {
+            toast.error("Something went wrong", {
 
                 position: "top-right",
                 closeOnClick: true,
@@ -116,10 +116,10 @@ const Login = () => {
         
        useEffect(() => {
         
-        const token = localStorage.getItem('AccessToken')
-        if(token){
-            router.push('/dashboard/home')
-        }
+        // // // const token = localStorage.getItem('AccessToken')
+        // // if(token){
+        // //     router.push('/dashboard/home')
+        // }
        }, []);
         
        

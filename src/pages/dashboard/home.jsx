@@ -33,11 +33,11 @@ const Home = () => {
       
 
         useEffect(() => {
-            const token = localStorage.getItem('AccessToken')
-            if(!token){
-               router.push('/')
-            }
-            setUserdata(JSON.parse(localStorage.getItem('User_data')))
+            // const token = localStorage.getItem('AccessToken')
+            // if(!token){
+            //    router.push('/')
+            // }
+            // setUserdata(JSON.parse(localStorage.getItem('User_data')))
         }, []);
 
 

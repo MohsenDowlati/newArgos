@@ -12,20 +12,20 @@ export default function App({ Component, pageProps }) {
     const router =useRouter()
     useEffect (() => {
       
-        try {
-            const token = localStorage.getItem("AccessToken");
-            if (token) {
-                const decodedToken = decodeToken(token);
-                const dateNow = Date.now() / 1000;
+        // try {
+        //     const token = localStorage.getItem("AccessToken");
+        //     if (token) {
+        //         const decodedToken = decodeToken(token);
+        //         const dateNow = Date.now() / 1000;
 
-                if (decodedToken.payload.exp < dateNow) {
-                    localStorage.removeItem("AccessToken");
-                    router.push('/')
-                }
-            }
-        } catch (e) {
-            console.log(e)
-        }
+        //         if (decodedToken.payload.exp < dateNow) {
+        //             localStorage.removeItem("AccessToken");
+        //             router.push('/')
+        //         }
+        //     }
+        // } catch (e) {
+        //     console.log(e)
+        // }
 
     }, []);
     // Default loading
