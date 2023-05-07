@@ -20,14 +20,7 @@ export default function Organization() {
     const date = new Date()
     const router = useRouter()
     const path = router.pathname
-    try {
-        const token = localStorage.getItem('AccessToken')
-        if(!token){
-           router.push('/')
-        }
-   } catch (error) {
-       
-   }
+
        // Component return
        return (
            <div className="">

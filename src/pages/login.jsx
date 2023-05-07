@@ -18,14 +18,8 @@ const Login = () => {
     const router = useRouter();
     const [email,setEmail] = useState();
     const [password,setPassword] = useState();
-    try {
-        const token = localStorage.getItem('AccessToken')
-        if(token){
-            router.push('/dashboard/home')
-        }
-    } catch (error) {
-        
-    }
+   
+   
     // Particle settings 
     const particlesSettings = {
         background: {
@@ -120,7 +114,13 @@ const Login = () => {
             });
         }
         
-       
+       useEffect(() => {
+        
+        const token = localStorage.getItem('AccessToken')
+        if(token){
+            router.push('/dashboard/home')
+        }
+       }, []);
         
        
     };

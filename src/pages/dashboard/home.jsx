@@ -19,14 +19,6 @@ const Home = () => {
  const path = router.pathname 
  const [userdata,setUserdata] = useState() 
  
-try {
-     const token = localStorage.getItem('AccessToken')
-     if(!token){
-        router.push('/')
-     }
-} catch (error) {
-    
-}
 
 
     // Component return
@@ -41,6 +33,10 @@ try {
       
 
         useEffect(() => {
+            const token = localStorage.getItem('AccessToken')
+            if(!token){
+               router.push('/')
+            }
             setUserdata(JSON.parse(localStorage.getItem('User_data')))
         }, []);
 

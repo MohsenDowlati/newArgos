@@ -12,14 +12,7 @@ const Configuration = () => {
     const path = router.pathname
     const imgsrc = 'https://www.maxpixel.net/static/photo/1x/Young-Smile-Portrait-Ai-Generated-Man-Teeth-7833751.jpg'
     // Component return
-    try {
-        const token = localStorage.getItem('AccessToken')
-        if(!token){
-           router.push('/')
-        }
-   } catch (error) {
-       
-   }
+
     return (
         <div className="">
         <div className="flex w-full justify-between items-center pt-5 shadow-md pb-4 ">
