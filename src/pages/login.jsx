@@ -12,6 +12,7 @@ import Cookies from 'js-cookie';
 import {GiBleedingEye} from 'react-icons/gi'
 import { BiLogInCircle } from 'react-icons/bi';
 import { loginService, registerService } from '@/services/userServices';
+import { BsEye } from "react-icons/bs";
 
 // Login Page definitions
 const Login = () => {
@@ -20,12 +21,12 @@ const Login = () => {
     const [email,setEmail] = useState();
     const [password,setPassword] = useState();
     const [isloading,setIsloading] = useState(false)
-   
+    const [isVisible,setIsVisible] = useState(false)
     // Particle settings 
     const particlesSettings = {
         background: {
             color: {
-                value: "#24273b",
+                value: "#1d2126",
             },
             opacity: 1
         },
@@ -46,7 +47,7 @@ const Login = () => {
         },
         particles: {
             color: {
-                value: "#00eeff",
+                value: "#ffffff",
             },
             move: {
                 directions: "none",
@@ -136,8 +137,9 @@ const Login = () => {
                                     <div>
                                         <input onChange={(e)=>setEmail(e.currentTarget.value)} className='mt-4 w-[300px] h-[40px] bg-transparent border-b border-[#515152] focus:border-[#5ddaf0] placeholder:text-gray-300 text-white-p outline-none' placeholder='Email'></input>
                                     </div>
-                                    <div>
-                                        <input onChange={(e)=>setPassword(e.currentTarget.value)} className='mt-4 w-[300px] h-[40px] bg-transparent border-b border-[#515152]  focus:border-[#5ddaf0] placeholder:text-gray-300 text-white-p outline-none' placeholder='Password'></input>
+                                    <div className="relative">
+                                        <BsEye onClick={()=>setIsVisible(!isVisible)} className="absolute right-2 w-[20px] h-[20px] top-7"/>
+                                        <input type={isVisible ? 'text' : 'password'} onChange={(e)=>setPassword(e.currentTarget.value)} className='mt-4 w-[300px] h-[40px] bg-transparent border-b border-[#515152] focus:border-[#5ddaf0] placeholder:text-gray-300 text-white-p outline-none' placeholder='Password'></input>
                                     </div>
                             </div>
                         </div>
