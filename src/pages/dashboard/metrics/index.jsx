@@ -5,6 +5,7 @@ import { HiOutlineStatusOnline } from "react-icons/hi";
 import NavigationBar from "@/components/NavigationSection/NavigationBar";
 import { GiBleedingEye } from "react-icons/gi";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 // Login Page definitions
 export default function Metrics() {    
