@@ -137,7 +137,7 @@ const Dhome = () => {
                     <RiRoadMapFill className="w-[30px] h-[30px] text-white"/>
                     <p className="text-white ml-2">Normal view</p>
                 </button>
-                <button onClick={()=>setMapstyle('mapbox://styles/mapbox/satellite-v9')} className="hover:bg-teal-700 backdrop-blur-sm p-3 rounded-xl  z-10 flex items-center">
+                <button onClick={()=>setMapstyle('mapbox://styles/mapbox/satellite-streets-v12')} className="hover:bg-teal-700 backdrop-blur-sm p-3 rounded-xl  z-10 flex items-center">
                     <MdOutlineSatelliteAlt className="w-[30px] h-[30px] text-white"/>
                     <p className="text-white ml-2">Satelite view</p>
                 </button>
