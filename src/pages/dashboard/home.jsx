@@ -10,7 +10,8 @@ import { useEffect } from "react";
 import Table from "@/components/Table/Table";
 import { HiLocationMarker, HiOutlineStatusOnline } from "react-icons/hi";
 import { BiCamera } from "react-icons/bi";
-
+import {MdOutlineSatelliteAlt} from 'react-icons/md'
+import { RiRoadMapFill } from "react-icons/ri";
 // Login Page definitions
 const Dhome = () => {
  const imgsrc = 'https://www.maxpixel.net/static/photo/1x/Young-Smile-Portrait-Ai-Generated-Man-Teeth-7833751.jpg'
@@ -18,16 +19,17 @@ const Dhome = () => {
  const router = useRouter()
  const path = router.pathname 
  const [userdata,setUserdata] = useState() 
- 
+ const [mapstyle,setMapstyle] = useState('mapbox://styles/mapbox/dark-v11')
 
 
     // Component return
    
     const Map = ReactMapboxGl({
         accessToken: 'pk.eyJ1IjoicGFydGl5YTAyMTAiLCJhIjoiY2xoYzVjODlnMDlhbzNtbnZyNzdvZDV0NSJ9.pENwwnr9suPHN1Liq2izQA',
+        
       });
       
-      const mapStyle = 'mapbox://styles/mapbox/dark-v11';
+     
       
       const centerCoordinates = [-122.431297, 37.773972];
       
@@ -67,7 +69,7 @@ const Dhome = () => {
                 </div>
 
             </div>
-            <div className=" p-10 absolute z-10 top-28 w-[0px]">
+            <div className=" p-10 absolute  z-10 top-28 w-[0px]">
                     <NavigationBar/>
             </div>
             
@@ -76,10 +78,12 @@ const Dhome = () => {
             <div className="  flex items-center w-full justify-center">
                 {/* MAP CONTAINER  */}
             
-                <Map
-                     style={mapStyle}
+                <Map 
+                     
+                     style={mapstyle}
                      center={centerCoordinates}
                      zoom={[3]}
+                     
                      className={'w-full h-screen'}
                      
                 >
@@ -127,6 +131,16 @@ const Dhome = () => {
                 value={10} 
                 maxValue={10} 
                 />
+            </div>
+            <div className="absolute top-32 right-10 z-10">
+            <button onClick={()=>setMapstyle('mapbox://styles/mapbox/dark-v11')} className="hover:bg-pink-800 backdrop-blur-sm p-3 my-2 rounded-xl  flex items-center">
+                    <RiRoadMapFill className="w-[30px] h-[30px] text-white"/>
+                    <p className="text-white ml-2">Normal view</p>
+                </button>
+                <button onClick={()=>setMapstyle('mapbox://styles/mapbox/satellite-v9')} className="hover:bg-teal-700 backdrop-blur-sm p-3 rounded-xl  z-10 flex items-center">
+                    <MdOutlineSatelliteAlt className="w-[30px] h-[30px] text-white"/>
+                    <p className="text-white ml-2">Satelite view</p>
+                </button>
             </div>
         
             
