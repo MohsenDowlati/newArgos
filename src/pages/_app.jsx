@@ -6,28 +6,37 @@ import { decodeToken } from '@/utils/DecodeToken';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import jwtDecode from 'jwt-decode';
+import jwt from 'jsonwebtoken';
 
 // Function to run App
 export default function App({ Component, pageProps }) {
     const router =useRouter()
-    useEffect (() => {
+
       
+           
+   
         // try {
-        //     const token = localStorage.getItem("AccessToken");
+        //        const token = localStorage.getItem("AccessToken");
         //     if (token) {
         //         const decodedToken = decodeToken(token);
         //         const dateNow = Date.now() / 1000;
-
+              
         //         if (decodedToken.payload.exp < dateNow) {
         //             localStorage.removeItem("AccessToken");
         //             router.push('/')
+                  
         //         }
         //     }
-        // } catch (e) {
-        //     console.log(e)
+        // } catch (error) {
+            
         // }
+           
+    
+    
+     
 
-    }, []);
+
     // Default loading
     return (
         <Component {...pageProps} />

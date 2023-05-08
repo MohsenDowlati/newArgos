@@ -3,6 +3,7 @@ import NavigationBar from "@/components/NavigationSection/NavigationBar";
 import Sidebar from "@/components/sidebar";
 import { useRouter } from "next/router";
 import React from "react";
+import { useEffect } from "react";
 import { GiBleedingEye } from "react-icons/gi";
 import { HiOutlineStatusOnline } from "react-icons/hi";
 
@@ -12,7 +13,13 @@ const Configuration = () => {
     const path = router.pathname
     const imgsrc = 'https://www.maxpixel.net/static/photo/1x/Young-Smile-Portrait-Ai-Generated-Man-Teeth-7833751.jpg'
     // Component return
-
+    useEffect(() => {
+        const token = localStorage.getItem('AccessToken')
+        if(!token){
+           router.push('/')
+        }
+  
+    }, []);
     return (
         <div className="">
         <div className="flex w-full justify-between items-center pt-5 shadow-md pb-4 ">

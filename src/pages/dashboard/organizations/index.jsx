@@ -20,7 +20,13 @@ export default function Organization() {
     const date = new Date()
     const router = useRouter()
     const path = router.pathname
-
+    useEffect(() => {
+        const token = localStorage.getItem('AccessToken')
+        if(!token){
+           router.push('/')
+        }
+     
+    }, []);
        // Component return
        return (
            <div className="">

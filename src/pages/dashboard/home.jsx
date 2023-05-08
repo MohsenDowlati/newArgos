@@ -12,7 +12,7 @@ import { HiLocationMarker, HiOutlineStatusOnline } from "react-icons/hi";
 import { BiCamera } from "react-icons/bi";
 
 // Login Page definitions
-const Home = () => {
+const Dhome = () => {
  const imgsrc = 'https://www.maxpixel.net/static/photo/1x/Young-Smile-Portrait-Ai-Generated-Man-Teeth-7833751.jpg'
  const date = new Date()
  const router = useRouter()
@@ -31,13 +31,13 @@ const Home = () => {
       
       const centerCoordinates = [-122.431297, 37.773972];
       
-
+        // Check if Token is available 
         useEffect(() => {
-            // const token = localStorage.getItem('AccessToken')
-            // if(!token){
-            //    router.push('/')
-            // }
-            // setUserdata(JSON.parse(localStorage.getItem('User_data')))
+            const token = localStorage.getItem('AccessToken')
+            if(!token){
+               router.push('/')
+            }
+            setUserdata(JSON.parse(localStorage.getItem('User_data')))
         }, []);
 
 
@@ -137,4 +137,4 @@ const Home = () => {
 }
 
 // Export the Dashboard page
-export default Home;
+export default Dhome;

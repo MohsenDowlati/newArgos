@@ -1,4 +1,5 @@
 // Imports
+import React from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import { errorToaster } from '@/components/toasters';
 import { loadSlim } from "tsparticles-slim";
@@ -7,7 +8,7 @@ import Particles from "react-tsparticles";
 import { useRouter } from 'next/router';
 import { useCallback } from "react";
 import Cookies from 'js-cookie';
-import React from "react";
+
 import {GiBleedingEye} from 'react-icons/gi'
 import { BiLogInCircle } from 'react-icons/bi';
 import { loginService, registerService } from '@/services/userServices';
@@ -18,7 +19,7 @@ const Login = () => {
     const router = useRouter();
     const [email,setEmail] = useState();
     const [password,setPassword] = useState();
-   
+    const [isloading,setIsloading] = useState(false)
    
     // Particle settings 
     const particlesSettings = {
@@ -82,17 +83,11 @@ const Login = () => {
         await loadSlim(engine);
     }, []);
 
-    // Pop toaster message if noTokens cookie is present
-    useEffect(() => {
-        const refresh = Cookies.get('noTokens');
-        if (refresh === 'true') {
-            Cookies.set('noTokens', false);
-            errorToaster('Login to access your dashboard', 'top-center');
-        }
-    }, []);
+    
 
     // Function call when the login button is pressed
     const loginPress = async () => {
+        setIsloading(true)
         // router.push('/dashboard/home')
         const payload = {
             email : email,
@@ -102,26 +97,20 @@ const Login = () => {
         const {data,status} = await loginService(payload)
         
         if(status === 200){
-            // localStorage.setItem('User_data',JSON.stringify(data))
-            // localStorage.setItem('AccessToken',JSON.stringify(data.tokens.access))
-            // localStorage.setItem('Refresh',JSON.stringify(data.tokens.refresh))
+            localStorage.setItem('User_data',JSON.stringify(data))
+            localStorage.setItem('AccessToken',JSON.stringify(data.tokens.access))
+            localStorage.setItem('Refresh',JSON.stringify(data.tokens.refresh))
             router.push('/dashboard/home')
         }else{
+            setIsloading(false)
             toast.error("Something went wrong", {
 
                 position: "top-right",
                 closeOnClick: true,
             });
         }
-        
-       useEffect(() => {
-        
-        // // // const token = localStorage.getItem('AccessToken')
-        // // if(token){
-        // //     router.push('/dashboard/home')
-        // }
-       }, []);
-        
+ 
+      
        
     };
 
@@ -153,8 +142,12 @@ const Login = () => {
                             </div>
                         </div>
                         <div className='flex w-full justify-center'>
-                            <button onClick={loginPress} className='mt-10 w-[200px] text-white flex rounded-md items-center justify-center h-[50px] bg-[#4097a7] font-thin'>
-                                <BiLogInCircle className='w-[25px] mr-2 h-[25px]'/>
+                            <button onClick={loginPress} className='mt-10 w-[200px] hover:bg-blue-600 text-white flex rounded-md items-center justify-center h-[50px] bg-blue-500 font-thin'>
+                                {
+                                    isloading 
+                                        ? <div className="w-[20px] animate-spin h-[20px] mr-3 border-t-2 rounded-full"></div>
+                                        : <BiLogInCircle className='w-[25px] mr-2 h-[25px]'/>
+                                }
                                 <p className='text-lg'>Login</p>
                             </button>
                         </div>
