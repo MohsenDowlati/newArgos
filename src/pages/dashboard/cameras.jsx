@@ -3,15 +3,34 @@ import NavigationBar from "@/components/NavigationSection/NavigationBar";
 import Sidebar from "@/components/sidebar";
 import { useRouter } from "next/router";
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { GiBleedingEye } from "react-icons/gi";
 import { HiOutlineStatusOnline } from "react-icons/hi";
+import WebSocket from "reconnecting-websocket";
 
 // Login Page definitions
 const Cameras = () => {
     const router = useRouter()
     const path = router.pathname
     const imgsrc = 'https://www.maxpixel.net/static/photo/1x/Young-Smile-Portrait-Ai-Generated-Man-Teeth-7833751.jpg'
+
+
+    const [data, setData] = useState({});
+
+    useEffect(() => {
+        const key = "ARGv30002";
+        const socket = new WebSocket(`ws://api.argos.vision/api/v1/camera/ws/${key}`);
+        socket.onopen = () => console.log("WebSocket connected");
+        socket.onmessage = (event) => {
+            const message = JSON.parse(event.data);
+            setData(message);
+        };
+        return () => {
+            socket.close();
+        };
+    }, []);
+
+    console.log(data)
     // Component return
     useEffect(() => {
         const token = localStorage.getItem('AccessToken')
