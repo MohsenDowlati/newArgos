@@ -4,7 +4,7 @@ import 'react-circular-progressbar/dist/styles.css';
 
 function CircularProgress({Title,value,maxValue,DetailText,BgColor,trailColor}) {
     return ( 
-        <div className={` ${BgColor} mx-2 w-[300px]  p-4 rounded-lg flex items-center `}>
+        <div className={` ${BgColor} mx-2  p-4 rounded-lg flex items-center `}>
             <div className='w-[60px] '>
                 <CircularProgressbar value={value} maxValue={maxValue} strokeWidth={5} 
                 text={value + ' / ' + maxValue}

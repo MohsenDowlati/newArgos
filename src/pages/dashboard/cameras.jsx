@@ -15,22 +15,9 @@ const Cameras = () => {
     const imgsrc = 'https://www.maxpixel.net/static/photo/1x/Young-Smile-Portrait-Ai-Generated-Man-Teeth-7833751.jpg'
 
 
-    const [data, setData] = useState({});
+    
+    
 
-    useEffect(() => {
-        const key = "ARGv30002";
-        const socket = new WebSocket(`ws://api.argos.vision/api/v1/camera/ws/${key}`);
-        socket.onopen = () => console.log("WebSocket connected");
-        socket.onmessage = (event) => {
-            const message = JSON.parse(event.data);
-            setData(message);
-        };
-        return () => {
-            socket.close();
-        };
-    }, []);
-
-    console.log(data)
     // Component return
     useEffect(() => {
         const token = localStorage.getItem('AccessToken')

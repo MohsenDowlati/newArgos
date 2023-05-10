@@ -20,6 +20,7 @@ const Dhome = () => {
  const path = router.pathname 
  const [userdata,setUserdata] = useState() 
  const [mapstyle,setMapstyle] = useState('mapbox://styles/mapbox/dark-v11')
+ const [data, setData] = useState({});
 
 
     // Component return
@@ -42,7 +43,18 @@ const Dhome = () => {
             setUserdata(JSON.parse(localStorage.getItem('User_data')))
         }, []);
 
-
+        useEffect(() => {
+            const key = "ARGv30002";
+            const socket = new WebSocket(`wss://api.argos.vision/api/v1/camera/ws/${key}`);
+            socket.onopen = () => console.log("WebSocket connected");
+            socket.onmessage = (event) => {
+                const message = JSON.parse(event.data);
+                setData(message);
+            };
+            return () => {
+                socket.close();
+            };
+        }, []);
 
 
 
