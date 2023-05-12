@@ -9,7 +9,7 @@ import NavigationCard from '../cards/NavigationCards';
 function NavigationBar() {
     const router = useRouter()
     return (
-        <div className=' items-center  justify-center  '>
+        <div className=' items-center justify-center  '>
              <NavigationCard
                     Icon={<AiOutlineHome className="text-blue-300  w-[40px] h-[40px]"/>}
                     Title={'Home'}
