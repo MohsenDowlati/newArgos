@@ -7,7 +7,7 @@ export default function Document() {
       
       <script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
       <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
-
+    
       <body className="flex h-full flex-col">
         <Main />
         <NextScript />

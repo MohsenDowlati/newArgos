@@ -15,6 +15,7 @@ import { RiMotorbikeLine } from "react-icons/ri";
 import FilterBar from "@/components/FilterBar";
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip, AreaChart, Area } from 'recharts';
 import { MdExpandMore, MdMore } from "react-icons/md";
+import ChartDetail from "@/components/ChartDetails";
 // Login Page definitions
 export default function Metrics() {    
     const router = useRouter()
@@ -25,6 +26,19 @@ export default function Metrics() {
     const imgsrc = 'https://www.maxpixel.net/static/photo/1x/Young-Smile-Portrait-Ai-Generated-Man-Teeth-7833751.jpg'
     const [CameraData,setCameraData] = useState()
     const [BicycleDirection,setBicycleDirection] = useState([])
+    const [PersonDetails,setPersonDetails] = useState({
+        directions : [],
+        totalPerson : 0,
+        peakTime : 0,
+        camera_id : '10',
+      })
+    const [CarDetails,setCarDetails] = useState({
+        directions : [],
+        TotalCar : 0 ,
+        peakTime  : 0,
+        camera_id : ""
+    })
+
     const [Bicycle,setBicycle] = useState([])
     const [BicyclePeakTime,setBicyclePeakTime] = useState('00')
     const [TotalBicycle,setTotalBicycle] = useState('0')
@@ -33,7 +47,6 @@ export default function Metrics() {
 
 
     const [show,setShow] = useState(false)
-    let bicyclePeaktime = 0;
   
 
     async function getCameradata (){
@@ -44,25 +57,34 @@ export default function Metrics() {
         let BicycleNumber =0;
         let PersonData = []  
         let PersonNumber = 0;
+        let Persondirections = []
         let CarData = [];
         let Bicycledirections = []
+        let Cardirections = []
         let CarNumber = 0;   
         setCameraData(data)
         data.forEach(element => {
            if(Object.keys(element.area_counts).length > 0){
+
+                // 1 person
+                // 2 car 
+                // 3 motorcycle
+
+
                if(element.area_counts[2] !== undefined){
-                    Bicycledirections = [...Bicycledirections,element.area_counts[2]]
+                    Cardirections = [...Cardirections,element.area_counts[2]]
                 for (const key in element.area_counts[2]){
                    
-                    BicycleNumber += element.area_counts[2][key]
+                    CarNumber += element.area_counts[2][key]
                     
                 }
-                BicycleData = [...BicycleData,
+
+            CarData = [ ...CarData,
                     { 
-                    bicycle : BicycleNumber,
+                    car : CarNumber,
                     name:element.date_time_Record.slice(11,13)
                 }]
-                BicycleNumber = 0
+                CarNumber = 0
                }
 
 
@@ -70,7 +92,7 @@ export default function Metrics() {
 
                 
                if(element.area_counts[1] !== undefined){
-                
+                Persondirections = [...Persondirections,element.area_counts[1]]
                for (const key in element.area_counts[1]){
                 PersonNumber += element.area_counts[1][key]
             }
@@ -88,12 +110,12 @@ export default function Metrics() {
                 for (const key in element.area_counts[3]){
                     BicycleNumber += element.area_counts[3][key]
                 }
-                CarData = [...CarData,
+                BicycleData = [...BicycleData,
                     { 
-                    car : CarNumber,
+                    bicycle : BicycleNumber,
                     name:element.date_time_Record.slice(11,13)
                 }]
-                CarNumber = 0
+                BicycleNumber = 0
                }
 
 
@@ -153,39 +175,116 @@ export default function Metrics() {
        setPerson(Personresult)
 
        let TotalBicycle = 0;
-       let max_value = Bicycleresult[0]?.bicycle;
+       let maxBicycle = Bicycleresult[0]?.bicycle;
        let peakTime = 0
+       let TotalPerson = 0 
+       let MaxPerson = Personresult[0]?.person
+       let PersonPeakTime = 0
+       let TotalCar = 0
+       let MaxCar = Carresult[0]?.car
+       let CarPeakTime = 0
+
+
+
+       Personresult.forEach(obj => {
+        
+         TotalPerson += obj.person
+         if(obj.person > MaxPerson){
+             MaxPerson = obj.person
+             PersonPeakTime = obj.name
+         }
+        });
+        Carresult.forEach(obj => {
+                
+            TotalCar += obj.car
+            if(obj.car > MaxCar){
+                MaxCar = obj.car
+                CarPeakTime = obj.name
+            }
+        });
        Bicycleresult.forEach(obj => {
        
             TotalBicycle += obj.bicycle
-            if(obj.bicycle > max_value){
-                max_value = obj.bicycle
+            if(obj.bicycle > maxBicycle){
+                maxBicycle = obj.bicycle
                 peakTime = obj.name
             }
       });
+      
+      
+        const groupedDataPerson = {};
+        Persondirections.forEach(obj => {
+          for (let key in obj) {
+            if (groupedDataPerson.hasOwnProperty(key)) {
+              groupedDataPerson[key] += obj[key];
+            } else {
+              groupedDataPerson[key] = obj[key];
+            }
+          }
+        });
+        const PersonDirectionDetails = Object.keys(groupedDataPerson).map(key => ({ [key]: groupedDataPerson[key] }));
 
-      const groupedData = {};
 
+
+
+        
+        const groupedDataCar = {};
+        Cardirections.forEach(obj => {
+          for (let key in obj) {
+            if (groupedDataCar.hasOwnProperty(key)) {
+              groupedDataCar[key] += obj[key];
+            } else {
+              groupedDataCar[key] = obj[key];
+            }
+          }
+        });
+        const CarDirectionDetails = Object.keys(groupedDataCar).map(key => ({ [key]: groupedDataCar[key] }));
+
+
+
+
+
+
+      const groupedBikeData = {};
       Bicycledirections.forEach(obj => {
         for (let key in obj) {
-          if (groupedData.hasOwnProperty(key)) {
-            groupedData[key] += obj[key];
+          if (groupedBikeData.hasOwnProperty(key)) {
+            groupedBikeData[key] += obj[key];
           } else {
-            groupedData[key] = obj[key];
+            groupedBikeData[key] = obj[key];
           }
         }
       });
-      const result = Object.keys(groupedData).map(key => ({ [key]: groupedData[key] }));
-      
-      
+      const BikeDirectionDetail = Object.keys(groupedBikeData).map(key => ({ [key]: groupedBikeData[key] }));
 
-      setBicycleDirection(result)
+    
+      
+      
+      
+      setPersonDetails({
+        directions : PersonDirectionDetails,
+        totalPerson : TotalPerson,
+        peakTime : PersonPeakTime,
+        camera_id : camera_id,
+      })
+      setCarDetails({
+        directions : CarDirectionDetails,
+        TotalCar : TotalCar,
+        peakTime : CarPeakTime,
+        camera_id : camera_id
+      })
+
+
+
+
+      setBicycleDirection(BikeDirectionDetail)
       setTotalBicycle(TotalBicycle)
       setBicyclePeakTime(peakTime)
       
        console.log('Bicycle Data === > ' , Bicycle)
        console.log('Person Data === > ' , Personresult)
        console.log('Car Data === > ' , Carresult)
+       console.log('PersonDetails ==== > ' , PersonDetails)
        console.log(BicycleDirection)
 
        
@@ -243,61 +342,12 @@ export default function Metrics() {
                 </div>
                 <p className="mt-5 ml-10 text-white">- Results are based on selected filter  </p>
                 <div className="flex items-center flex-wrap pb-10">
-                    <div className=" bg-[#1e2127] pr-10 w-fit ml-10 mt-10 rounded-lg">
-                        <div className="flex items-center p-4">
-                            <BiCycling className="w-[50px] h-[50px] flex items-center text-indigo-400"/>
-                            <p className="text-indigo-400 ml-2 border-b border-indigo-400">Bicycle data<span className="text-[12px]"> (Average Bicycle/hour)</span>  </p>
-                        </div>
-                        <AreaChart  width={800}   className='mt-5 z-0' height={300} data={Bicycle}>
-                            <Area type="monotone" strokeWidth={2} fill={'#7984e8'} dataKey="bicycle" stroke="#818df8" />
-                            <CartesianGrid stroke="#fffff" />
-                            <XAxis  dataKey="name" />
-                            <YAxis />
-                            <Tooltip  />
-                        <Legend />
-                        </AreaChart>
-                        <div className="w-full flex justify-start items-center mb-10">
-                            <div className="flex ml-10 items-center">
-                                <BiCycling className="text-indigo-400 w-[40px] h-[40px]"/>
-                                <div className="ml-2">
-                                    <p className="text-xl font-boldVazir text-indigo-400">{TotalBicycle}</p>
-                                    <p className="text-sm text-gray-500">Total bicycles</p>
-                                </div>
-                            </div>
-                              <div className="flex ml-10 items-center">
-                                <BiTime className="text-indigo-400 w-[40px] h-[40px]"/>
-                                <div className="ml-2">
-                                    <p className="text-xl font-boldVazir text-indigo-400">{BicyclePeakTime + ':00'}</p>
-                                    <p className="text-sm text-gray-500">Peak Time</p>
-                                </div>
-                            </div>
-                            <div className="flex ml-10 items-center">
-                                <BiCctv className="text-indigo-400 w-[40px] h-[40px]"/>
-                                <div className="ml-2">
-                                    <p className="text-xl font-boldVazir text-indigo-400">{camera_id}</p>
-                                    <p className="text-sm text-gray-500">Camera</p>
-                                </div>
-                            </div>
-                            <div className="flex items-center ml-10 ">
-                                <BiDirections className="w-[40px] h-[40px] text-indigo-400"/>
-                                <div className="overflow-y-scroll h-[80px] px-5">
-                                  
-                                         {BicycleDirection.map((item, index) => (
-                                             <p className="text-white text-sm" key={index}>
-                                             {Object.keys(item)[0]}: {item[Object.keys(item)[0]]}
-                                             </p>
-                                            ))}
-                            
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
 
 
 
 
-                    <div className=" bg-[#1e2127] pr-10  w-fit ml-10 mt-10 rounded-lg">
+                    <div className=" bg-[#252830] pr-10  w-fit ml-10 mt-10 rounded-lg">
                         <div className="flex items-center p-4">
                             <BsPerson className="w-[50px] h-[50px] flex items-center text-blue-400"/>
                             <p className="text-blue-400 ml-2 border-b border-blue-400">Person Data <span className="text-[12px]">(Average Person/hour)</span> </p>
@@ -310,8 +360,22 @@ export default function Metrics() {
                             <Tooltip  />
                         <Legend />
                         </AreaChart>
+                        <ChartDetail 
+                        Title={'Person'}
+                        TextColor={'text-blue-400'}
+                        Direction={PersonDetails.directions}
+                        Total={PersonDetails.totalPerson}
+                        camera_id={camera_id}
+                        PeakTime={PersonDetails.peakTime} 
+                        icon={<BsPerson className="text-blue-400 w-[40px] h-[40px]"/>}
+                           
+                           />
                     </div>
-                    <div className=" bg-[#1e2127] pr-10  w-fit ml-10 mt-10 rounded-lg">
+
+
+
+
+                    <div className=" bg-[#252830] pr-10  w-fit ml-10 mt-10 rounded-lg">
                         <div className="flex items-center p-4">
                             <BsPerson className="w-[50px] h-[50px] flex items-center text-red-400"/>
                             <p className="text-red-400 ml-2 border-b red-400 border-red-400">Car Data <span className="text-[12px]">(Average Car/hour)</span> </p>
@@ -324,6 +388,40 @@ export default function Metrics() {
                             <Tooltip  />
                         <Legend />
                         </AreaChart>
+                        <ChartDetail 
+                        Title={'Car'}
+                        TextColor={'text-red-400'}
+                        Direction={CarDetails.directions}
+                        Total={CarDetails.TotalCar}
+                        camera_id={camera_id}
+                        PeakTime={CarDetails.peakTime} 
+                        icon={<BiCar className="text-red-400 w-[40px] h-[40px]"/>}
+                           
+                           />
+                    
+                    </div>
+
+
+
+
+
+
+
+
+                    <div className=" bg-[#252830] pr-10 w-fit ml-10 mt-10 rounded-lg">
+                        <div className="flex items-center p-4">
+                            <BiCycling className="w-[50px] h-[50px] flex items-center text-indigo-400"/>
+                            <p className="text-indigo-400 ml-2 border-b border-indigo-400">Bicycle data<span className="text-[12px]"> (Average Bicycle/hour)</span>  </p>
+                        </div>
+                        <AreaChart  width={700}   className='mt-5 z-0' height={300} data={Bicycle}>
+                            <Area type="monotone" strokeWidth={2} fill={'#7984e8'} dataKey="bicycle" stroke="#818df8" />
+                            <CartesianGrid stroke="#fffff" />
+                            <XAxis  dataKey="name" />
+                            <YAxis />
+                            <Tooltip  />
+                        <Legend />
+                        </AreaChart>
+                      
                     </div>
                     
                 </div>

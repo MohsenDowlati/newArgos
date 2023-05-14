@@ -1,28 +1,31 @@
 // Imports
-import React from "react";
+import React, { useRef } from "react";
 import NavigationBar from "@/components/NavigationSection/NavigationBar";
 import { useRouter } from "next/router";
 import 'mapbox-gl/dist/mapbox-gl.css';
+
 import CircularProgress from "@/components/Progressbar/CircularProgress";
 import { useState } from "react";
-import ReactMapboxGl, { Marker } from 'react-mapbox-gl';
+import ReactMapboxGl, { Layer, Marker } from 'react-mapbox-gl';
 import { useEffect } from "react";
-import Table from "@/components/Table/Table";
-import { HiLocationMarker, HiOutlineStatusOnline } from "react-icons/hi";
-import { BiCamera } from "react-icons/bi";
+
 import {MdOutlineSatelliteAlt} from 'react-icons/md'
 import { RiRoadMapFill } from "react-icons/ri";
+
 import Navbar from "@/components/Navbar/Navbar";
+import MyMap from "@/components/Map/Map";
+
 // Login Page definitions
 const Dhome = () => {
-
  const date = new Date()
  const router = useRouter()
  const path = router.pathname 
+ const [showMap,setShowmap] = useState(false)
  
  const [mapstyle,setMapstyle] = useState('mapbox://styles/mapbox/dark-v11')
- const [data, setData] = useState({});
 
+ const [data,setData] = useState()
+ const example = useRef()
 
     // Component return
    
@@ -44,24 +47,32 @@ const Dhome = () => {
          
         }, []);
 
-        useEffect(() => {
-            const key = "ARGv30002";
-            const socket = new WebSocket(`wss://api.argos.vision/api/v1/camera/ws/${key}`);
-            socket.onopen = () => console.log("WebSocket connected");
-            socket.onmessage = (event) => {
-                const message = JSON.parse(event.data);
-                setData(message);
-            };
-            return () => {
-                socket.close();
-            };
-        }, []);
+       
+        let tempdata2
+    // useEffect(() => {
+    //     const key = "ARGv30002";
+    //     const socket = new WebSocket(`wss://api.argos.vision/ws/socket-server/`)
+  
+    //  socket.onopen = () => console.log("WebSocket connected");
+    //     socket.send(key)
+        
+    //     socket.onmessage = (event) => {
+    //      setData(event.data)
+    //      const a = JSON.parse(event.data)
+        
+    //         example.current = JSON.parse(a.live_data)
+         
+    //     };
+      
+    //     return () => {
    
+    //         socket.close();
+    //     };
+     
+    // }, []);
 
 
-
-
-
+   
 
 
 
@@ -78,7 +89,7 @@ const Dhome = () => {
             <div className="  flex items-center w-full justify-center">
                 {/* MAP CONTAINER  */}
             
-                <Map 
+                {/* <Map 
                      
                      style={mapstyle}
                      center={centerCoordinates}
@@ -87,20 +98,24 @@ const Dhome = () => {
                      className={'w-full h-screen'}
                      
                 >
-                     <Marker coordinates={[-122.431297, 37.773972]}>
-                        <div>
-                            <HiLocationMarker className="w-[30px] h-[30px] text-green-600"/>
+                        
+                  {example.current?.payload.detections.wide.map((item,key)=>(
+                    
+                    <Marker key={key} coordinates={[item.gps[1],item.gps[0]]}>
+                        <div className="flex items-center">
+                            <BiCctv className="w-[30px] h-[30px] p-1 bg-green-400 text-white rounded-xl "/>
+                                <div>
+                                    <p className="text-white ml-1">{example.current.payload.date}</p>
+                                    <p className="text-white ml-1">{example.current.id}</p>
+                                </div>
                         </div>
                     </Marker>
-                    <Marker coordinates={[-122.421297, 37.773972]}>
-                        <div>
-                            <HiLocationMarker className="w-[30px] h-[30px] text-green-600"/>
-                        </div>
-                    </Marker>
-                </Map>
-           
-            </div>
+                  ))}
+       
+                </Map> */}
+                <MyMap/>
 
+            </div>
 
 
 

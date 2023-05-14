@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import jwtDecode from 'jwt-decode';
 import jwt from 'jsonwebtoken';
+import Script from 'next/script';
 
 // Function to run App
 export default function App({ Component, pageProps }) {
@@ -39,6 +40,9 @@ export default function App({ Component, pageProps }) {
 
     // Default loading
     return (
-        <Component {...pageProps} />
+        <>
+                <Component {...pageProps} />
+                <Script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'/>
+        </>
     )
 }
