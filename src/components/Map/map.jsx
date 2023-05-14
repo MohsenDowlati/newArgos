@@ -3,7 +3,7 @@ import mapboxgl from 'mapbox-gl';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFydGl5YTAyMTAiLCJhIjoiY2xoYzVjODlnMDlhbzNtbnZyNzdvZDV0NSJ9.pENwwnr9suPHN1Liq2izQA';
 
-const MyMap = () => {
+const  TestMap = () => {
   const mapContainer = useRef(null);
 
   useEffect(() => {
@@ -87,4 +87,4 @@ const MyMap = () => {
   return <div ref={mapContainer} style={{ width: '100%', height: '100vh' }} />;
 };
 
-export default MyMap;
+export default TestMap;

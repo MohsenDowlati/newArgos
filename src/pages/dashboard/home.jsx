@@ -13,7 +13,8 @@ import {MdOutlineSatelliteAlt} from 'react-icons/md'
 import { RiRoadMapFill } from "react-icons/ri";
 
 import Navbar from "@/components/Navbar/Navbar";
-import MyMap from "@/components/Map/Map";
+import TestMap from "@/components/Map/Map";
+
 
 // Login Page definitions
 const Dhome = () => {
@@ -113,7 +114,7 @@ const Dhome = () => {
                   ))}
        
                 </Map> */}
-                <MyMap/>
+                    <TestMap/>
 
             </div>
 
