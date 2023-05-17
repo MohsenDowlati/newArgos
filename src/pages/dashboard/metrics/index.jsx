@@ -377,7 +377,7 @@ export default function Metrics() {
 
                     <div className=" bg-[#252830] pr-10  w-fit ml-10 mt-10 rounded-lg">
                         <div className="flex items-center p-4">
-                            <BsPerson className="w-[50px] h-[50px] flex items-center text-red-400"/>
+                            <BiCar className="w-[50px] h-[50px] flex items-center text-red-400"/>
                             <p className="text-red-400 ml-2 border-b red-400 border-red-400">Car Data <span className="text-[12px]">(Average Car/hour)</span> </p>
                         </div>
                         <AreaChart  width={700}   className='mt-5 z-0' height={300} data={Car}>
@@ -396,6 +396,7 @@ export default function Metrics() {
                         camera_id={camera_id}
                         PeakTime={CarDetails.peakTime} 
                         icon={<BiCar className="text-red-400 w-[40px] h-[40px]"/>}
+
                            
                            />
                     

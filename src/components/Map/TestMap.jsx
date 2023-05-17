@@ -40,8 +40,8 @@ const  TestMap = () => {
         source: 'my-source',
 
         paint: {
-        "circle-radius" : 4,
-        'circle-color' : 'blue'
+        "circle-radius" : 5,
+        'circle-color' : '#36c9b1'
         },
       });
     });
@@ -62,9 +62,9 @@ const  TestMap = () => {
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       const data2 = JSON.parse(data.live_data)
-      console.log(data2.payload.detections.narrow)
-      const lng = data2.payload.detections.wide[0].gps[0]
-      const lat = data2.payload.detections.wide[0].gps[1]
+      console.log(data2.payload.detections.wide)
+      const lng = data2.payload.detections.narrow[0]?.gps[0]
+      const lat = data2.payload.detections.narrow[0]?.gps[1]
       // Update the position of the circle layer
       const source = map.getSource('my-source');
 
