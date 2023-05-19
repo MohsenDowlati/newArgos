@@ -1,11 +1,13 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
+import { BsPerson } from 'react-icons/bs';
+import { BiCar } from 'react-icons/bi';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFydGl5YTAyMTAiLCJhIjoiY2xoYzVjODlnMDlhbzNtbnZyNzdvZDV0NSJ9.pENwwnr9suPHN1Liq2izQA';
 
 const  TestMap = () => {
   const mapContainer = useRef(null);
-
+  const popupRef = useRef(null);
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainer.current,
@@ -20,17 +22,7 @@ const  TestMap = () => {
         type: 'geojson',
         data: {
           type: 'FeatureCollection',
-          features: [
-            { 
-              id : '1',
-              type: 'Feature',
-              properties: {},
-              geometry: {
-                type: 'Point',
-                coordinates: [-122.4376, 37.7577],
-              },
-            },
-          ],
+          features: [],
         },
       });
 
@@ -38,10 +30,15 @@ const  TestMap = () => {
         id: 'my-layer',
         type: 'circle',
         source: 'my-source',
-
         paint: {
-        "circle-radius" : 5,
-        'circle-color' : '#36c9b1'
+          'circle-radius': 4,
+          'circle-color': [
+            'match',
+            ['get', 'type'],
+            1, '#2f9bfa',
+            2, '#ed3232',
+            'gray',
+          ],
         },
       });
     });
@@ -50,32 +47,82 @@ const  TestMap = () => {
     const socket = new WebSocket('wss://api.argos.vision/ws/socket-server/');
 
     // Handle incoming data
-    const key = "ARGv30002";
+    const key = "ARGv30003";
     
     socket.onopen = () => {
       socket.send(key)
     }
-    
-   
-    
-
     socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      const data2 = JSON.parse(data.live_data)
-      console.log(data2.payload.detections.wide)
-      const lng = data2.payload.detections.narrow[0]?.gps[0]
-      const lat = data2.payload.detections.narrow[0]?.gps[1]
-      // Update the position of the circle layer
+      const jsonData = JSON.parse(event.data);
+      // const parsedData = JSON.parse(jsonData)
+      const parsedData =JSON.parse(jsonData.live_data)
+ 
+      // Update the source data with the new points
       const source = map.getSource('my-source');
-
       if (source) {
-        const feature = source._data.features[0];
-        feature.geometry.coordinates = [lat, lng];
-
-        map.setFeatureState({ source: 'my-source', id: feature.id }, { position: feature.geometry.coordinates });
-        source.setData(source._data);
+        source.setData({
+          type: 'FeatureCollection',
+          features: parsedData.payload.detections.wide?.map((point) => ({
+            type: 'Feature',
+            properties: {
+              type: point.type,
+              speed : point.speed,
+            },
+            geometry: {
+              type: 'Point',
+              coordinates: [point.gps[1], point.gps[0]],
+            },
+          })),
+        });
       }
     };
+
+    const popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+    });
+
+    function handlepopup(type){
+        if(type === 1){
+          return('Person')
+        }
+        if(type ===2){
+          return('Car')
+        }
+
+    }
+
+    // Display popup when hovering over a point
+    map.on('mouseenter', 'my-layer', (e) => {
+      map.getCanvas().style.cursor = 'pointer';
+
+      const coordinates = e.features[0].geometry.coordinates.slice();
+      const properties = e.features[0].properties;
+
+      const popupContent = `
+      <h4 style={{color:'white',}}>${handlepopup(properties.type)}</h4>
+        <p> Speed : ${properties.speed}</p>
+      `;
+
+      popup.setLngLat(coordinates).setHTML(popupContent).addTo(map);
+      const popupContainer = popup._content;
+      if(properties.type === 1){
+        popupContainer.style.backgroundColor = '#2f9bfa';
+        popupContainer.style.color = 'white';
+      }
+      if(properties.type === 2){
+        popupContainer.style.backgroundColor = '#ed3232';
+        popupContainer.style.color = 'white';
+      }
+
+      
+    });
+
+    // Remove popup when mouse leaves the point
+    map.on('mouseleave', 'my-layer', () => {
+      map.getCanvas().style.cursor = '';
+      popup.remove();
+    });
 
     // Clean up on unmount
     return () => {

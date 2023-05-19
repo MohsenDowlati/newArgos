@@ -18,6 +18,7 @@ function ChartDetail({Total,PeakTime,camera_id,Direction,icon ,TextColor,Title})
                 <p className="text-sm text-gray-500">Peak Time</p>
             </div>
         </div>
+    
         <div className="flex ml-4 items-center">
             <BiCctv className={`text-xl w-[40px] h-[40px]  font-boldVazir ${TextColor}`}/>
             <div className="ml-2">
