@@ -5,13 +5,13 @@ import { BiCar } from 'react-icons/bi';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFydGl5YTAyMTAiLCJhIjoiY2xoYzVjODlnMDlhbzNtbnZyNzdvZDV0NSJ9.pENwwnr9suPHN1Liq2izQA';
 
-const  TestMap = () => {
+const  TestMap = ({style}) => {
   const mapContainer = useRef(null);
   const popupRef = useRef(null);
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/dark-v11',
+      style: style,
       center: [-122.4376, 37.7577], // set initial center of map
       zoom: 12, // set initial zoom level
     });
@@ -31,7 +31,7 @@ const  TestMap = () => {
         type: 'circle',
         source: 'my-source',
         paint: {
-          'circle-radius': 4,
+          'circle-radius': 6,
           'circle-color': [
             'match',
             ['get', 'type'],
@@ -56,7 +56,7 @@ const  TestMap = () => {
       const jsonData = JSON.parse(event.data);
       // const parsedData = JSON.parse(jsonData)
       const parsedData =JSON.parse(jsonData.live_data)
- 
+      console.log(parsedData)
       // Update the source data with the new points
       const source = map.getSource('my-source');
       if (source) {
@@ -129,7 +129,7 @@ const  TestMap = () => {
       socket.close();
       map.remove();
     };
-  }, []);
+  }, [style]);
 
   return <div ref={mapContainer} style={{ width: '100%', height: '100vh' }} />;
 };

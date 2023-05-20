@@ -29,18 +29,13 @@ const Dhome = () => {
  const [data,setData] = useState()
  const example = useRef()
 
-    // Component return
+
    
     const Map = ReactMapboxGl({
         accessToken: 'pk.eyJ1IjoicGFydGl5YTAyMTAiLCJhIjoiY2xoYzVjODlnMDlhbzNtbnZyNzdvZDV0NSJ9.pENwwnr9suPHN1Liq2izQA',
         
       });
-      
-     
-      
       const centerCoordinates = [-122.431297, 37.773972];
-      
-        // Check if Token is available 
         useEffect(() => {
             const token = localStorage.getItem('AccessToken')
             if(!token){
@@ -49,29 +44,8 @@ const Dhome = () => {
          
         }, []);
 
-       
         let tempdata2
-    // useEffect(() => {
-    //     const key = "ARGv30002";
-    //     const socket = new WebSocket(`wss://api.argos.vision/ws/socket-server/`)
-  
-    //  socket.onopen = () => console.log("WebSocket connected");
-    //     socket.send(key)
-        
-    //     socket.onmessage = (event) => {
-    //      setData(event.data)
-    //      const a = JSON.parse(event.data)
-        
-    //         example.current = JSON.parse(a.live_data)
-         
-    //     };
-      
-    //     return () => {
    
-    //         socket.close();
-    //     };
-     
-    // }, []);
 
 
    
@@ -89,41 +63,10 @@ const Dhome = () => {
 
 
             <div className="  flex items-center w-full justify-center">
-                {/* MAP CONTAINER  */}
-            
-                {/* <Map 
-                     
-                     style={mapstyle}
-                     center={centerCoordinates}
-                     zoom={[3]}
-                     
-                     className={'w-full h-screen'}
-                     
-                >
-                        
-                  {example.current?.payload.detections.wide.map((item,key)=>(
-                    
-                    <Marker key={key} coordinates={[item.gps[1],item.gps[0]]}>
-                        <div className="flex items-center">
-                            <BiCctv className="w-[30px] h-[30px] p-1 bg-green-400 text-white rounded-xl "/>
-                                <div>
-                                    <p className="text-white ml-1">{example.current.payload.date}</p>
-                                    <p className="text-white ml-1">{example.current.id}</p>
-                                </div>
-                        </div>
-                    </Marker>
-                  ))}
-       
-                </Map> */}
-                <TestMap></TestMap>
+             
+                <TestMap style={mapstyle}></TestMap>
 
             </div>
-
-
-
-
-
-
 
             <div className="absolute top-32 flex z-[8]  w-full justify-center  ">
                 <CircularProgress  

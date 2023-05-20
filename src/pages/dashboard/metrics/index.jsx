@@ -13,7 +13,7 @@ import { BsBusFront, BsFilterLeft, BsPerson, BsTrainFront, BsTruck } from "react
 import { BiCar, BiCctv, BiCycling, BiDirections, BiFilter, BiTime } from "react-icons/bi";
 import { RiMotorbikeLine } from "react-icons/ri";
 import FilterBar from "@/components/FilterBar";
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip, AreaChart, Area } from 'recharts';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip, AreaChart, Area, PieChart, Pie, ResponsiveContainer } from 'recharts';
 import { MdExpandMore, MdMore } from "react-icons/md";
 import ChartDetail from "@/components/ChartDetails";
 // Login Page definitions
@@ -22,6 +22,8 @@ export default function Metrics() {
     const path = router.pathname
     const [startdate,setStartdate] = useState( new Date())
     const [enddate,setEnddate] = useState(new Date())
+    const [Sdate,setSdate] = useState('')
+    const [Edate,setEdate] = useState('')
     const [camera_id,setCamera_id] = useState('0')
     const imgsrc = 'https://www.maxpixel.net/static/photo/1x/Young-Smile-Portrait-Ai-Generated-Man-Teeth-7833751.jpg'
     const [CameraData,setCameraData] = useState()
@@ -63,6 +65,9 @@ export default function Metrics() {
         let Cardirections = []
         let CarNumber = 0;   
         setCameraData(data)
+        setSdate(startdate.toISOString())
+        setEdate(enddate.toISOString())
+
         data.forEach(element => {
            if(Object.keys(element.area_counts).length > 0){
 
@@ -257,7 +262,7 @@ export default function Metrics() {
       });
       const BikeDirectionDetail = Object.keys(groupedBikeData).map(key => ({ [key]: groupedBikeData[key] }));
 
-    
+      
       
       
       
@@ -286,12 +291,28 @@ export default function Metrics() {
        console.log('Car Data === > ' , Carresult)
        console.log('PersonDetails ==== > ' , PersonDetails)
        console.log(BicycleDirection)
-
+       console.log(Person)
        
     }
 
 
-   
+    function handleDirectionsChartData(directions){
+
+      const jsonArray = directions.map((item, index) => {
+        const key = Object.keys(item)[0];
+        const street = key;
+        const value = item[key];
+        
+        return {
+          name: street,
+          value: value
+        };
+      });
+      console.log('myJsonArray == > ' , jsonArray)
+      return jsonArray
+
+
+    }
 
 
 
@@ -352,6 +373,8 @@ export default function Metrics() {
                             <BsPerson className="w-[50px] h-[50px] flex items-center text-blue-400"/>
                             <p className="text-blue-400 ml-2 border-b border-blue-400">Person Data <span className="text-[12px]">(Average Person/hour)</span> </p>
                         </div>
+                      <div className="flex">
+                        <div>
                         <AreaChart  width={700}   className='mt-5 z-0' height={300} data={Person}>
                             <Area type="monotone" strokeWidth={2} fill={'#60a5fa'}  dataKey="person" stroke="#60a5fa" />
                             <CartesianGrid stroke="#fffff" />
@@ -369,7 +392,36 @@ export default function Metrics() {
                         PeakTime={PersonDetails.peakTime} 
                         icon={<BsPerson className="text-blue-400 w-[40px] h-[40px]"/>}
                            
-                           />
+                           /> 
+                        </div>
+                        <div className="w-[1px] h-[350px] m-10 bg-blue-300"></div>
+                        <div className=" ">
+                        <p className="text-white font-thin border-b border-blue-400 pb-2">Chart based on Persons/Street</p>
+                        <p className="text-gray-500">{Sdate.slice(0,10)} -  {Edate.slice(0,10)}</p>
+                        <PieChart width={300} height={300}>
+                                    <Pie
+                                      dataKey="value"
+                                     
+                                      isAnimationActive={true}
+                                      data={handleDirectionsChartData(PersonDetails.directions)}
+                                      cx="50%"
+                                      cy="50%"
+                                      outerRadius={80}
+                                      
+                                      fill="#60a5fa"
+
+                                      label
+                                    />
+                                    
+                                    <Tooltip />
+                                  </PieChart>
+                                  
+                        </div>
+                               
+                               
+                            
+                           
+                        </div>
                     </div>
 
 
@@ -380,7 +432,9 @@ export default function Metrics() {
                             <BiCar className="w-[50px] h-[50px] flex items-center text-red-400"/>
                             <p className="text-red-400 ml-2 border-b red-400 border-red-400">Car Data <span className="text-[12px]">(Average Car/hour)</span> </p>
                         </div>
-                        <AreaChart  width={700}   className='mt-5 z-0' height={300} data={Car}>
+                        <div className="flex">
+                            <div>
+                            <AreaChart  width={700}   className='mt-5 z-0' height={300} data={Car}>
                             <Area type="monotone" strokeWidth={2} fill={'#f87171'}  dataKey="car" stroke="#f87171" />
                             <CartesianGrid stroke="#fffff" />
                             <XAxis  dataKey="name" />
@@ -399,6 +453,40 @@ export default function Metrics() {
 
                            
                            />
+                            </div>
+                            <div className="w-[1px] h-[350px] m-10 bg-red-300"></div>
+                            <div className=" ">
+                              <p className="text-white font-thin border-b border-red-400 pb-2">Chart based on Car/Street</p>
+                              <p className="text-gray-500">{Sdate.slice(0,10)} -  {Edate.slice(0,10)}</p>
+                              <PieChart width={300} height={300}>
+                                    <Pie
+                                      dataKey="value"
+                                     
+                                      isAnimationActive={true}
+                                      data={handleDirectionsChartData(CarDetails.directions)}
+                                      cx="50%"
+                                      cy="50%"
+                                      outerRadius={80}
+                                      
+                                      fill="
+                                      #f87171
+                                      "
+
+                                      label
+                                    />
+                                    
+                                    <Tooltip />
+                                  </PieChart>
+                                  
+                             </div>
+                               
+
+
+
+
+                        </div>
+
+                        
                     
                     </div>
 

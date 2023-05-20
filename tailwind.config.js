@@ -49,7 +49,7 @@ module.exports = {
       }),
       fontFamily: {
         sans: ['Inter', ...defaultTheme.fontFamily.sans],
-        boldVazir: ['VazirBold'],
+      
         faNum: ['FaNum'],
       },
       keyframes: {
