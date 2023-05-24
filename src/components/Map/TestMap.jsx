@@ -25,6 +25,13 @@ const  TestMap = ({style}) => {
           features: [],
         },
       });
+      map.addSource('my-source2', {
+        type: 'geojson',
+        data: {
+          type: 'FeatureCollection2',
+          features: [],
+        },
+      });
 
       map.addLayer({
         id: 'my-layer',
@@ -35,12 +42,24 @@ const  TestMap = ({style}) => {
           'circle-color': [
             'match',
             ['get', 'type'],
-            1, '#2f9bfa',
+            0, '#81c8f8',
+            1, '#818df8',
             2, '#ed3232',
             'gray',
           ],
         },
-      });
+      },   
+      );
+      map.addLayer({
+        id: 'my-layer2',
+        type: 'circle',
+        source: 'my-source2',
+        paint: {
+          'circle-radius': 6,
+          'circle-color': '#81c8f8',
+        },
+      },   
+      );
     });
 
     // Connect to WebSocket API
@@ -55,14 +74,20 @@ const  TestMap = ({style}) => {
     socket.onmessage = (event) => {
       const jsonData = JSON.parse(event.data);
       // const parsedData = JSON.parse(jsonData)
-      const parsedData =JSON.parse(jsonData.live_data)
-      console.log(parsedData)
+      const parsedData = JSON.parse(jsonData.live_data)
+      const wide = parsedData.payload.detections.wide
+      const narrow  = parsedData.payload.detections.narrow
+      let togheter = [...wide,...narrow]
+      
+     
       // Update the source data with the new points
       const source = map.getSource('my-source');
+      const source2 = map.getSource('my-source2');
       if (source) {
+      
         source.setData({
           type: 'FeatureCollection',
-          features: parsedData.payload.detections.wide?.map((point) => ({
+          features: togheter.map((point) => ({
             type: 'Feature',
             properties: {
               type: point.type,
@@ -72,9 +97,26 @@ const  TestMap = ({style}) => {
               type: 'Point',
               coordinates: [point.gps[1], point.gps[0]],
             },
+          
           })),
+
+          
         });
+      
+        
+
+
+
+
+
+
       }
+
+       
+       
+
+
+    
     };
 
     const popup = new mapboxgl.Popup({
@@ -84,10 +126,13 @@ const  TestMap = ({style}) => {
 
     function handlepopup(type){
         if(type === 1){
-          return('Person')
+          return('Bike')
         }
         if(type ===2){
           return('Car')
+        }
+        if(type ===0){
+          return('Person')
         }
 
     }
@@ -101,17 +146,21 @@ const  TestMap = ({style}) => {
 
       const popupContent = `
       <h4 style={{color:'white',}}>${handlepopup(properties.type)}</h4>
-        <p> Speed : ${properties.speed}</p>
+       
       `;
 
       popup.setLngLat(coordinates).setHTML(popupContent).addTo(map);
       const popupContainer = popup._content;
       if(properties.type === 1){
-        popupContainer.style.backgroundColor = '#2f9bfa';
+        popupContainer.style.backgroundColor = '#818df8';
         popupContainer.style.color = 'white';
       }
       if(properties.type === 2){
         popupContainer.style.backgroundColor = '#ed3232';
+        popupContainer.style.color = 'white';
+      }
+      if(properties.type === 0){
+        popupContainer.style.backgroundColor = '#81c8f8';
         popupContainer.style.color = 'white';
       }
 
@@ -131,7 +180,7 @@ const  TestMap = ({style}) => {
     };
   }, [style]);
 
-  return <div ref={mapContainer} style={{ width: '100%', height: '100vh' }} />;
+  return <div ref={mapContainer} className='bg-ind' style={{ width: '100%', height: '100vh' }} />;
 };
 
 export default TestMap;
