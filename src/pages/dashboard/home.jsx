@@ -56,9 +56,12 @@ const Dhome = () => {
     return (
         <div className="">
             <Navbar/>
-            <div className=" p-10 absolute  z-10 top-28 w-[0px]">
-                    <NavigationBar/>
+            <div className="flex absolute w-full min-h-screen items-center ">
+            <div className="  h-[500px] bg-black/80 rounded-tr-xl rounded-br-xl z-[10] top-28 min-w-fit">
+                    <NavigationBar WhichActive={'Home'}/>
             </div>
+            </div>
+            
             
 
 

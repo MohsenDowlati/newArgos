@@ -1,21 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineSetting } from 'react-icons/ai';
 import { BiHome } from 'react-icons/bi';
 
 
-function NavigationCard({Title,Icon,Details,onClick,hoverColor}) {
+function NavigationCard({Title,Icon,Details,onClick,hoverColor,whichActive,MainColor}) {
+   
+
     return ( 
-        <div onClick={onClick} className={`w-[250px]  cursor-pointer backdrop-blur-sm  bg-transparent  bg-opacity-0  h-[100px]    transform transition duration-500 hover:scale-110  p-2 `}>
-            <div className='flex items-center '>
-                {
-                    Icon
-                }
-                <p className='ml-2 text-lg text-white font-bold'>{Title}</p>
+        <button onClick={onClick} className='w-full pl-3   my-5 flex items-center ' >
+            <div className={`    ${whichActive ? `text-${MainColor}` : 'text-white'} justify-start items-center `}>
+                {Icon}
             </div>
-            <div className='w-full'>
-                <p className='text-sm text-center mx-3 text-white'>{Details}</p>
-            </div>
-        </div>
+            <p className={`ml-4 text-white overflow-hidden font-medium  ${whichActive ? `text-${MainColor} border-b border-${MainColor}` : 'text-white '} `}>
+                {Title}
+            </p>
+        </button>
      );
 }
 

@@ -78,7 +78,7 @@ export default function Metrics() {
         setEdate(enddate.toISOString())
         setSearch(false)
         
-
+        console.log('data tokhmi asghar === > ' , data)
         data.forEach(element => {
            if(Object.keys(element.area_counts).length > 0){
 
@@ -185,7 +185,7 @@ export default function Metrics() {
             if (a.name > b.name) return 1;
             return a.car - b.car;
           });
-          
+       
        setCar(Carresult)
        setBicycle(Bicycleresult)
        setPerson(Personresult)
@@ -199,8 +199,8 @@ export default function Metrics() {
        let TotalCar = 0
        let MaxCar = Carresult[0]?.car
        let CarPeakTime = 0
-
-
+          console.log('bikedata === > ' , BicycleData)
+          console.log('bikeReusult == > ' , Bicycleresult)
 
        Personresult.forEach(obj => {
         
@@ -301,7 +301,7 @@ export default function Metrics() {
       DirectionsObjectCreator(data)
       setBicycleDirection(BikeDirectionDetail)
 
-    
+      
       console.log('bike Direction details === > ' , groupedBicycleData)
        
     }
@@ -382,36 +382,6 @@ export default function Metrics() {
   
   
   
-        
-  const transformData = (data) => {
-    const transformedArray = [];
-  
-    // Extract unique street names
-    const streetNames = Object.keys(data[0]).filter(key => key !== 'time');
-  
-    let counter = 0; // Initialize a counter variable
-  
-    streetNames.forEach(streetName => {
-      const details = [];
-      data.forEach((item, index) => {
-        const time = item.time;
-        const value = item[streetName];
-        const valuePropertyName = 'value' // Generate the value property name using the counter
-  
-        const street_name = streetName;
-        if (value !== undefined) {
-          const detail = { time, street_name };
-          detail[valuePropertyName] = value; // Assign the value using the dynamic property name
-          details.push(detail);
-        }
-      });
-  
-      transformedArray.push({  details });
-      counter++; // Increment the counter for the next streetName
-    });
-  
-    return transformedArray;
-  };
 
 
   const extractStreetData = (data) => {
@@ -461,33 +431,12 @@ export default function Metrics() {
 
     const transformedCarData = extractStreetData(mergedCarObjects);
     const transformedBikeData = extractStreetData(mergedBikeObjects)
-    // transformedCarData.forEach(obj => {
-    //   obj.details.sort((a, b) => {
-    //     const timeA = parseInt(a.time, 10);
-    //     const timeB = parseInt(b.time, 10);
-    //     return timeA - timeB;
-    //   });
-    // });
-    // transformedBikeData.forEach(obj => {
-    //   obj.details.sort((a, b) => {
-    //     const timeA = parseInt(a.time, 10);
-    //     const timeB = parseInt(b.time, 10);
-    //     return timeA - timeB;
-    //   });
-    // });
 
-
-     
 
  
-      console.log('bike direction === > ' ,BikeDirection)
-      console.log('bike direction details === > ' , )
-      console.log('mergedbike === > ',mergedBikeObjects)
-      console.log('transformed ===> ', transformedCarData)
       setCarDirection(transformedCarData)
       setBikeDirection(transformedBikeData)
-      console.log('transformed car data === > ', transformedCarData)
-      console.log('transformed bike ==== > ' , transformedBikeData)
+
       setisloaded(true)
     }
 
@@ -558,8 +507,8 @@ const CustomTooltip = ({ active, payload, label }) => {
         <div className="bg-[#212326] w-full ">
             <Navbar/>
             <div className="flex h-fit">
-            <div className=" pt-32 ml-10  h-full  ">
-                    <NavigationBar/>
+            <div className="  pt-28  min-h-screen   ">
+                    <NavigationBar WhichActive={'Metrics'}/>
             </div>
             <div className="bg-[#292c30]  w-full min-h-screen">
                 <div className="w-full flex  ">

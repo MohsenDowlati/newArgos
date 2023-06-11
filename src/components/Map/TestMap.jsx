@@ -66,11 +66,11 @@ const  TestMap = ({style}) => {
     const socket = new WebSocket('wss://api.argos.vision/ws/socket-server/');
 
     // Handle incoming data
-    const key = "ARGv30003";
+    const key = "ARGv30001";
     const key2 = "ARGv30002";
     
     socket.onopen = () => {
-      
+       
       socket.send(key)
     }
     socket.onmessage = (event) => {
@@ -178,7 +178,7 @@ const  TestMap = ({style}) => {
 
     // Clean up on unmount
     return () => {
-      
+      socket.close()
       map.remove();
     };
   }, [style]);
