@@ -24,7 +24,7 @@ const Dhome = () => {
  const path = router.pathname 
  const [showMap,setShowmap] = useState(false)
  
- const [mapstyle,setMapstyle] = useState('mapbox://styles/mapbox/dark-v11')
+ const [mapstyle,setMapstyle] = useState('mapbox://styles/mapbox/satellite-streets-v12')
 
  const [data,setData] = useState()
  const example = useRef()

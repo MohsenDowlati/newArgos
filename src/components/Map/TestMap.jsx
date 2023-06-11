@@ -84,12 +84,13 @@ const  TestMap = ({style}) => {
      
       // Update the source data with the new points
       const source = map.getSource('my-source');
-      const source2 = map.getSource('my-source2');
+
       if (source) {
       
         source.setData({
           type: 'FeatureCollection',
           features: togheter.map((point) => ({
+          
             type: 'Feature',
             properties: {
               type: point.type,
@@ -99,7 +100,7 @@ const  TestMap = ({style}) => {
               type: 'Point',
               coordinates: [point.gps[1], point.gps[0]],
             },
-          
+            
           })),
 
           
@@ -177,7 +178,7 @@ const  TestMap = ({style}) => {
 
     // Clean up on unmount
     return () => {
-      socket.close();
+      
       map.remove();
     };
   }, [style]);

@@ -30,7 +30,7 @@ module.exports = {
         '22': '5.5rem'
       },
       animation: {
-
+        'animloader' : 'animloader 2s linear infinite;',
         'blink' : 'blink 10s ease 0s infinite normal forwards',
         'fade-in': 'fade-in 0.5s linear forwards',
         'marquee': 'marquee var(--marquee-duration) linear infinite',
@@ -93,6 +93,17 @@ module.exports = {
             opacity: 0
           }
         },
+        'animloader': {
+          '0%': {
+            left: '0',
+            transform: 'translateX(0%)',
+          },
+          '100%': {
+            left: '100%',
+            transform: 'translateX(-100%)',
+          },
+        },
+    
 
  
 

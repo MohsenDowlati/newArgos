@@ -18,6 +18,8 @@ import { MdExpandMore, MdMore } from "react-icons/md";
 import ChartDetail from "@/components/ChartDetails";
 import { element } from "prop-types";
 import CarChart from "@/components/Charts/CarChart";
+import BikeChart from "@/components/Charts/BikeChart";
+import Loading from "@/components/loading/loading";
 // Login Page definitions
 export default function Metrics() {    
     const router = useRouter()
@@ -32,6 +34,8 @@ export default function Metrics() {
     const [CameraData,setCameraData] = useState()
     const [BicycleDirection,setBicycleDirection] = useState([])
     const [CarDirection,setCarDirection] = useState([{}])
+    const [BikeDirection,setBikeDirection] = useState()
+    const [BikeDetail,setBikeDetial] = useState()
     const [PersonDetails,setPersonDetails] = useState({
         directions : [],
         totalPerson : 0,
@@ -50,13 +54,14 @@ export default function Metrics() {
     const [TotalBicycle,setTotalBicycle] = useState('0')
     const [Person,setPerson] = useState([])
     const [Car,setCar] = useState([])
-
+    const [search,setSearch] = useState()
 
     const [show,setShow] = useState(false)
   
 
     async function getCameradata (){
-        
+        setisloaded(false)
+        setSearch(true)
         const {data,status} = await getCameraData({start_date : startdate,end_date:enddate,camera_id:camera_id})
         console.log(data)
         let BicycleData = [];  
@@ -71,6 +76,8 @@ export default function Metrics() {
         setCameraData(data)
         setSdate(startdate.toISOString())
         setEdate(enddate.toISOString())
+        setSearch(false)
+        
 
         data.forEach(element => {
            if(Object.keys(element.area_counts).length > 0){
@@ -185,7 +192,7 @@ export default function Metrics() {
 
        let TotalBicycle = 0;
        let maxBicycle = Bicycleresult[0]?.bicycle;
-       let peakTime = 0
+       let BikepeakTime = 0
        let TotalPerson = 0 
        let MaxPerson = Personresult[0]?.person
        let PersonPeakTime = 0
@@ -216,7 +223,7 @@ export default function Metrics() {
             TotalBicycle += obj.bicycle
             if(obj.bicycle > maxBicycle){
                 maxBicycle = obj.bicycle
-                peakTime = obj.name
+                BikepeakTime = obj.name
             }
       });
       
@@ -282,15 +289,20 @@ export default function Metrics() {
         peakTime : CarPeakTime,
         camera_id : camera_id
       })
+      setBikeDetial({
+        directions : BikeDirectionDetail,
+        TotalBike : TotalBicycle,
+        peakTime : BikepeakTime,
+        camera_id : camera_id
+      })
 
 
       
       DirectionsObjectCreator(data)
       setBicycleDirection(BikeDirectionDetail)
-      setTotalBicycle(TotalBicycle)
-      setBicyclePeakTime(peakTime)
+
     
-      console.log('car directions === > ' , Cardirections)
+      console.log('bike Direction details === > ' , groupedBicycleData)
        
     }
 
@@ -300,6 +312,7 @@ export default function Metrics() {
 
     function DirectionsObjectCreator(data){
       let streets_car_data = []
+      let streets_bike_data = []
       console.log('test===>' , data)
       data.forEach(element => {
         if(element.area_counts[2] !== undefined){
@@ -313,30 +326,62 @@ export default function Metrics() {
 
         }
       });
+      data.forEach(element => {
+        if(element.area_counts[1] !== undefined){
+
+          streets_bike_data= [
+            ...streets_bike_data, {
+                 ...element.area_counts[1],
+                time: element.date_time_Record.slice(11,13)
+            }
+          ]
+
+        }
+      });
 
       
 
 
     
 
-      const mergedData = {};
+      const mergedCarData = {};
+     
 
-  for (const obj of streets_car_data) {
+  for (const obj of streets_car_data) { ////////////// CAR //////////////////
     const time = obj.time;
 
-    if (time in mergedData) {
+    if (time in mergedCarData) {
       for (const key in obj) {
         if (key !== 'time') {
-          mergedData[time][key] = (mergedData[time][key] || 0) + obj[key];
+          mergedCarData[time][key] = (mergedCarData[time][key] || 0) + obj[key];
         }
       }
     } else {
-      mergedData[time] = { ...obj };
+      mergedCarData[time] = { ...obj };
+    }
+  }
+  const mergedCarObjects = Object.values(mergedCarData);
+
+
+  const mergedBikeData = {};
+  for (const obj of streets_bike_data) { ////////////// BIKE ////////////////
+    const time = obj.time;
+
+    if (time in mergedBikeData) {
+      for (const key in obj) {
+        if (key !== 'time') {
+          mergedBikeData[time][key] = (mergedBikeData[time][key] || 0) + obj[key];
+        }
+      }
+    } else {
+      mergedBikeData[time] = { ...obj };
     }
   }
 
-  const mergedObjects = Object.values(mergedData);
-
+  const mergedBikeObjects = Object.values(mergedBikeData)
+  
+  
+  
         
   const transformData = (data) => {
     const transformedArray = [];
@@ -367,27 +412,82 @@ export default function Metrics() {
   
     return transformedArray;
   };
+
+
+  const extractStreetData = (data) => {
+    const streets = {};
   
-
-    const transformedData = transformData(mergedObjects);
-
-    transformedData.forEach(obj => {
-      obj.details.sort((a, b) => {
-        const timeA = parseInt(a.time, 10);
-        const timeB = parseInt(b.time, 10);
-        return timeA - timeB;
+    // Find all unique time values in the data
+    const times = [...new Set(data.map((item) => item.time))];
+  
+    data.forEach((item) => {
+      Object.entries(item).forEach(([key, value]) => {
+        if (key !== "time") {
+          const streetName = key;
+  
+          if (!streets[streetName]) {
+            streets[streetName] = {
+              street_name: streetName,
+              data: []
+            };
+          }
+  
+          streets[streetName].data[item.time] = value;
+        }
       });
     });
+  
+    // Fill missing times with a value of 0 in each street's data
+    Object.values(streets).forEach((street) => {
+      const streetData = street.data;
+  
+      times.forEach((time) => {
+        if (streetData[time] === undefined) {
+          streetData[time] = 0;
+        }
+      });
+  
+      street.data = Object.values(streetData);
+    });
+  
+    return Object.values(streets);
+  };
+
+
+
+
+
+  
+
+    const transformedCarData = extractStreetData(mergedCarObjects);
+    const transformedBikeData = extractStreetData(mergedBikeObjects)
+    // transformedCarData.forEach(obj => {
+    //   obj.details.sort((a, b) => {
+    //     const timeA = parseInt(a.time, 10);
+    //     const timeB = parseInt(b.time, 10);
+    //     return timeA - timeB;
+    //   });
+    // });
+    // transformedBikeData.forEach(obj => {
+    //   obj.details.sort((a, b) => {
+    //     const timeA = parseInt(a.time, 10);
+    //     const timeB = parseInt(b.time, 10);
+    //     return timeA - timeB;
+    //   });
+    // });
 
 
      
-    
- 
-      console.log('merged === > ' , mergedObjects)
-      
-      console.log('transformed ===> ', transformedData)
-      setCarDirection(transformedData)
 
+ 
+      console.log('bike direction === > ' ,BikeDirection)
+      console.log('bike direction details === > ' , )
+      console.log('mergedbike === > ',mergedBikeObjects)
+      console.log('transformed ===> ', transformedCarData)
+      setCarDirection(transformedCarData)
+      setBikeDirection(transformedBikeData)
+      console.log('transformed car data === > ', transformedCarData)
+      console.log('transformed bike ==== > ' , transformedBikeData)
       setisloaded(true)
     }
 
@@ -461,7 +561,7 @@ const CustomTooltip = ({ active, payload, label }) => {
             <div className=" pt-32 ml-10  h-full  ">
                     <NavigationBar/>
             </div>
-            <div className="bg-[#292c30]  w-full h-[2000px]">
+            <div className="bg-[#292c30]  w-full min-h-screen">
                 <div className="w-full flex  ">
                     <button className="flex  justify-center " onClick={(handleShowFilter)}>
                      <BsFilterLeft className="mt-32 hover:bg-slate-600 rounded-xl  text-white ml-4 w-[40px] h-[40px]"/>
@@ -469,10 +569,18 @@ const CustomTooltip = ({ active, payload, label }) => {
                     {show ? <FilterBar ApplyFunction={getCameradata} SETstartdate={setStartdate} setCamera_id={setCamera_id} SETenddate={setEnddate} startdate={startdate} enddate={enddate}/> : <></>}
                 </div>
                 <p className="mt-5 ml-10 text-white">- Results are based on selected filter  </p>
-                <div className="flex items-center flex-wrap pb-10">
+                <div className=" items-center  pb-10">
+
+              {
+                search ? <Loading/> :  <></>
+              }
 
               {
                 isloaded?    <CarChart data={CarDirection} detialData={CarDetails} camera_id={camera_id} start_date={startdate} end_date={enddate}/> : ''
+              }
+              
+              {
+                isloaded?    <BikeChart data={BikeDirection} detialData={BikeDetail} camera_id={camera_id} start_date={startdate} end_date={enddate}/> : ''
               }
 
 {/* 
