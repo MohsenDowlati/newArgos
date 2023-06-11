@@ -67,8 +67,10 @@ const  TestMap = ({style}) => {
 
     // Handle incoming data
     const key = "ARGv30003";
+    const key2 = "ARGv30002";
     
     socket.onopen = () => {
+      
       socket.send(key)
     }
     socket.onmessage = (event) => {

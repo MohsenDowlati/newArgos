@@ -14,7 +14,7 @@ import ListBox from './DropdownBtn/ListDropDown';
 function FilterBar({SETstartdate,SETenddate,startdate,enddate,setCamera_id,ApplyFunction}) {
     
     return ( 
-        <div className='animate-fade-in ml-10 bg-transparent '>
+        <div className='animate-fade-in z-10 ml-10 bg-transparent '>
         <div className="mt-32  text-white flex w-fit items-center h-[70px] rounded-xl bg-[#202024]">
                    <div className="w-[130px] h-full bg-blue-400 flex items-center justify-center rounded-tl-xl rounded-bl-xl">
                     <BsPerson className="w-[30px] mr-1 h-[30px]"/>

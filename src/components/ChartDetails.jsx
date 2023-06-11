@@ -3,7 +3,7 @@ import { BiCctv, BiDirections, BiTime } from 'react-icons/bi';
 
 function ChartDetail({Total,PeakTime,camera_id,Direction,icon ,TextColor,Title}) {
     return ( 
-        <div className="w-full flex justify-start items-center mb-10">
+        <div className="w-full flex justify-around items-center mb-10">
         <div className="flex ml-10 items-center">
             {icon}
             <div className="ml-2">

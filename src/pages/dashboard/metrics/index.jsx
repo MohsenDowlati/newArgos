@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { HiOutlineStatusOnline } from "react-icons/hi";
 import NavigationBar from "@/components/NavigationSection/NavigationBar";
-import { GiBleedingEye } from "react-icons/gi";
+import { GiBleedingEye, GiDirectionSigns, GiPerson } from "react-icons/gi";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Navbar from "@/components/Navbar/Navbar";
@@ -16,6 +16,8 @@ import FilterBar from "@/components/FilterBar";
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip, AreaChart, Area, PieChart, Pie, ResponsiveContainer } from 'recharts';
 import { MdExpandMore, MdMore } from "react-icons/md";
 import ChartDetail from "@/components/ChartDetails";
+import { element } from "prop-types";
+import CarChart from "@/components/Charts/CarChart";
 // Login Page definitions
 export default function Metrics() {    
     const router = useRouter()
@@ -28,6 +30,7 @@ export default function Metrics() {
     const imgsrc = 'https://www.maxpixel.net/static/photo/1x/Young-Smile-Portrait-Ai-Generated-Man-Teeth-7833751.jpg'
     const [CameraData,setCameraData] = useState()
     const [BicycleDirection,setBicycleDirection] = useState([])
+    const [CarDirection,setCarDirection] = useState([{}])
     const [PersonDetails,setPersonDetails] = useState({
         directions : [],
         totalPerson : 0,
@@ -97,15 +100,15 @@ export default function Metrics() {
 
                 
                if(element.area_counts[1] !== undefined){
-                Persondirections = [...Persondirections,element.area_counts[1]]
+                Bicycledirections = [...Bicycledirections,element.area_counts[1]]
                for (const key in element.area_counts[1]){
-                PersonNumber += element.area_counts[1][key]
+                BicycleNumber += element.area_counts[1][key]
             }
-                PersonData = [...PersonData,  { 
-                    person : PersonNumber,
+                BicycleData = [...BicycleData,  { 
+                    bicycle : BicycleNumber,
                     name:element.date_time_Record.slice(11,13)
                 }]
-                PersonNumber = 0
+                BicycleNumber = 0
                }
 
 
@@ -229,7 +232,7 @@ export default function Metrics() {
         });
         const PersonDirectionDetails = Object.keys(groupedDataPerson).map(key => ({ [key]: groupedDataPerson[key] }));
 
-
+        console.log('person Directions === > ', PersonDirectionDetails)
 
 
         
@@ -280,55 +283,129 @@ export default function Metrics() {
       })
 
 
-
-
+      
+      DirectionsObjectCreator(data)
       setBicycleDirection(BikeDirectionDetail)
       setTotalBicycle(TotalBicycle)
       setBicyclePeakTime(peakTime)
-      
-       console.log('Bicycle Data === > ' , Bicycle)
-       console.log('Person Data === > ' , Personresult)
-       console.log('Car Data === > ' , Carresult)
-       console.log('PersonDetails ==== > ' , PersonDetails)
-       console.log(BicycleDirection)
-       console.log(Person)
+    
+      console.log('car directions === > ' , Cardirections)
        
     }
 
 
-    function handleDirectionsChartData(directions){
 
-      const jsonArray = directions.map((item, index) => {
-        const key = Object.keys(item)[0];
-        const street = key;
-        const value = item[key];
-        
-        return {
-          name: street,
-          value: value
-        };
+
+
+    function DirectionsObjectCreator(data){
+      let streets_car_data = []
+      console.log('test===>' , data)
+      data.forEach(element => {
+        if(element.area_counts[2] !== undefined){
+
+          streets_car_data= [
+            ...streets_car_data, {
+                 ...element.area_counts[2],
+                time: element.date_time_Record.slice(11,13)
+            }
+          ]
+
+        }
       });
-      console.log('myJsonArray == > ' , jsonArray)
-      return jsonArray
 
 
+
+    
+
+      const mergedData = {};
+
+  for (const obj of streets_car_data) {
+    const time = obj.time;
+
+    if (time in mergedData) {
+      for (const key in obj) {
+        if (key !== 'time') {
+          mergedData[time][key] = (mergedData[time][key] || 0) + obj[key];
+        }
+      }
+    } else {
+      mergedData[time] = { ...obj };
+    }
+  }
+
+  const mergedObjects = Object.values(mergedData);
+
+        
+  const transformData = (data) => {
+    const transformedArray = [];
+  
+    // Extract unique street names
+    const streetNames = Object.keys(data[0]).filter(key => key !== 'time');
+  
+    let counter = 0; // Initialize a counter variable
+  
+    streetNames.forEach(streetName => {
+      const details = [];
+      data.forEach((item, index) => {
+        const time = item.time;
+        const value = item[streetName];
+        const valuePropertyName = 'value' // Generate the value property name using the counter
+  
+        const street_name = streetName;
+        if (value !== undefined) {
+          const detail = { time, street_name };
+          detail[valuePropertyName] = value; // Assign the value using the dynamic property name
+          details.push(detail);
+        }
+      });
+  
+      transformedArray.push({  details });
+      counter++; // Increment the counter for the next streetName
+    });
+  
+    return transformedArray;
+  };
+  
+
+    const transformedData = transformData(mergedObjects);
+
+    transformedData.forEach(obj => {
+      obj.details.sort((a, b) => {
+        const timeA = parseInt(a.time, 10);
+        const timeB = parseInt(b.time, 10);
+        return timeA - timeB;
+      });
+    });
+
+
+     
+    
+ 
+      console.log('merged === > ' , mergedObjects)
+      
+      console.log('transformed ===> ', transformedData)
+      setCarDirection(transformedData)
     }
 
 
-
-
-
-
-
-
-
-
-
-
+      
+      
+    
 
 
     function handleShowFilter(){
         setShow(!show)
+    }
+
+    function getRandomColor() {
+      const letters = "0123456789ABCDEF";
+      let color = "#";
+      
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      
+      return color;
     }
 
 
@@ -347,6 +424,32 @@ export default function Metrics() {
        console.log('start date === > ',startdate)
        console.log('end date === > ', enddate)
     }, [startdate,enddate]);
+
+
+
+    
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    // Extract the data from the payload
+    const { time, value , streetName  } = payload[0].payload;
+
+    return (
+      <div className="bg-red-500 p-5 rounded-xl text-white">
+        <p>{`Street : ${streetName}`}</p>
+        <p>{`Time: ${time}:00`}</p>
+        <p>{`Amount: ${value}`}</p>
+      </div>
+    );
+  }
+
+  return null;
+};
+
+
+
+
+
+
     return (
         <div className="bg-[#212326] w-full h-fit">
             <Navbar/>
@@ -364,17 +467,33 @@ export default function Metrics() {
                 <p className="mt-5 ml-10 text-white">- Results are based on selected filter  </p>
                 <div className="flex items-center flex-wrap pb-10">
 
+              <CarChart data={CarDirection} detialData={CarDetails} camera_id={camera_id}/>
 
-
-
+{/* 
 
                     <div className=" bg-[#252830] pr-10  w-fit ml-10 mt-10 rounded-lg">
-                        <div className="flex items-center p-4">
+                        <div className="flex items-center justify-between p-4">
+                            <div className="w-full flex items-center">
                             <BsPerson className="w-[50px] h-[50px] flex items-center text-blue-400"/>
-                            <p className="text-blue-400 ml-2 border-b border-blue-400">Person Data <span className="text-[12px]">(Average Person/hour)</span> </p>
+                            <p className="text-blue-400 ml-2 border-b border-blue-400">Person Data </p>
+                            </div>
+                            <div className="flex items-center">
+
+                              <button className="flex hover:border-b hover:border-b-blue-400 pb-2  items-center text-white"> 
+                                  <GiPerson className="w-[25px] h-[25px] "/>
+                                  <p className="text-sm w-[100px]">Person / hour</p>
+                              </button>
+                              <button className="flex hover:border-b hover:border-b-blue-400 pb-2  items-center text-white"> 
+                                  <GiDirectionSigns className="w-[25px] h-[25px] "/>
+                                  <p className="text-sm w-[100px]">Person / Street</p>
+                              </button>
+
+
+
+                            </div>
                         </div>
                       <div className="flex">
-                        <div>
+                        <div className="">
                         <AreaChart  width={700}   className='mt-5 z-0' height={300} data={Person}>
                             <Area type="monotone" strokeWidth={2} fill={'#60a5fa'}  dataKey="person" stroke="#60a5fa" />
                             <CartesianGrid stroke="#fffff" />
@@ -394,101 +513,13 @@ export default function Metrics() {
                            
                            /> 
                         </div>
-                        <div className="w-[1px] h-[350px] m-10 bg-blue-300"></div>
-                        <div className=" ">
-                        <p className="text-white font-thin border-b border-blue-400 pb-2">Chart based on Persons/Street</p>
-                        <p className="text-gray-500">{Sdate.slice(0,10)} -  {Edate.slice(0,10)}</p>
-                        <PieChart width={300} height={300}>
-                                    <Pie
-                                      dataKey="value"
-                                     
-                                      isAnimationActive={true}
-                                      data={handleDirectionsChartData(PersonDetails.directions)}
-                                      cx="50%"
-                                      cy="50%"
-                                      outerRadius={80}
-                                      
-                                      fill="#60a5fa"
-
-                                      label
-                                    />
-                                    
-                                    <Tooltip />
-                                  </PieChart>
-                                  
-                        </div>
+                       
                                
                                
                             
                            
                         </div>
-                    </div>
-
-
-
-
-                    <div className=" bg-[#252830] pr-10  w-fit ml-10 mt-10 rounded-lg">
-                        <div className="flex items-center p-4">
-                            <BiCar className="w-[50px] h-[50px] flex items-center text-red-400"/>
-                            <p className="text-red-400 ml-2 border-b red-400 border-red-400">Car Data <span className="text-[12px]">(Average Car/hour)</span> </p>
-                        </div>
-                        <div className="flex">
-                            <div>
-                            <AreaChart  width={700}   className='mt-5 z-0' height={300} data={Car}>
-                            <Area type="monotone" strokeWidth={2} fill={'#f87171'}  dataKey="car" stroke="#f87171" />
-                            <CartesianGrid stroke="#fffff" />
-                            <XAxis  dataKey="name" />
-                            <YAxis />
-                            <Tooltip  />
-                        <Legend />
-                        </AreaChart>
-                        <ChartDetail 
-                        Title={'Car'}
-                        TextColor={'text-red-400'}
-                        Direction={CarDetails.directions}
-                        Total={CarDetails.TotalCar}
-                        camera_id={camera_id}
-                        PeakTime={CarDetails.peakTime} 
-                        icon={<BiCar className="text-red-400 w-[40px] h-[40px]"/>}
-
-                           
-                           />
-                            </div>
-                            <div className="w-[1px] h-[350px] m-10 bg-red-300"></div>
-                            <div className=" ">
-                              <p className="text-white font-thin border-b border-red-400 pb-2">Chart based on Car/Street</p>
-                              <p className="text-gray-500">{Sdate.slice(0,10)} -  {Edate.slice(0,10)}</p>
-                              <PieChart width={300} height={300}>
-                                    <Pie
-                                      dataKey="value"
-                                     
-                                      isAnimationActive={true}
-                                      data={handleDirectionsChartData(CarDetails.directions)}
-                                      cx="50%"
-                                      cy="50%"
-                                      outerRadius={80}
-                                      
-                                      fill="
-                                      #f87171
-                                      "
-
-                                      label
-                                    />
-                                    
-                                    <Tooltip />
-                                  </PieChart>
-                                  
-                             </div>
-                               
-
-
-
-
-                        </div>
-
-                        
-                    
-                    </div>
+                    </div> */}
 
 
 
@@ -497,21 +528,11 @@ export default function Metrics() {
 
 
 
-                    <div className=" bg-[#252830] pr-10 w-fit ml-10 mt-10 rounded-lg">
-                        <div className="flex items-center p-4">
-                            <BiCycling className="w-[50px] h-[50px] flex items-center text-indigo-400"/>
-                            <p className="text-indigo-400 ml-2 border-b border-indigo-400">Bicycle data<span className="text-[12px]"> (Average Bicycle/hour)</span>  </p>
-                        </div>
-                        <AreaChart  width={700}   className='mt-5 z-0' height={300} data={Bicycle}>
-                            <Area type="monotone" strokeWidth={2} fill={'#7984e8'} dataKey="bicycle" stroke="#818df8" />
-                            <CartesianGrid stroke="#fffff" />
-                            <XAxis  dataKey="name" />
-                            <YAxis />
-                            <Tooltip  />
-                        <Legend />
-                        </AreaChart>
-                      
-                    </div>
+
+
+
+
+                 
                     
                 </div>
             </div>
