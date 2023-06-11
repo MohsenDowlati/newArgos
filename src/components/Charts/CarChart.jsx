@@ -1,19 +1,23 @@
 
 
 
+import dynamic from 'next/dynamic';
 import { element } from 'prop-types';
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import ApexCharts from 'react-apexcharts';
+
 import { BiCar } from 'react-icons/bi';
 import ChartDetail from '../ChartDetails';
-
-function CarChart({data,detialData,camera_id})  {
-const [series,setSeries] = useState()
+const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
+function CarChart({data,detialData,camera_id,start_date,end_date})  {
+const [series,setSeries] = useState([])
     
     let series2 = []
 
+   
+    useEffect(() => {
+        
     function generateRandomColor() {
         const letters = "0123456789ABCDEF";
         let color = "#";
@@ -27,24 +31,27 @@ const [series,setSeries] = useState()
 
 
     function transformArray(array) {
-        return array.map(obj => {
-          const { details } = obj;
-          const values = details.map(detail => detail.value);
-      
-          return {
-            name: details[0].street_name,
-            data: values,
-            color: generateRandomColor()
-          };
-        });
+        try {
+            return array.map(obj => {
+                const { details } = obj;
+                const values = details?.map(detail => detail.value);
+            
+                return {
+                  name: details[0].street_name,
+                  data: values,
+                  color: generateRandomColor()
+                };
+              });
+        } catch (error) {
+            
+        }
+       
       }
-   
-    useEffect(() => {
-        
+      const transformedArray = transformArray(data);
+      setSeries(transformedArray)
     }, [data]);
     console.log(data)
-    const transformedArray = transformArray(data);
-    console.log(transformedArray)
+   
 
     
       const options = {
@@ -94,22 +101,26 @@ const [series,setSeries] = useState()
           
         },
       };
+      const start = start_date
+      
       console.log(detialData)
   return (
     <div className=' w-full flex justify-center'>
         <div className='bg-[#22242e] w-[70%] mt-10 p-10 rounded-xl'>
         <div className='flex items-center w-full mb-10'>
-            <BiCar className='w-[30px] h-[30px] text-red-500'/>
-            <p className='text-lg font-thin tracking-wider text-white ml-2 uppercase border-b border-b-red-400'>Car data charts </p>
+            <BiCar className='w-[40px] h-[40px] text-red-500'/>
+            <p className='text-lg min-w-fit font-thin tracking-wider text-white ml-2 uppercase border-b border-b-red-400'>Car data charts </p>
+            <p className='text-white text-center ml-10 font-thin'>This record was captured from {start_date?.toISOString().slice(0,10)} to {end_date?.toISOString().slice(0,10)}</p>
+          
         </div>
-        <ApexCharts    options={options} series={transformedArray} type="area" height={500} />  
+        <ApexChart    options={options} series={series} type="area" height={500} />  
         <ChartDetail
          Title={'Car'}
          TextColor={'text-red-400'}
-         Direction={detialData.directions}
-         Total={detialData.TotalCar}
+         Direction={detialData?.directions}
+         Total={detialData?.TotalCar}
          camera_id={camera_id}
-         PeakTime={detialData.peakTime} 
+         PeakTime={detialData?.peakTime} 
          icon={<BiCar className="text-red-400 w-[40px] h-[40px]"/>}
         />
      

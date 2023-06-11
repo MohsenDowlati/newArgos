@@ -26,6 +26,7 @@ export default function Metrics() {
     const [enddate,setEnddate] = useState(new Date())
     const [Sdate,setSdate] = useState('')
     const [Edate,setEdate] = useState('')
+    const [isloaded,setisloaded]= useState(false)
     const [camera_id,setCamera_id] = useState('0')
     const imgsrc = 'https://www.maxpixel.net/static/photo/1x/Young-Smile-Portrait-Ai-Generated-Man-Teeth-7833751.jpg'
     const [CameraData,setCameraData] = useState()
@@ -313,6 +314,7 @@ export default function Metrics() {
         }
       });
 
+      
 
 
     
@@ -385,6 +387,8 @@ export default function Metrics() {
       
       console.log('transformed ===> ', transformedData)
       setCarDirection(transformedData)
+
+      setisloaded(true)
     }
 
 
@@ -451,13 +455,13 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 
     return (
-        <div className="bg-[#212326] w-full h-fit">
+        <div className="bg-[#212326] w-full ">
             <Navbar/>
             <div className="flex h-fit">
             <div className=" pt-32 ml-10  h-full  ">
                     <NavigationBar/>
             </div>
-            <div className="bg-[#292c30]  w-full ">
+            <div className="bg-[#292c30]  w-full h-[2000px]">
                 <div className="w-full flex  ">
                     <button className="flex  justify-center " onClick={(handleShowFilter)}>
                      <BsFilterLeft className="mt-32 hover:bg-slate-600 rounded-xl  text-white ml-4 w-[40px] h-[40px]"/>
@@ -467,7 +471,9 @@ const CustomTooltip = ({ active, payload, label }) => {
                 <p className="mt-5 ml-10 text-white">- Results are based on selected filter  </p>
                 <div className="flex items-center flex-wrap pb-10">
 
-              <CarChart data={CarDirection} detialData={CarDetails} camera_id={camera_id}/>
+              {
+                isloaded?    <CarChart data={CarDirection} detialData={CarDetails} camera_id={camera_id} start_date={startdate} end_date={enddate}/> : ''
+              }
 
 {/* 
 
