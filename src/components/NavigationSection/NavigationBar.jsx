@@ -57,7 +57,7 @@ function NavigationBar({WhichActive}) {
                   
                 />
                     <NavigationCard
-                    MainColor={'red-500'}
+                    MainColor={'text-red-500'}
                     whichActive={Metrics}
                     Icon={<BiBarChart className="  w-[30px] h-[30px]"/>}
                     Title={'Metrics'}

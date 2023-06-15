@@ -9,9 +9,6 @@ import { GiBleedingEye } from "react-icons/gi";
 import { HiOutlineStatusOnline } from "react-icons/hi";
 import WebSocket from "reconnecting-websocket";
 
-import dynamic from 'next/dynamic';
-
-const RTSPPlayer = dynamic(() => import('react-player'), { ssr: false });
 // Login Page definitions
 const Cameras = () => {
     const router = useRouter()
@@ -34,7 +31,7 @@ const Cameras = () => {
             <div className="bg-[#292c30]  w-full ">
                               
       <div className="h-full">
-      <RTSPPlayer url={url} playing  controls width="100%" height="auto" />
+
       </div>
    
 
