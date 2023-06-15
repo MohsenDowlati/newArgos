@@ -8,13 +8,14 @@ mapboxgl.accessToken = 'pk.eyJ1IjoicGFydGl5YTAyMTAiLCJhIjoiY2xoYzVjODlnMDlhbzNtb
 const  TestMap = ({style}) => {
   const mapContainer = useRef(null);
   const popupRef = useRef(null);
+  const [center,setCenter] = useState()
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainer.current,
       style: style,
-      center: [-122.4376, 37.7577], // set initial center of map
+      center: center, // set initial center of map
       zoom: 12, // set initial zoom level
-    });
+    } );
 
     // Add a custom circle layer to the map
     map.on('load', () => {
@@ -79,8 +80,12 @@ const  TestMap = ({style}) => {
       const parsedData = JSON.parse(jsonData.live_data)
       const wide = parsedData.payload.detections.wide
       const narrow  = parsedData.payload.detections.narrow
-      let togheter = [...wide,...narrow]
-      
+      let together = [...wide,...narrow];
+
+      if (!center && together.length > 0) {
+        // If center is not set and there are GPS coordinates available, set the center of the map
+        setCenter([together[0].gps[1], together[0].gps[0]]);
+      }
      
       // Update the source data with the new points
       const source = map.getSource('my-source');
@@ -89,7 +94,7 @@ const  TestMap = ({style}) => {
       
         source.setData({
           type: 'FeatureCollection',
-          features: togheter.map((point) => ({
+          features: together.map((point) => ({
           
             type: 'Feature',
             properties: {
@@ -181,7 +186,7 @@ const  TestMap = ({style}) => {
       socket.close()
       map.remove();
     };
-  }, [style]);
+  }, [style,center]);
 
   return <div ref={mapContainer} className='bg-ind' style={{ width: '100%', height: '100vh' }} />;
 };

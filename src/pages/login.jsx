@@ -22,6 +22,9 @@ const Login = () => {
     const [password,setPassword] = useState();
     const [isloading,setIsloading] = useState(false)
     const [isVisible,setIsVisible] = useState(false)
+  
+
+
     // Particle settings 
     const particlesSettings = {
         background: {
@@ -89,6 +92,7 @@ const Login = () => {
     // Function call when the login button is pressed
     const loginPress = async () => {
         setIsloading(true)
+
         // router.push('/dashboard/home')
         const payload = {
             email : email,

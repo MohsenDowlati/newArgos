@@ -2,14 +2,13 @@
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/tailwind.css'
 import 'focus-visible'
-import { decodeToken } from '@/utils/DecodeToken';
+
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import jwtDecode from 'jwt-decode';
-import jwt from 'jsonwebtoken';
-import Script from 'next/script';
 
+import Script from 'next/script';
+import jwt_decode from 'jwt-decode';
 // Function to run App
 export default function App({ Component, pageProps }) {
     const router =useRouter()
@@ -17,23 +16,25 @@ export default function App({ Component, pageProps }) {
       
            
    
-        // try {
-        //        const token = localStorage.getItem("AccessToken");
-        //     if (token) {
-        //         const decodedToken = decodeToken(token);
-        //         const dateNow = Date.now() / 1000;
-              
-        //         if (decodedToken.payload.exp < dateNow) {
-        //             localStorage.removeItem("AccessToken");
-        //             router.push('/')
-                  
-        //         }
-        //     }
-        // } catch (error) {
-            
-        // }
+    function isTokenExpired(token) {
+        if (token) {
+          const decodedToken = jwt_decode(token);
+          const currentTime = Date.now() / 1000; // Convert milliseconds to seconds
+          console.log('decode ==  > ' , decodedToken)
+          // Check if the token has an expiration date
+          if (decodedToken.exp && decodedToken.exp < currentTime) {
+            return localStorage.clear(),router.push('/'); // Token has expired
+          } else {
+            return false; // Token is valid
+          }
+        } else {
+          return false; // No token provided
+        }
+      }
            
-    
+    useEffect(() => {
+        isTokenExpired(localStorage.getItem('AccessToken'))
+    }, []);
     
      
 

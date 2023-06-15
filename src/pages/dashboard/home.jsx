@@ -35,7 +35,7 @@ const Dhome = () => {
         accessToken: 'pk.eyJ1IjoicGFydGl5YTAyMTAiLCJhIjoiY2xoYzVjODlnMDlhbzNtbnZyNzdvZDV0NSJ9.pENwwnr9suPHN1Liq2izQA',
         
       });
-      const centerCoordinates = [-122.431297, 37.773972];
+     
         useEffect(() => {
             const token = localStorage.getItem('AccessToken')
             if(!token){

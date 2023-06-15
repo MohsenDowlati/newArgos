@@ -46,6 +46,7 @@ const [series,setSeries] = useState([])
       }
       const transformedArray = transformArray(data);
       setSeries(transformedArray)
+      console.log(series)
     }, [data]);
 
 
