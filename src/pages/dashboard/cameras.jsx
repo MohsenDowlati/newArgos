@@ -32,15 +32,8 @@ const Cameras = () => {
                               
       <div className="h-full">
 
-      </div>
-   
-
-                    </div> 
-
-
-
-
-                    
+            </div>
+                    </div>
                 </div>
             </div>
 

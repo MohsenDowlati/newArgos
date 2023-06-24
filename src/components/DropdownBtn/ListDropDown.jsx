@@ -50,42 +50,6 @@ export default function ListBox({setCamera_id}) {
                 </a>
               )}
             </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                onClick={()=>{
-                    setSelected('ARGV-30002')
-                    setCamera_id('ARGv30002')
-                }}
-                  
-                  className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
-                  )}
-                >
-                 ARGV-30002
-                </a>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                onClick={()=>{
-                    setSelected('ARGV-30003')
-                    setCamera_id('ARGv30003')
-                }}
-                 
-                  className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
-                  )}
-                >
-                      ARGV-30003
-                </a>
-              )}
-            </Menu.Item>
-           
-           
           </div>
         </Menu.Items>
       </Transition>
