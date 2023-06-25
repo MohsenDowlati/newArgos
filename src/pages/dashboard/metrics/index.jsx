@@ -21,7 +21,7 @@ import CarChart from "@/components/Charts/CarChart";
 import BikeChart from "@/components/Charts/BikeChart";
 import Loading from "@/components/loading/loading";
 // Login Page definitions
-export default function Metrics() {    
+export default function Metrics() {
     const router = useRouter()
     const path = router.pathname
     const [startdate,setStartdate] = useState( new Date())
@@ -79,7 +79,7 @@ export default function Metrics() {
         setEdate(enddate.toISOString())
         setSearch(false)
         
-        console.log('data tokhmi asghar === > ' , data)
+        console.log('ajab chaghali hasti to partiya === > ' , data)
         data.forEach(element => {
            if(Object.keys(element.area_counts).length > 0){
 
