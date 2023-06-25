@@ -11,3 +11,6 @@ export const loginService = data => {
 export const registerService = data => {
     return http.post(`${config.api}/auth/register/`, data)
 }
+export const resetPassword = data =>{
+    return http.post(`${config.api}/auth/request-reset-email/`,data)
+}

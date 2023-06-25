@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 import { BiCar, BiCycling } from 'react-icons/bi';
 import ChartDetail from '../ChartDetails';
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
-function BikeChart({data,detialData,camera_id,start_date,end_date,icon,title})  {
+function BikeChart({data,detialData,camera_id,start_date,end_date,icon,title,timelist})  {
 const [series,setSeries] = useState([])
     
     let series2 = []
@@ -34,7 +34,7 @@ const [series,setSeries] = useState([])
         try {
             return array.map(obj => {
                 return {
-                  name: obj.street_name,
+                  name: obj.name,
                   data: obj.data,
                   color: generateRandomColor()
                 };
@@ -58,11 +58,7 @@ const [series,setSeries] = useState([])
 
         xaxis: {
           
-          categories: [
-            '00:00','01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00',
-            '17:00','18:00','19:00','20:00','21:00','22:00','23:00',
-
-        ] ,
+          categories: timelist,
           labels: {
             style: {
               colors: '#ffffff', // Customize x-axis label color

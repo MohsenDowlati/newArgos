@@ -55,7 +55,8 @@ export default function Metrics() {
     const [Person,setPerson] = useState([])
     const [Car,setCar] = useState([])
     const [search,setSearch] = useState()
-
+    const [CarTimelist,setCarTimelist] = useState()
+    const [BikeTimelist,setBikeTimelist] = useState()
     const [show,setShow] = useState(false)
   
 
@@ -63,7 +64,7 @@ export default function Metrics() {
         setisloaded(false)
         setSearch(true)
         const {data,status} = await getCameraData({start_date : startdate,end_date:enddate,camera_id:camera_id})
-        console.log(data)
+    
         let BicycleData = [];  
         let BicycleNumber =0;
         let PersonData = []  
@@ -199,8 +200,7 @@ export default function Metrics() {
        let TotalCar = 0
        let MaxCar = Carresult[0]?.car
        let CarPeakTime = 0
-          console.log('bikedata === > ' , BicycleData)
-          console.log('bikeReusult == > ' , Bicycleresult)
+   
 
        Personresult.forEach(obj => {
         
@@ -240,7 +240,7 @@ export default function Metrics() {
         });
         const PersonDirectionDetails = Object.keys(groupedDataPerson).map(key => ({ [key]: groupedDataPerson[key] }));
 
-        console.log('person Directions === > ', PersonDirectionDetails)
+
 
 
         
@@ -301,9 +301,7 @@ export default function Metrics() {
       DirectionsObjectCreator(data)
       setBicycleDirection(BikeDirectionDetail)
 
-      
-      console.log('bike Direction details === > ' , groupedBicycleData)
-       
+  
     }
 
 
@@ -313,14 +311,14 @@ export default function Metrics() {
     function DirectionsObjectCreator(data){
       let streets_car_data = []
       let streets_bike_data = []
-      console.log('test===>' , data)
+     
       data.forEach(element => {
         if(element.area_counts[2] !== undefined){
 
           streets_car_data= [
             ...streets_car_data, {
                  ...element.area_counts[2],
-                time: element.date_time_Record.slice(11,13)
+                time: element.date_time_Record
             }
           ]
 
@@ -332,7 +330,7 @@ export default function Metrics() {
           streets_bike_data= [
             ...streets_bike_data, {
                  ...element.area_counts[1],
-                time: element.date_time_Record.slice(11,13)
+                time: element.date_time_Record
             }
           ]
 
@@ -340,97 +338,65 @@ export default function Metrics() {
       });
 
       
+      console.log('street_bike_data === >' , streets_bike_data)
 
 
-    
 
-      const mergedCarData = {};
+      const extractStreets = (data) => {
+        const streets = {};
+
+        // Sort the data by time in ascending order
+        const sortedData = data.sort((a, b) => {
+          const timeA = new Date(a.time);
+          const timeB = new Date(b.time);
+          return timeA - timeB;
+        });
+      
+        sortedData.forEach((obj) => {
+          Object.keys(obj).forEach((key) => {
+            if (key !== "time") {
+              if (!streets[key]) {
+                streets[key] = {
+                  name: key,
+                  data: [],
+                  time: []
+                };
+              }
+      
+              streets[key].data.push(obj[key]);
+              streets[key].time.push(obj.time);
+            }
+          });
+        });
+      
+        return Object.values(streets);
+      };
+
+
+      const sortedCarData = streets_car_data.sort((a, b) => {
+        const timeA = new Date(a.time);
+        const timeB = new Date(b.time);
+        return timeA - timeB;
+      });
+      const sortedBikeData = streets_car_data.sort((a, b) => {
+        const timeA = new Date(a.time);
+        const timeB = new Date(b.time);
+        return timeA - timeB;
+      });
+
+      const CartimeList = sortedCarData.map(object => object.time);
+      const BikeTimeList = sortedBikeData.map(object => object.time)
+      setCarTimelist(CartimeList)
+      setBikeTimelist(BikeTimeList)
+     
      
 
-  for (const obj of streets_car_data) { ////////////// CAR //////////////////
-    const time = obj.time;
-
-    if (time in mergedCarData) {
-      for (const key in obj) {
-        if (key !== 'time') {
-          mergedCarData[time][key] = (mergedCarData[time][key] || 0) + obj[key];
-        }
-      }
-    } else {
-      mergedCarData[time] = { ...obj };
-    }
-  }
-  const mergedCarObjects = Object.values(mergedCarData);
+    
+    
 
 
-  const mergedBikeData = {};
-  for (const obj of streets_bike_data) { ////////////// BIKE ////////////////
-    const time = obj.time;
-
-    if (time in mergedBikeData) {
-      for (const key in obj) {
-        if (key !== 'time') {
-          mergedBikeData[time][key] = (mergedBikeData[time][key] || 0) + obj[key];
-        }
-      }
-    } else {
-      mergedBikeData[time] = { ...obj };
-    }
-  }
-
-  const mergedBikeObjects = Object.values(mergedBikeData)
-  
-  
-  
-
-
-  const extractStreetData = (data) => {
-    const streets = {};
-  
-    // Find all unique time values in the data
-    const times = [...new Set(data.map((item) => item.time))];
-  
-    data.forEach((item) => {
-      Object.entries(item).forEach(([key, value]) => {
-        if (key !== "time") {
-          const streetName = key;
-  
-          if (!streets[streetName]) {
-            streets[streetName] = {
-              street_name: streetName,
-              data: []
-            };
-          }
-  
-          streets[streetName].data[item.time] = value;
-        }
-      });
-    });
-  
-    // Fill missing times with a value of 0 in each street's data
-    Object.values(streets).forEach((street) => {
-      const streetData = street.data;
-  
-      times.forEach((time) => {
-        if (streetData[time] === undefined) {
-          streetData[time] = 0;
-        }
-      });
-  
-      street.data = Object.values(streetData);
-    });
-  
-    return Object.values(streets);
-  };
-
-
-
-
-
-  
-
-    const transformedCarData = extractStreetData(mergedCarObjects);
-    const transformedBikeData = extractStreetData(mergedBikeObjects)
+    const transformedCarData = extractStreets(streets_car_data)
+    const transformedBikeData = extractStreets(streets_bike_data)
 
 
  
@@ -474,9 +440,9 @@ export default function Metrics() {
     }, []);
   
     useEffect(() => {
-       console.log('start date === > ',startdate)
-       console.log('end date === > ', enddate)
-    }, [startdate,enddate]);
+      console.log('CarDirection === > ' , CarDirection )
+ 
+    }, [CarDirection]);
 
 
 
@@ -525,11 +491,11 @@ const CustomTooltip = ({ active, payload, label }) => {
               }
 
               {
-                isloaded?    <CarChart data={CarDirection} detialData={CarDetails} camera_id={camera_id} start_date={startdate} end_date={enddate}/> : ''
+                isloaded?    <CarChart timelist={CarTimelist} data={CarDirection} detialData={CarDetails} camera_id={camera_id} start_date={startdate} end_date={enddate}/> : ''
               }
               
               {
-                isloaded?    <BikeChart data={BikeDirection} detialData={BikeDetail} camera_id={camera_id} start_date={startdate} end_date={enddate}/> : ''
+                isloaded?    <BikeChart timelist={BikeTimelist} data={BikeDirection} detialData={BikeDetail} camera_id={camera_id} start_date={startdate} end_date={enddate}/> : ''
               }
 
 {/* 

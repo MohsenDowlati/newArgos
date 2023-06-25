@@ -147,6 +147,13 @@ const Login = () => {
                                     </div>
                             </div>
                         </div>
+                        <div className='flex w-full text-white justify-center'>
+                        <div>
+                            <p onClick={()=>router.push('/reset_password/')} className="text-white w-[300px] mt-3 cursor-pointer hover:text-blue-400">Forgot your password ? </p>
+                        </div>
+                                 
+                        </div>
+                       
                         <div className='flex w-full justify-center'>
                             <button onClick={loginPress} className='mt-10 w-[200px] hover:bg-blue-600 text-white flex rounded-md items-center justify-center h-[50px] bg-blue-500 font-thin'>
                                 {
