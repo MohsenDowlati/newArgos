@@ -30,11 +30,13 @@ const Cameras = () => {
             </div>
             <div className="bg-[#292c30]  w-full ">
                               
-      <div className="h-full">
+              <div className="h-full">
+                  <video id="player" className="w-full h-full" controls preload>
+                      <source src="http://52.53.105.21:5000" type="application/x-mpegURL"/>
+                  </video>
 
-            </div>
+              </div>
                     </div>
-                                <video src="http://52.53.105.21:5000"></video>
                 </div>
             </div>
 
