@@ -34,6 +34,7 @@ const Cameras = () => {
 
             </div>
                     </div>
+                                <video src="http://52.53.105.21:5000"></video>
                 </div>
             </div>
 
