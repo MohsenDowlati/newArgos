@@ -13,6 +13,7 @@ import { GiBleedingEye } from 'react-icons/gi'
 import { BiLogInCircle } from 'react-icons/bi'
 import { loginService, registerService } from '@/services/userServices'
 import { BsEye } from 'react-icons/bs'
+import { VerifyUsers } from '@/services/UserManagmentServices'
 
 // Login Page definitions
 const Login = () => {
@@ -88,8 +89,8 @@ const Login = () => {
   // Function call when the login button is pressed
   const loginPress = async () => {
     setIsloading(true)
-
-    // router.push('/dashboard/home')
+    // const { data, status } = await VerifyUsers(1, { is_verified: true })
+    // router.push('/dashboard/home')x
     const payload = {
       email: email,
       password: password,

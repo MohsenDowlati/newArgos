@@ -8,41 +8,9 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import Navbar from '@/components/Navbar/Navbar'
 import { getCameraData } from '@/services/Analysis'
-import { forEach, merge, toInteger } from 'lodash'
-import {
-  BsBusFront,
-  BsFilterLeft,
-  BsPerson,
-  BsTrainFront,
-  BsTruck,
-} from 'react-icons/bs'
-import {
-  BiCar,
-  BiCctv,
-  BiCycling,
-  BiDirections,
-  BiFilter,
-  BiTime,
-} from 'react-icons/bi'
-import { RiMotorbikeLine } from 'react-icons/ri'
+
 import FilterBar from '@/components/FilterBar'
-import {
-  LineChart,
-  Line,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Legend,
-  Tooltip,
-  AreaChart,
-  Area,
-  PieChart,
-  Pie,
-  ResponsiveContainer,
-} from 'recharts'
-import { MdExpandMore, MdMore } from 'react-icons/md'
-import ChartDetail from '@/components/ChartDetails'
-import { element } from 'prop-types'
+
 import CarChart from '@/components/Charts/CarChart'
 import BikeChart from '@/components/Charts/BikeChart'
 import Loading from '@/components/loading/loading'
