@@ -105,13 +105,17 @@ const Login = () => {
         router.push('/dashboard/home')
       }
     } catch (error) {
+      console.log(error)
       if (error.response.status === 400) {
+        setIsloading(false)
         toast.error(error.response.data?.email[0])
       }
       if (error.response.status === 401) {
-        toast.error('Enter a valid password')
+        setIsloading(false)
+        toast.error(error.response.data.detail)
       }
       if (error.response.status === 500) {
+        setIsloading(false)
         toast.error('Server error 500')
       }
     }
