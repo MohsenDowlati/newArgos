@@ -301,8 +301,31 @@ export default function Metrics() {
       }
     })
 
-    console.log('street_bike_data === >', streets_bike_data)
+    const addMissingStreets = (data) => {
+      let allStreets = []
+      data.forEach((object) => {
+        allStreets = allStreets.concat(Object.keys(object))
+      })
+      allStreets = Array.from(new Set(allStreets)) // Get unique street names
 
+      return data
+        .map((object) => {
+          const newObj = { ...object }
+          allStreets.forEach((street) => {
+            if (!newObj.hasOwnProperty(street)) {
+              newObj[street] = 0
+            }
+          })
+          return newObj
+        })
+        .sort((a, b) => {
+          // Assuming "time" is in ISO 8601 format, you can use Date objects to compare
+          return new Date(a.time) - new Date(b.time)
+        })
+    }
+
+    const CarDataWithMissingStreets = addMissingStreets(streets_car_data)
+    const BikeDataWithMissingStreets = addMissingStreets(streets_bike_data)
     const extractStreets = (data) => {
       const streets = {}
 
@@ -349,10 +372,10 @@ export default function Metrics() {
     setCarTimelist(CartimeList)
     setBikeTimelist(BikeTimeList)
 
-    const transformedCarData = extractStreets(streets_car_data)
-    const transformedBikeData = extractStreets(streets_bike_data)
+    const transformedCarData = extractStreets(CarDataWithMissingStreets)
+    const transformedBikeData = extractStreets(BikeDataWithMissingStreets)
 
-    console.log('test === > ', transformedBikeData)
+    console.log('test === > ', transformedCarData)
 
     setCarDirection(transformedCarData)
     setBikeDirection(transformedBikeData)
