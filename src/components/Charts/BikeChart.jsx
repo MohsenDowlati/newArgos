@@ -93,9 +93,6 @@ const [series,setSeries] = useState([])
           
         },
       };
-      const start = start_date
-      
-      console.log(detialData)
       
   return (
     <div className=' w-full flex justify-center'>

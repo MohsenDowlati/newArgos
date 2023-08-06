@@ -59,7 +59,6 @@ const [series,setSeries] = useState([])
         },
 
         xaxis: {
-          
           categories: timelist,
           labels: {
             style: {
@@ -95,9 +94,7 @@ const [series,setSeries] = useState([])
           
         },
       };
-      const start = start_date
-      
-      console.log(detialData)
+
   return (
     <div className=' w-full flex justify-center'>
         <div className='bg-[#22242e] w-[90%] mt-10 p-10 rounded-xl'>
@@ -109,7 +106,7 @@ const [series,setSeries] = useState([])
             <p className='text-white text-center ml-10 font-thin'>This record was captured from {start_date?.toISOString().slice(0,10)} to {end_date?.toISOString().slice(0,10)}</p>
           
         </div>
-        <ApexChart    options={options} series={series} type="area" height={500} />  
+        <ApexChart options={options} series={series} type="area" height={500} />
         <ChartDetail
          Title={'Car'}
          TextColor={'text-red-400'}
