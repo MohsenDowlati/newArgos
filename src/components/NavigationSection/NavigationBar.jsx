@@ -11,6 +11,7 @@ function NavigationBar({ WhichActive }) {
   const [Metrics, setMetrics] = useState(false)
   const [Home, setHome] = useState(false)
   const [Camera, setCamera] = useState(false)
+  const [Logs, setLogs] = useState(false)
   const [Usermanagement, setUsermanagment] = useState(false)
   useEffect(() => {
     switch (WhichActive) {
@@ -22,6 +23,8 @@ function NavigationBar({ WhichActive }) {
         return setCamera(true)
       case 'Usermanagement':
         return setUsermanagment(true)
+      case 'Logs':
+        return setLogs(true)
         break
 
       default:
@@ -66,8 +69,10 @@ function NavigationBar({ WhichActive }) {
         bgColor={'bg-red-600'}
       />
       <NavigationCard
+        whichActive={Logs}
         Icon={<GiNotebook className="     h-[30px] w-[30px]" />}
         Title={'Logs'}
+        MainColor={'text-orange-500'}
         onClick={() => router.push('/dashboard/logs')}
         Details={'Navigate to Logs'}
         bgColor={'bg-cyan-600'}

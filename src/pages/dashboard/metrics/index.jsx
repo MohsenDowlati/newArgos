@@ -58,8 +58,8 @@ export default function Metrics() {
     setisloaded(false)
     setSearch(true)
     const { data, status } = await getCameraData({
-      start_date: startdate,
-      end_date: enddate,
+      start_date: startdate.toISOString().slice(0, 19),
+      end_date: enddate.toISOString().slice(0, 19),
       camera_id: camera_id,
     })
 
