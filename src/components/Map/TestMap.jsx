@@ -70,7 +70,6 @@ const TestMap = ({ style }) => {
 
     // Handle incoming data
     const key = 'ARGv30001'
-    const key2 = 'ARGv30002'
 
     socket.onopen = () => {
       socket.send(key)
@@ -78,9 +77,8 @@ const TestMap = ({ style }) => {
     socket.onmessage = (event) => {
       const jsonData = JSON.parse(event.data)
       // const parsedData = JSON.parse(jsonData)
-      const parsedData = JSON.parse(jsonData.live_data)
-      const wide = parsedData.payload.detections.wide
-      const narrow = parsedData.payload.detections.narrow
+      const wide = jsonData.payload.detections.wide
+      const narrow = jsonData.payload.detections.narrow
       let together = [...wide, ...narrow]
 
       if (!center && together.length > 0) {
