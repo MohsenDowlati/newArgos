@@ -9,7 +9,7 @@ mapboxgl.accessToken =
 const TestMap = ({ style }) => {
   const mapContainer = useRef(null)
   const popupRef = useRef(null)
-  const [center, setCenter] = useState()
+  const [center, setCenter] = useState([-112.07257209863812, 33.46761542772093])
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: mapContainer.current,
@@ -78,14 +78,14 @@ const TestMap = ({ style }) => {
     socket.onmessage = (event) => {
       const jsonData = JSON.parse(event.data)
       // const parsedData = JSON.parse(jsonData)
-      const parsedData = JSON.parse(jsonData.live_data)
-      const wide = parsedData.payload.detections.wide
-      const narrow = parsedData.payload.detections.narrow
+      console.log(jsonData)
+      const wide = jsonData.payload.detections.wide
+      const narrow = jsonData.payload.detections.narrow
       let together = [...wide, ...narrow]
 
       if (!center && together.length > 0) {
         // If center is not set and there are GPS coordinates available, set the center of the map
-        setCenter([together[0].gps[1], together[0].gps[0]])
+        // setCenter([together[0].gps[1], together[0].gps[0]])
       }
 
       // Update the source data with the new points
