@@ -14,6 +14,7 @@ import { getLogsData } from '@/services/Logs'
 
 import LogsChartContainer from '@/components/Charts/LogsChartContainer'
 import { element } from 'prop-types'
+import Loading from '@/components/loading/loading'
 
 // Login Page definitions
 const Logs = () => {
@@ -21,7 +22,7 @@ const Logs = () => {
   const [startdate, setStartdate] = useState(new Date())
   const [enddate, setEnddate] = useState(new Date())
   const [camera_id, setCamera_id] = useState('0')
-  const [isloaded, setisloaded] = useState(false)
+  const [isloaded, setisloaded] = useState()
   const [ram, setRam] = useState()
   const [time, setTime] = useState()
   const [gpu, setGpu] = useState()
@@ -304,6 +305,7 @@ const Logs = () => {
                 <LogsChartContainer
                   Payload={{ startdate, enddate, camera_id }}
                   timelist={time}
+                  isloaded={isloaded}
                   GpuDataSet={gpu}
                   CpuDataSet={cpu}
                   RamDataSet={ram}
@@ -321,6 +323,7 @@ const Logs = () => {
               ) : (
                 ''
               )}
+              {isloaded === false ? <Loading /> : ''}
             </div>
           </div>
         </div>

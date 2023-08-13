@@ -34,6 +34,7 @@ function LogsChartContainer({
   SystemLoadCurrentDataSet,
   ChargerCurrentDataSet,
   Payload,
+  isloaded,
 }) {
   const [activeModel, setActiveModel] = useState({
     gpu: false,
@@ -50,6 +51,12 @@ function LogsChartContainer({
     system_load_current: false,
     charger_current: false,
   })
+  useEffect(() => {
+    if (isloaded) {
+      setActiveModel({ ...activeModel, gpu: true })
+      console.log(activeModel)
+    }
+  }, [isloaded])
 
   const handleButtonClick = (property) => {
     const updatedModel = Object.fromEntries(
