@@ -7,19 +7,14 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { useEffect } from 'react'
 
-import { GiBleedingEye } from 'react-icons/gi'
-import { HiOutlineStatusOnline } from 'react-icons/hi'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { useState } from 'react'
 import { getLogsData } from '@/services/Logs'
+
+import LogsChartContainer from '@/components/Charts/LogsChartContainer'
 import { element } from 'prop-types'
-import dynamic from 'next/dynamic'
-import GPUChart from '@/components/Charts/GPU_Chart'
-import CPUChart from '@/components/Charts/CPU_Chart'
-import RAMChart from '@/components/Charts/RAM_Chart'
-import BoardTempChart from '@/components/Charts/BoardTemp_Chart'
-const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
+
 // Login Page definitions
 const Logs = () => {
   const router = useRouter()
@@ -31,6 +26,16 @@ const Logs = () => {
   const [time, setTime] = useState()
   const [gpu, setGpu] = useState()
   const [cpu, setCpu] = useState()
+  const [fps, setFps] = useState()
+  const [fan, setFan] = useState()
+  const [solarpanelVoltage, setSolarPanelVoltage] = useState()
+  const [solarpanelCurrent, setSolarPanelCurrent] = useState()
+  const [systemloadVoltage, setSystemLoadVoltage] = useState()
+  const [systemloadCurrent, setSystemLoadCurrent] = useState()
+  const [chargercurrent, setChargerCurrent] = useState()
+  const [outdoorTemp, setOutDoorTemp] = useState()
+  const [batteryVoltage, setBatteryVoltage] = useState()
+  const [ActiveChart, setActiveChart] = useState()
 
   const [boardtemp, setBoardTemp] = useState()
   const path = router.pathname
@@ -66,7 +71,7 @@ const Logs = () => {
       ram = [...ram, `${(element.ram * 100).toFixed(2)}`]
     })
 
-    setRam([{ data: ram, name: 'RAM USAGE', time: time, color: '#c92c41' }])
+    setRam([{ data: ram, name: 'RAM USAGE', time: time, color: '#f87171' }])
   }
   function CreateCpuArray(data) {
     let cpu = []
@@ -86,12 +91,140 @@ const Logs = () => {
         data: BoradTemp,
         name: 'BOARD TEMPATURE',
         time: time,
-        color: '#cf912d',
+        color: '#e11d47',
+      },
+    ])
+  }
+
+  function CreateOutDoorTempArray(data) {
+    let OutDoorTemp = []
+    data?.forEach((element) => {
+      OutDoorTemp = [...OutDoorTemp, element.temp]
+    })
+    setOutDoorTemp([
+      {
+        data: OutDoorTemp,
+        name: 'OUTDOOR TEMPATURE',
+        time: time,
+        color: '#e11d47',
+      },
+    ])
+  }
+  function CreateFanArray(data) {
+    let Fan = []
+    data?.forEach((element) => {
+      Fan = [...Fan, Math.floor(element.fan).toString().slice(0, 2)]
+    })
+    setFan([
+      {
+        data: Fan,
+        name: 'Fan Speed',
+        time: time,
+        color: '#2dd4be',
+      },
+    ])
+  }
+  function CreateBatteryVoltageArray(data) {
+    let BatteryVoltage = []
+    data?.forEach((element) => {
+      BatteryVoltage = [...BatteryVoltage, element.batt_V.toFixed(2)]
+    })
+    setBatteryVoltage([
+      {
+        data: BatteryVoltage,
+        name: 'Battery Voltage',
+        time: time,
+        color: '#facc15',
+      },
+    ])
+  }
+  function CreateFpsArray(data) {
+    let Fps = []
+    data?.forEach((element) => {
+      Fps = [...Fps, element.fps]
+    })
+    setFps([
+      {
+        data: Fps,
+        name: 'Frame per seconds',
+        time: time,
+        color: '#f472b5',
+      },
+    ])
+  }
+  function CreateSolarVoltageArray(data) {
+    let SolarVoltage = []
+    data?.forEach((element) => {
+      SolarVoltage = [...SolarVoltage, element.panel_V.toFixed(2)]
+    })
+    setSolarPanelVoltage([
+      {
+        data: SolarVoltage,
+        name: 'Solar panel voltage',
+        time: time,
+        color: '#f2a53f',
+      },
+    ])
+  }
+  function CreateSolarCurrentArray(data) {
+    let SolarCurrent = []
+    data?.forEach((element) => {
+      SolarCurrent = [...SolarCurrent, element.panel_I.toFixed(2)]
+    })
+    setSolarPanelCurrent([
+      {
+        data: SolarCurrent,
+        name: 'Solar panel current',
+        time: time,
+        color: '#f2a53f',
+      },
+    ])
+  }
+  function CreateSystemLoadVoltageArray(data) {
+    let SystemVoltage = []
+    data?.forEach((element) => {
+      SystemVoltage = [...SystemVoltage, element.load_V.toFixed(2)]
+    })
+    setSystemLoadVoltage([
+      {
+        data: SystemVoltage,
+        name: 'System Load Voltage',
+        time: time,
+        color: '#bef264',
+      },
+    ])
+  }
+  function CreateSystemLoadCurrentArray(data) {
+    let SystemCurrent = []
+    data?.forEach((element) => {
+      SystemCurrent = [...SystemCurrent, element.load_I.toFixed(2)]
+    })
+    setSystemLoadCurrent([
+      {
+        data: SystemCurrent,
+        name: 'System Load Current',
+        time: time,
+        color: '#bef264',
+      },
+    ])
+  }
+  function CreateChargerCurrentArray(data) {
+    let ChargerCurrent = []
+    data?.forEach((element) => {
+      ChargerCurrent = [...ChargerCurrent, element.charge_I.toFixed(2)]
+    })
+    setChargerCurrent([
+      {
+        data: ChargerCurrent,
+        name: 'Charger current',
+        time: time,
+        color: '#818df8',
       },
     ])
   }
 
   async function getCameraLogs() {
+    setisloaded(false)
     const payload = {
       start_date: startdate.toISOString().slice(0, 19),
       end_date: enddate.toISOString().slice(0, 19),
@@ -106,6 +239,16 @@ const Logs = () => {
     CreateGpuArray(data)
     CreateCpuArray(data)
     CreateBoradTempArray(data)
+    CreateFanArray(data)
+    CreateFpsArray(data)
+    CreateSolarVoltageArray(data)
+    CreateBatteryVoltageArray(data)
+    CreateSolarCurrentArray(data)
+    CreateOutDoorTempArray(data)
+    CreateChargerCurrentArray(data)
+    CreateSystemLoadVoltageArray(data)
+    CreateSystemLoadCurrentArray(data)
+
     setisloaded(true)
 
     console.log('logs -==== > ', ram)
@@ -156,24 +299,25 @@ const Logs = () => {
             </div>
           </div>
           <div className="mt-10 flex w-full justify-center ">
-            <div className="w-[80%]">
-              {isloaded ? <GPUChart GpuDataSet={gpu} timelist={time} /> : ''}
-            </div>
-          </div>
-          <div className="flex w-full justify-center ">
-            <div className="w-[80%]">
-              {isloaded ? <CPUChart CpuDataSet={cpu} timelist={time} /> : ''}
-            </div>
-          </div>
-          <div className="flex w-full justify-center ">
-            <div className="w-[80%]">
-              {isloaded ? <RAMChart RamDataSet={ram} timelist={time} /> : ''}
-            </div>
-          </div>
-          <div className="flex w-full justify-center ">
-            <div className="w-[80%]">
+            <div className="mb-20 w-[80%]">
               {isloaded ? (
-                <BoardTempChart BoardTempDataSet={boardtemp} timelist={time} />
+                <LogsChartContainer
+                  Payload={{ startdate, enddate, camera_id }}
+                  timelist={time}
+                  GpuDataSet={gpu}
+                  CpuDataSet={cpu}
+                  RamDataSet={ram}
+                  FanDataSet={fan}
+                  FpsDataSet={fps}
+                  TempBoardDataSet={boardtemp}
+                  TempOutdoorDataSet={outdoorTemp}
+                  BatteryVoltageDataSet={batteryVoltage}
+                  SolarPanelVoltageDataSet={solarpanelVoltage}
+                  SolarPanelCurrentDataSet={solarpanelCurrent}
+                  SystemLoadVoltageDataSet={systemloadVoltage}
+                  SystemLoadCurrentDataSet={systemloadCurrent}
+                  ChargerCurrentDataSet={chargercurrent}
+                />
               ) : (
                 ''
               )}

@@ -31,14 +31,22 @@
 
 @tailwind base;
 
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--secondary) #0073a8;
-}
+/* * {
 
+} */
+.LogsChartScroll::-webkit-scrollbar {
+  width: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--secondary) #a82812;
+}
+.LogsChartScroll::-webkit-scrollbar-thumb{
+  background-color: #555555;
+  border-radius: 30px;
+  border: 3px solid var(--primary);
+}
 /* Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
-  width: 3px;
+  width: 2px;
 }
 
 *::-webkit-scrollbar-track {
@@ -47,7 +55,7 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #0073a8;
+  background-color: #4d4d4d;
   border-radius: 30px;
   border: 3px solid var(--primary);
 }

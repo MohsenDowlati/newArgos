@@ -1,10 +1,11 @@
 import React from 'react'
+
 import dynamic from 'next/dynamic'
 import { useEffect } from 'react'
 import { useState } from 'react'
 
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
-function BoardTempChart({ timelist, BoardTempDataSet }) {
+function LogsChart({ timelist, DataSet }) {
   const [series, setSeries] = useState([])
   const [time, setTime] = useState([])
 
@@ -24,7 +25,7 @@ function BoardTempChart({ timelist, BoardTempDataSet }) {
     },
     yaxis: {
       title: {
-        text: 'BOARD TEMPATURE',
+        text: 'GPU',
       },
       labels: {
         style: {
@@ -50,13 +51,8 @@ function BoardTempChart({ timelist, BoardTempDataSet }) {
     },
   }
   return (
-    <ApexChart
-      options={options}
-      series={BoardTempDataSet}
-      type="area"
-      height={500}
-    />
+    <ApexChart options={options} series={DataSet} type="area" height={500} />
   )
 }
 
-export default BoardTempChart
+export default LogsChart
