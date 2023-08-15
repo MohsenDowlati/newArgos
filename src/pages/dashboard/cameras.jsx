@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { GiBleedingEye } from "react-icons/gi";
 import { HiOutlineStatusOnline } from "react-icons/hi";
 import WebSocket from "reconnecting-websocket";
-import React, { useEffect, useState } from 'react';
+
 
 // Login Page definitions
 const Cameras = () => {
