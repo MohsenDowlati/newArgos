@@ -56,7 +56,7 @@ const Cameras = () => {
                 <div className="bg-[#292c30]  w-full">
                 <div className="h-full">
                     <div className="App">
-                    {image ? <img src={image} alt="Webcam capture" width="200" height="100" /> : <p>Loading...</p>}
+                    {image ? <img src={image} alt="Webcam capture" width="900" height="500" /> : <p>Loading...</p>}
                     </div>
                 </div>
                 </div>
