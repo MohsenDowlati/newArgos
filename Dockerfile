@@ -17,15 +17,3 @@ RUN npm install --production --legacy-peer-deps
 # Copy all files
 COPY ./ ./
 
-# Build app
-RUN npm run build
-
-# Expose the listening port
-EXPOSE 3000
-
-# Run container as non-root (unprivileged) user
-# The node user is provided in the Node.js Alpine base image
-USER node
-
-# Run npm start script with PM2 when container starts
-CMD [ "pm2-runtime", "npm", "--", "start" ]
