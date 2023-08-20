@@ -57,7 +57,7 @@ const Record = () => {
       <Navbar />
       <div className="flex h-fit">
         <div className="  min-h-screen  pt-28   ">
-          <NavigationBar WhichActive={'Logs'} />
+          <NavigationBar WhichActive={'Record'} />
         </div>
         <div className="min-h-screen  w-full bg-[#292c30] pt-32">
           <div className="flex w-full items-center justify-center">
