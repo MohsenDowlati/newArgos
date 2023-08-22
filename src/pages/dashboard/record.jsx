@@ -1,54 +1,49 @@
-// Imports
-import ListBox from '@/components/DropdownBtn/ListDropDown'
-import Navbar from '@/components/Navbar/Navbar'
-import NavigationBar from '@/components/NavigationSection/NavigationBar'
-import { useRouter } from 'next/router'
-import React from 'react'
-import { useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import ListBox from '@/components/DropdownBtn/ListDropDown';
+import Navbar from '@/components/Navbar/Navbar';
+import NavigationBar from '@/components/NavigationSection/NavigationBar';
+import { useRouter } from 'next/router';
+import axios from 'axios';
 
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
-import { useState } from 'react'
-
-
-//import TimePicker from 'react-time-picker'; // You may need to install a suitable package for this
-//import 'react-datepicker/dist/react-datepicker.css';
-
-
-
-// Login Page definitions
 const Record = () => {
-  const router = useRouter()
-  const [startdate, setStartdate] = useState(new Date())
-  const [enddate, setEnddate] = useState(new Date())
-  const [camera_id, setCamera_id] = useState('0')
-  const [startTime, setStartTime] = useState("00:00"); // Default to midnight
-  const [endTime, setEndTime] = useState("00:00"); // Default to midnight
+  const router = useRouter();
+  const [startdate, setStartdate] = useState(new Date());
+  const [enddate, setEnddate] = useState(new Date());
+  const [camera_id, setCamera_id] = useState('0');
+  const [startTime, setStartTime] = useState('00:00');
+  const [endTime, setEndTime] = useState('00:00');
   const [email, setEmail] = useState('');
 
-
-  // Component return
   useEffect(() => {
-    const token = localStorage.getItem('AccessToken')
+    const token = localStorage.getItem('AccessToken');
     if (!token) {
-      router.push('/')
+      router.push('/');
     }
-  }, [])
+  }, []);
 
+  const uploadRequest = async () => {
+    const combinedStartDate = new Date(
+      startdate.toISOString().split('T')[0] + 'T' + startTime + ':00'
+    );
+    const combinedEndDate = new Date(
+      enddate.toISOString().split('T')[0] + 'T' + endTime + ':00'
+    );
 
-  
-  async function uploadRequest() {
-    
-    // Combine the selected date and time into a new Date object
-    const combinedStartDate = new Date(startdate.toISOString().split('T')[0] + 'T' + startTime + ':00');
-    const combinedEndDate = new Date(enddate.toISOString().split('T')[0] + 'T' + endTime + ':00');
- 
     const payload = {
-       start_date: combinedStartDate.toISOString().slice(0, 19),
-       end_date: combinedEndDate.toISOString().slice(0, 19),
-       camera_id: camera_id,
-       email: email
+      start_date: combinedStartDate.toISOString(),
+      end_date: combinedEndDate.toISOString(),
+      camera_id: camera_id,
+      email: email,
     };
+
+    try {
+      const response = await axios.post('/api/upload/', payload); // Assuming your API endpoint is "/api/upload/"
+      console.log(response.data); // Handle the response as needed
+    } catch (error) {
+      console.error(error);
+    }
     
   }
   
