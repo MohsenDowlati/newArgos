@@ -38,11 +38,10 @@ const Record = () => {
       email: email,
     };
 
-    try {
-      const response = await axios.post('/api/upload/', payload); // Assuming your API endpoint is "/api/upload/"
-      console.log(response.data); // Handle the response as needed
-    } catch (error) {
-      console.error(error);
+    const response = await uploadReguest(payload)
+    if (!response.ok) {
+      console.error("Error upload request:", response.statusText);
+      return;
     }
     
   }
