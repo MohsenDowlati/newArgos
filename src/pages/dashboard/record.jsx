@@ -38,10 +38,9 @@ const Record = () => {
       email: email,
     };
 
-    const response = await uploadReguest(payload)
-    if (!response.ok) {
+    const { data, status }  = await uploadReguest(payload)
+    if (status != 200) {
       console.error("Error upload request:", response.statusText);
-      return;
     }
     
   }
