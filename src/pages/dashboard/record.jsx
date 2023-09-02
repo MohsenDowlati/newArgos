@@ -28,6 +28,20 @@ const Record = () => {
         }
     }, []);
 
+    const canUpload = () => {
+        const combinedStartDate = new Date(
+            startdate.toISOString().split('T')[0] + 'T' + startTime + ':00'
+        );
+        const combinedEndDate = new Date(
+            enddate.toISOString().split('T')[0] + 'T' + endTime + ':00'
+        );
+
+        return (
+            camera_id !== '0' && 
+            combinedStartDate < combinedEndDate
+        );
+    };
+
     const uploadRequest = async () => {
         const combinedStartDate = new Date(
             startdate.toISOString().split('T')[0] + 'T' + startTime + ':00'
@@ -46,7 +60,7 @@ const Record = () => {
         const { data, status } = await uploadReguest(payload);
         if (status === 200) {
             setSuccessMessage(true);
-            const currentTime = new Date().toLocaleTimeString(); // Get the browser's local time
+            const currentTime = new Date().toLocaleTimeString();
             setSuccessTime(currentTime);
         } else {
             console.error("Error upload request:", data.statusText);
@@ -96,6 +110,7 @@ const Record = () => {
                             </div>
                             <button
                                 onClick={uploadRequest}
+                                disabled={!canUpload()}
                                 className="ml-10 w-[200px] rounded-xl bg-blue-400 p-4 text-white"
                             >
                                 Upload Videos
