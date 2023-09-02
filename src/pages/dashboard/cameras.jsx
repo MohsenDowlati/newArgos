@@ -29,7 +29,7 @@ const Cameras = () => {
     useEffect(() => {
         if (camera_id !== '0') {
             fetchImage();
-            interval = setInterval(fetchImage, 4000);
+            interval = setInterval(fetchImage, 1000);
         }
 
         return () => clearInterval(interval);
