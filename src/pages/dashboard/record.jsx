@@ -37,8 +37,7 @@ const Record = () => {
         );
 
         return (
-            camera_id !== '0' && 
-            combinedStartDate < combinedEndDate
+            camera_id !== '0'
         );
     };
 
