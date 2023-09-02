@@ -72,3 +72,14 @@
 #__next {
   min-height: 100%;
 }
+
+.note {
+  padding: 15px 25px;
+  background-color: #343740;
+  color: #E0E0E0;
+  border-radius: 8px;
+  margin: 30px 0;
+  border: 1px solid #4A4D53;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  font-weight: 500;
+}
