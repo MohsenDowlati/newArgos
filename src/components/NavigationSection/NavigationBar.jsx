@@ -4,6 +4,7 @@ import { AiOutlineHome, AiOutlineSetting } from 'react-icons/ai'
 import { BiBarChart, BiCctv, BiLogOut,BiVideo} from 'react-icons/bi'
 import { BsFillPeopleFill } from 'react-icons/bs'
 import { GiNotebook } from 'react-icons/gi'
+import { FcHeatMap } from 'react-icons/fc';
 import NavigationCard from '../cards/NavigationCards'
 
 function NavigationBar({ WhichActive }) {
@@ -12,6 +13,7 @@ function NavigationBar({ WhichActive }) {
   const [Home, setHome] = useState(false)
   const [Camera, setCamera] = useState(false)
   const [Record, setRecord] = useState(false)
+  const [Heatmap, setHeatmap] = useState(false)
   const [Logs, setLogs] = useState(false)
   const [Usermanagement, setUsermanagment] = useState(false)
   useEffect(() => {
@@ -20,6 +22,8 @@ function NavigationBar({ WhichActive }) {
         return setHome(true)
       case 'Metrics':
         return setMetrics(true)
+      case 'Heatmap':
+        return setHeatmap(true)
       case 'Camera':
         return setCamera(true)
       case 'Record':
@@ -72,6 +76,15 @@ function NavigationBar({ WhichActive }) {
         onClick={() => router.push('/dashboard/metrics')}
         Details={'Navigate to Metrics'}
         bgColor={'bg-red-600'}
+      />
+      <NavigationCard
+        whichActive={Heatmap}
+        MainColor={'text-green-400'}
+        Icon={<FcHeatMap className="   h-[30px] w-[30px]" />}
+        Title={'Ped Heatmap'}
+        onClick={() => router.push('/dashboard/heatmap')}
+        bgColor={'bg-green-500'}
+        Details={'Navigate to Usermanagment'}
       />
       <NavigationCard
         whichActive={Logs}
