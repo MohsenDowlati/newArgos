@@ -28,7 +28,6 @@ function Navbar({Notabsolute}) {
                 <div className="mr-10 flex items-center">
                     <HiOutlineStatusOnline className="w-[25px] h-[25px] mr-2 animate-blink text-green-500"/>
                     <p>Welcome {userdata?.username} !</p>
-                    <img src={userdata?.profile_image} className="w-[60px] h-[60px] border rounded-full ml-3 object-cover"></img>
                 </div>
 
             </div>
