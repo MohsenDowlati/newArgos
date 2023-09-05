@@ -51,7 +51,7 @@ const Heatmap = () => {
             }
         });
         try {
-            const response = await fetch(`https://api.argos.vision/api/v1/camera/stream/live/?camera_id=${camera_id}`);
+            const response = await fetch(`https://api.argos.vision/api/v1/camera/conf/satelite/?camera_id=${camera_id}`);
             
             if (!response.ok) {
                 console.error("Error fetching image:", response.statusText);
@@ -71,7 +71,7 @@ const Heatmap = () => {
             <Navbar />
             <div className="flex h-fit">
                 <div className="min-h-screen pt-28">
-                    <NavigationBar WhichActive={'Logs'} />
+                    <NavigationBar WhichActive={'Heatmap'} />
                 </div>
                 <div className="min-h-screen w-full bg-[#292c30] pt-32">
                     <div className="flex w-full items-center justify-center">
@@ -105,7 +105,7 @@ const Heatmap = () => {
                                 onClick={getCameraLogs}
                                 className="ml-10 w-[200px] rounded-xl bg-blue-400 p-4 text-white"
                             >
-                                Search Logs
+                                Generate Heatmap
                             </button>
                         </div>
                     </div>
@@ -136,7 +136,7 @@ const Heatmap = () => {
                         cellStyle={(_x, _y, ratio) => ({
                             background: `rgb(100, 160, 44, ${ratio})`,
                             fontSize: '.8rem',
-                            color: `rgb(0, 0, 0, ${ratio / 2 + 0.4})`
+                            color: `rgb(255, 255, 255)`
                         })}
                         cellHeight='3.47rem'
                         xLabelsPos='bottom'
