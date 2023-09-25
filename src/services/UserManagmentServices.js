@@ -1,9 +1,19 @@
 import http from "./httpService";
 import config from "./config.json";
+import axios from "axios";
 
 
 export const getUsers = page =>{
-    return http.get(`${config.api}/auth/users/`,{params:{page}})
+    const token = localStorage.getItem('AccessToken')
+    if (token) {
+        console.log(token)
+        axios.defaults.headers.post['Authorization'] = `Bearer ${token}`;
+    }
+
+
+
+    //return http.get(`${config.api}/auth/users/`,{params:{page}})
+    return http.get(`${config.api}/group/data/`,{params:{page}});
 }
 export const deleteUsers = id => {
     return http.delete(`${config.api}/auth/users/${id}/`)

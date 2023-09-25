@@ -5,9 +5,9 @@ import { AiOutlineDelete } from 'react-icons/ai'
 function UsersData({ data, handleDeleteUser, handleVerifyUser }) {
   return (
     <tr className=" border-b text-center text-white">
-      <td className="py-4">{data.first_name}</td>
-      <td className="py-4">{data.last_name}</td>
-      <td className="py-4">{data.email}</td>
+      <td className="py-4">{data.id}</td>
+      <td className="py-4">{data.name}</td>
+      <td className="py-4">{data.description}</td>
       <td className="flex items-center justify-center py-5">
         {data.is_staff ? (
           <TiTick className="h-[20px] w-[20px] text-green-600" />

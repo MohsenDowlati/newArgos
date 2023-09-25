@@ -27,8 +27,7 @@ export default function Organization() {
   const [page, setPage] = useState(1)
   const [ModalOpen, setModalOpen] = useState(false)
   // Get the router
-  const imgsrc =
-    'https://www.maxpixel.net/static/photo/1x/Young-Smile-Portrait-Ai-Generated-Man-Teeth-7833751.jpg'
+  const imgsrc = 'https://www.maxpixel.net/static/photo/1x/Young-Smile-Portrait-Ai-Generated-Man-Teeth-7833751.jpg';
   const date = new Date()
   const router = useRouter()
   const path = router.pathname
@@ -87,7 +86,7 @@ export default function Organization() {
                     <UsersData
                       handleVerifyUser={handleVerifyUser}
                       handleDeleteUser={handleDeleteUser}
-                      data={item}
+                      data={item.results}
                     />
                   ))}
                 </tbody>
