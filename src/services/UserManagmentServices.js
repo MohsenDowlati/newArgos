@@ -5,15 +5,9 @@ import axios from "axios";
 
 export const getUsers = page =>{
     const token = localStorage.getItem('AccessToken')
-    if (token) {
-        console.log(token)
-        axios.defaults.headers.post['Authorization'] = `Bearer ${token}`;
-    }
-
-
-
-    //return http.get(`${config.api}/auth/users/`,{params:{page}})
-    return http.get(`${config.api}/group/data/`,{params:{page}});
+    return http.get(`${config.api}/group/data/`, { headers: {
+            Authorization: `Bearer ${token}`,
+        },})
 }
 export const deleteUsers = id => {
     return http.delete(`${config.api}/auth/users/${id}/`)

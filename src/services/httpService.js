@@ -2,13 +2,13 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
-try {
-    const token = localStorage.getItem('AccessToken');
-    if (token) axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-} catch (e) {
-    console.log(e)
-}
+// try {
+//     const token = localStorage.getItem('AccessToken');
+//     if (token) axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+//
+// } catch (e) {
+//     console.log(e)
+// }
 
 axios.interceptors.response.use(null, (error) => {
     const expectedErrors =

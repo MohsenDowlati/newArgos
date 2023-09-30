@@ -99,9 +99,9 @@ const Login = () => {
       const { data, status } = await loginService(payload)
 
       if (status === 200) {
-        localStorage.setItem('User_data', JSON.stringify(data))
-        localStorage.setItem('AccessToken', JSON.stringify(data.tokens.access))
-        localStorage.setItem('Refresh', JSON.stringify(data.tokens.refresh))
+        // localStorage.setItem('User_data', JSON.stringify(data))
+        localStorage.setItem('AccessToken', data.tokens.access)
+        localStorage.setItem('Refresh', data.tokens.refresh)
         router.push('/dashboard/home')
       }
     } catch (error) {
