@@ -20,6 +20,7 @@ import {
 } from '@/services/UserManagmentServices'
 import UsersData from '@/components/Usermanagment/UsersData'
 import CreateUserModal from '@/components/Modals/CreateUser'
+import OrgCard from "@/components/cards/OrgCard";
 
 // Function to define the organization
 export default function Organization() {
@@ -70,35 +71,12 @@ export default function Organization() {
         <div className="min-h-screen w-full  bg-[#292c30] pt-32">
           <div className="flex min-h-full w-full items-start justify-center pt-10">
             <div>
-              <table>
-                <thead>
-                  <tr className="border-b text-white">
-                    <td className="px-20 pb-4">First name</td>
-                    <td className="px-20 pb-4">Last name</td>
-                    <td className="px-20 pb-4">Email</td>
-                    <td className="px-20 pb-4">Staff</td>
-                    <td className="px-20 pb-4">Verified</td>
-                    <td className="px-20 pb-4"></td>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users?.map((item) => (
-                    <UsersData
-                      handleVerifyUser={handleVerifyUser}
-                      handleDeleteUser={handleDeleteUser}
-                      data={item.results}
-                    />
-                  ))}
-                </tbody>
-              </table>
-              <div className="mt-10 flex items-center justify-end rounded-xl ">
-                <button
-                  onClick={() => setModalOpen(true)}
-                  className="rounded-xl bg-blue-600 px-10 py-4 text-white"
-                >
-                  Create user
-                </button>
+              <div className={'flex-col'}>
+                {users?.map((org,index)=> (
+                    <OrgCard data={org} key={index}/>
+                ))}
               </div>
+
               <CreateUserModal
                 getusers={get_users}
                 setModalOpen={setModalOpen}
