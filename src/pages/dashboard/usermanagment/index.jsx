@@ -65,24 +65,16 @@ export default function Organization() {
     <div className="w-full bg-[#212326] ">
       <Navbar />
       <div className="flex h-fit">
-        <div className="  min-h-screen  pt-28   ">
+        <div className="min-h-screen  pt-28">
           <NavigationBar WhichActive={'Usermanagement'} />
         </div>
         <div className="min-h-screen w-full  bg-[#292c30] pt-32">
-          <div className="flex min-h-full w-full items-start justify-center pt-10">
-            <div>
-              <div className={'flex-col'}>
+          <div className="flex min-h-full w-full items-start justify-center pt-10 w-full px-8">
+              <div className={'flex flex-col w-full'}>
                 {users?.map((org,index)=> (
                     <OrgCard data={org} key={index}/>
                 ))}
               </div>
-
-              <CreateUserModal
-                getusers={get_users}
-                setModalOpen={setModalOpen}
-                ModalOpen={ModalOpen}
-              />
-            </div>
           </div>
         </div>
       </div>
