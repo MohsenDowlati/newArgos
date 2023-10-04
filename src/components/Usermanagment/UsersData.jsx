@@ -22,15 +22,13 @@ function UsersData({ data, admin , user , orgID,handleVerifyUser}) {
 
   const adminHandling = () => {
       // only users can be admin
-      if(confirm(confirmDialog)){
-          if (isUser) {
+      if (isUser && confirm(confirmDialog)) {
               setIsAdmin(!isAdmin);
               handleVerifyUser(change);
           } else {
               console.log('Only Users Can Be Admin')
               //TODO: toast massage
           }
-      }
   }
 
   const userHandling = () => {

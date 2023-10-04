@@ -5,7 +5,6 @@ import {useEffect} from "react";
 import UsersData from "@/components/Usermanagment/UsersData";
 import {IoMdArrowDropup , IoMdArrowDropright} from 'react-icons/io'
 import {AiOutlineUserAdd} from 'react-icons/ai'
-
 const OrgCard = (props) => {
 
     async function get_members() {
@@ -56,7 +55,7 @@ const OrgCard = (props) => {
             </div>
 
             {clicked &&
-                <div className={'flex justify-center my-5 p-6 flex-col'}>
+                <div className={'flex justify-center my-5 p-6 flex-col swing-in-top-fwd'}>
                 <table className={'mb-4'}>
                 <thead>
                 <tr className="border-b text-white">
@@ -82,7 +81,7 @@ const OrgCard = (props) => {
                 </tbody>
                 </table>
                     {/*TODO: handle new members*/}
-                    <div className={'flex flex-row bg-green-400 w-fit px-4 py-1.5 justify-center items-center rounded-lg transition-opacity hover:opacity-80 cursor-pointer'}>
+                    <div className={'static right-0 flex flex-row bg-green-400 w-fit px-4 py-1.5 justify-center items-center rounded-lg transition-opacity hover:opacity-80 cursor-pointer'}>
                         <p className={'text-base p-0 mr-2'}>Add a new Member</p>
                         <AiOutlineUserAdd className={'h-[37px] w-[37px]'}/>
                     </div>
