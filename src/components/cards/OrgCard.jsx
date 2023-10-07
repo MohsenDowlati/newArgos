@@ -1,10 +1,11 @@
 import {useRouter} from "next/router";
 import React, {useState} from "react";
-import {changeRolls, getMembers} from "@/pages/dashboard/usermanagment/users";
+import {changeRolls, getMembers} from "@/services/users";
 import {useEffect} from "react";
 import UsersData from "@/components/Usermanagment/UsersData";
 import {IoMdArrowDropup , IoMdArrowDropright} from 'react-icons/io'
 import {AiOutlineUserAdd} from 'react-icons/ai'
+
 const OrgCard = (props) => {
 
     async function get_members() {
@@ -59,12 +60,12 @@ const OrgCard = (props) => {
                 <table className={'mb-4'}>
                 <thead>
                 <tr className="border-b text-white">
-                    <td className="px-20 pb-4">ID</td>
-                    <td className="px-20 pb-4">Username</td>
-                    <td className="px-20 pb-4">Email</td>
-                    <td className="px-20 pb-4">Admin</td>
-                    <td className="px-20 pb-4">User</td>
-                    <td className="px-20 pb-4"></td>
+                    <td className="px-20 pb-4 select-none flex justify-center">ID</td>
+                    <td className="px-20 pb-4 select-none">Username</td>
+                    <td className="px-20 pb-4 select-none">Email</td>
+                    <td className="px-20 pb-4 select-none">Admin</td>
+                    <td className="px-20 pb-4 select-none">User</td>
+                    <td className="px-20 pb-4 select-none"></td>
                 </tr>
                 </thead>
                 <tbody>
@@ -82,7 +83,7 @@ const OrgCard = (props) => {
                 </table>
                     {/*TODO: handle new members*/}
                     <div className={'static right-0 flex flex-row bg-green-400 w-fit px-4 py-1.5 justify-center items-center rounded-lg transition-opacity hover:opacity-80 cursor-pointer'}>
-                        <p className={'text-base p-0 mr-2'}>Add a new Member</p>
+                        <p className={'text-base p-0 mr-2 select-none'}>Add a new Member</p>
                         <AiOutlineUserAdd className={'h-[37px] w-[37px]'}/>
                     </div>
             </div>}

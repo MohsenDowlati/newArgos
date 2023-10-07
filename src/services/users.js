@@ -12,11 +12,11 @@ export const changeRolls = (data) => {
     if (!data.is_user && data.is_admin) {
         console.log('Admin but not user');
     } else {
-    const token = localStorage.getItem('AccessToken');
-    return http.put(`${config.api}/group/roll/change/`, data , {
-        headers:{
-            Authorization: `Bearer ${token}`
-        }
-    })
+        const token = localStorage.getItem('AccessToken');
+        return http.put(`${config.api}/group/roll/change/`, data , {
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
     }
 }

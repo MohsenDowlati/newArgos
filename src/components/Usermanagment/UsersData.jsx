@@ -44,7 +44,7 @@ function UsersData({ data, admin , user , orgID,handleVerifyUser}) {
 
   //return component
   return (
-    <tr className=" border-b text-center text-white">
+    <tr className="border-b text-center text-white">
       <td className="py-4">{data.id}</td>
       <td className="py-4">{data.username}</td>
       <td className="py-4">{data.email}</td>
