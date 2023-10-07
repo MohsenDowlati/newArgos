@@ -28,7 +28,10 @@ function UsersData({ data, admin , user , orgID,handleVerifyUser}) {
           } else {
               console.log('Only Users Can Be Admin')
               //TODO: toast massage
+              toast.error("Only Users Can Be Admin")
           }
+
+      toast.success("success")
   }
 
   const userHandling = () => {
@@ -44,40 +47,43 @@ function UsersData({ data, admin , user , orgID,handleVerifyUser}) {
 
   //return component
   return (
-    <tr className="border-b text-center text-white">
-      <td className="py-4">{data.id}</td>
-      <td className="py-4">{data.username}</td>
-      <td className="py-4">{data.email}</td>
-      <td className="flex items-center justify-center py-5">
-        {isAdmin ? (
-          <TiTick className="h-[20px] w-[20px] text-green-600"
-                  onClick={adminHandling}/>
-        ) : (
-          <IoMdClose className="h-[20px] w-[20px] text-red-600"
-                     onClick={adminHandling}/>
-        )}
-      </td>
-      <td className="py-4">
-        <div className="flex items-center justify-center">
-          {isUser ? (
-            <TiTick
-              onClick={userHandling}
-              className=" h-[20px] w-[20px] cursor-pointer text-green-400"
-            />
-          ) : (
-            <IoMdClose
-              onClick={userHandling}
-              className=" h-[20px] w-[20px] cursor-pointer text-red-500"
-            />
-          )}
-        </div>
-      </td>
-      <td className="py-4">
-        <button onClick={() => handleDeleteUser(data.id)}>
-          <AiOutlineDelete className="h-[25px] w-[25px] text-red-600" />
-        </button>
-      </td>
-    </tr>
+   <>
+       <tr className="border-b text-center text-white">
+           <td className="py-4">{data.id}</td>
+           <td className="py-4">{data.username}</td>
+           <td className="py-4">{data.email}</td>
+           <td className="flex items-center justify-center py-5">
+               {isAdmin ? (
+                   <TiTick className="h-[20px] w-[20px] text-green-600"
+                           onClick={adminHandling}/>
+               ) : (
+                   <IoMdClose className="h-[20px] w-[20px] text-red-600"
+                              onClick={adminHandling}/>
+               )}
+           </td>
+           <td className="py-4">
+               <div className="flex items-center justify-center">
+                   {isUser ? (
+                       <TiTick
+                           onClick={userHandling}
+                           className=" h-[20px] w-[20px] cursor-pointer text-green-400"
+                       />
+                   ) : (
+                       <IoMdClose
+                           onClick={userHandling}
+                           className=" h-[20px] w-[20px] cursor-pointer text-red-500"
+                       />
+                   )}
+               </div>
+           </td>
+           <td className="py-4">
+               <button onClick={() => handleDeleteUser(data.id)}>
+                   <AiOutlineDelete className="h-[25px] w-[25px] text-red-600" />
+               </button>
+           </td>
+       </tr>
+       <ToastContainer />
+   </>
   )
 }
 
