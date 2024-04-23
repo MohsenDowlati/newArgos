@@ -1,16 +1,7 @@
 // Import
-import { ToastContainer, toast } from 'react-toastify'
-import { successToaster } from '@/components/toasters'
-import { AiOutlinePlus } from 'react-icons/ai'
-import PageTitle from '@/components/pageTitle'
 import { useState, useEffect } from 'react'
-import Sidebar from '@/components/sidebar'
-import { IconContext } from 'react-icons'
 import { useRouter } from 'next/router'
-import Cookies from 'js-cookie'
 import React from 'react'
-import { GiBleedingEye } from 'react-icons/gi'
-import { HiOutlineStatusOnline } from 'react-icons/hi'
 import NavigationBar from '@/components/NavigationSection/NavigationBar'
 import Navbar from '@/components/Navbar/Navbar'
 import {
@@ -18,9 +9,8 @@ import {
   getUsers,
   VerifyUsers,
 } from '@/services/UserManagmentServices'
-import UsersData from '@/components/Usermanagment/UsersData'
-import CreateUserModal from '@/components/Modals/CreateUser'
 import OrgCard from "@/components/cards/OrgCard";
+import {ToastContainer} from "react-toastify";
 
 // Function to define the organization
 export default function Organization() {
@@ -78,6 +68,7 @@ export default function Organization() {
           </div>
         </div>
       </div>
+      <ToastContainer/>
     </div>
   )
 }

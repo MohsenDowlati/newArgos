@@ -14,187 +14,147 @@ import { BiLogInCircle } from 'react-icons/bi'
 import { loginService, registerService } from '@/services/userServices'
 import { BsEye } from 'react-icons/bs'
 import { VerifyUsers } from '@/services/UserManagmentServices'
-
+import {Register} from "@/services/Register";
 // Login Page definitions
 const Login = () => {
   // Variable declaration and initialization
-  const router = useRouter()
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
-  const [isloading, setIsloading] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
+  const [rightPanel , setRightPanel] = useState("");
 
-  // Particle settings
-  const particlesSettings = {
-    background: {
-      color: {
-        value: '#1d2126',
-      },
-      opacity: 1,
-    },
-    fpsLimit: 120,
-    interactivity: {
-      events: {
-        resize: true,
-      },
-      modes: {
-        push: {
-          quantity: 4,
-        },
-        repulse: {
-          distance: 200,
-          duration: 0.4,
-        },
-      },
-    },
-    particles: {
-      color: {
-        value: '#ffffff',
-      },
-      move: {
-        directions: 'none',
-        enable: true,
-        outModes: {
-          default: 'bounce',
-        },
-        random: false,
-        speed: 2,
-        straight: false,
-      },
-      number: {
-        density: {
-          enable: true,
-          area: 800,
-        },
-        value: 300,
-      },
-      opacity: {
-        value: 1,
-      },
-      shape: {
-        type: 'circle',
-      },
-      size: {
-        value: { min: 1, max: 3 },
-      },
-    },
-    detectRetina: true,
+  const[name , setName] = useState('');
+  const[email , setEmail] = useState('');
+  const[passwordSignUp , setPasswordSignUp] = useState('');
+  const[passwordSignUpAgain , setPasswordSignUpAgain] = useState('');
+  const[company , setCompany] = useState('');
+
+  const[passwordSignIn , setPasswordSignIn] = useState('');
+  const[emailSignIn , setEmailSignIn] = useState('');
+  //useEffect
+
+  useEffect(()=>{
+
+  })
+  //handle API
+  async function sign_up(data) {
+    try{
+      const {data,status} = await Register(data)
+      if (status===201)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
-  // Particle engine initialization
-  const particlesInit = useCallback(async (engine) => {
-    await loadSlim(engine)
-  }, [])
+  async function
 
-  // Function call when the login button is pressed
-  const loginPress = async () => {
-    setIsloading(true)
-    // const { data, status } = await VerifyUsers(1, { is_verified: true })
-    // router.push('/dashboard/home')x
-    const payload = {
-      email: email,
-      password: password,
-    }
-    try {
-      const { data, status } = await loginService(payload)
+  // Function call when the sign-up button pressed
+  const handleSignUp = () => {
+    if (signUpValidation()) {
+      const data = {
+        "name": name,
+        "email": email,
+        "password": passwordSignUp,
+        "passwordConfirm": passwordSignUpAgain,
+        "photo": null,
+        "company_name": company,
+      };
+      console.log(data)
 
-      if (status === 200) {
-        // localStorage.setItem('User_data', JSON.stringify(data))
-        localStorage.setItem('AccessToken', data.tokens.access)
-        localStorage.setItem('Refresh', data.tokens.refresh)
-        router.push('/dashboard/home')
-      }
-    } catch (error) {
-      console.log(error)
-      if (error.response.status === 400) {
-        setIsloading(false)
-        toast.error(error.response.data?.email[0])
-      }
-      if (error.response.status === 401) {
-        setIsloading(false)
-        toast.error(error.response.data.detail)
-      }
-      if (error.response.status === 500) {
-        setIsloading(false)
-        toast.error('Server error 500')
-      }
     }
+
+  }
+
+  const signUpValidation = () => {
+    if (name === "" || email === "" || passwordSignUp === "" || passwordSignUpAgain === "" || company === "") {
+      toast("Fill out all textFields.")
+      return false;
+    } else {
+      if (passwordSignUp.length < 8){
+        toast("Password must contains at least 8 character.")
+        return false;
+      } else{
+      if (passwordSignUp === passwordSignUpAgain) {
+        return true;
+      }
+      toast("Password and Password confirmation must be same.")
+      return false;
+    }
+    }
+  }
+
+  const handleSignIn = () => {
+    const data = {
+      "name": passwordSignIn,
+      "email": emailSignIn,
+    }
+
+    console.log(data)
   }
 
   // Component return
   return (
-    <div className="relative flex h-full items-center  justify-center">
-      <Particles
-        id="tsparticles"
-        init={particlesInit}
-        options={particlesSettings}
-      />
+    <div className="relative flex h-full items-center  justify-center bg-main">
       <div className="h-screen w-full ">
-        <div className="flex w-full justify-center">
-          <div className=" text-white-p h-screen w-full rounded-md bg-blue-400  bg-opacity-0 bg-clip-padding pt-[200px] backdrop-blur-md backdrop-filter  ">
-            <div className="font-boldVazir mt-10 flex items-center justify-center text-3xl ">
+        <div className="flex w-full justify-center flex-col">
+            <div className="font-boldVazir mt-10 flex items-center justify-center text-3xl">
               <img
                 src="https://i.ibb.co/Xk0MPxS/Argos-Logo.png"
                 className="h-[100px] w-[200px] object-contain"
               ></img>
             </div>
-            <div className="flex w-full  justify-center">
-              <p className="mt-2 border-b border-[#5ddaf0] font-thin tracking-wider text-white">
-                DASHBOARD LOGIN
-              </p>
-            </div>
-            <div className="flex w-full justify-center text-white">
-              <div>
-                <div>
-                  <input
-                    onChange={(e) => setEmail(e.currentTarget.value)}
-                    className="text-white-p mt-4 h-[40px] w-[300px] border-b border-[#515152] bg-transparent outline-none placeholder:text-gray-300 focus:border-[#5ddaf0]"
-                    placeholder="Email"
-                  ></input>
+                <div className={`container ${rightPanel} mt-6`}>
+                  <div className="form-container sign-up-container">
+                    <form action="#">
+                      <h1>Sign Up</h1>
+                      <label>
+                        <input type="text" placeholder="Name" onChange={(e)=>setName(e.currentTarget.value)}/>
+                      </label>
+                      <label>
+                        <input type="email" placeholder="Email" onChange={(e)=>setEmail(e.currentTarget.value)}/>
+                      </label>
+                      <label>
+                        <input type="password" placeholder="Password" onChange={(e)=>setPasswordSignUp(e.currentTarget.value)}/>
+                      </label>
+                      <label>
+                        <input type="password" placeholder="Password" onChange={(e)=>setPasswordSignUpAgain(e.currentTarget.value)}/>
+                      </label>
+                      <label>
+                        <input type="text" placeholder="Company" onChange={(e)=>setCompany(e.currentTarget.value)}/>
+                      </label>
+                      <button className={"mt-2.5 bg-second"} onClick={handleSignUp}>Sign Up</button>
+                    </form>
+                  </div>
+                  <div className="form-container sign-in-container">
+                    <form action="#">
+                      <h1>Sign in</h1>
+                      <label>
+                        <input type="email" placeholder="Email" onChange={(e)=>setEmailSignIn(e.currentTarget.value)}/>
+                      </label>
+                      <label>
+                        <input type="password" placeholder="Password" onChange={(e)=>setPasswordSignIn(e.currentTarget.value)}/>
+                      </label>
+                      <a href="#">Forgot your password?</a>
+                      <button className={"bg-second"} onClick={handleSignIn} >Sign In</button>
+                    </form>
+                  </div>
+                  <div className="overlay-container">
+                    <div className="overlay">
+                      <div className="overlay-panel overlay-left bg-second">
+                        <h1>Log in</h1>
+                        <p>Sign in here if you already have an account </p>
+                        <button className="ghost mt-5" id="signIn" onClick={()=>setRightPanel("")}>Sign In</button>
+                      </div>
+                      <div className="overlay-panel overlay-right bg-second">
+                        <h1>Create, Account!</h1>
+                        <p>Sign up if you still don't have an account ... </p>
+                        <button className="ghost" id="signUp" onClick={()=>setRightPanel("right-panel-active")}>Sign Up</button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="relative">
-                  <BsEye
-                    onClick={() => setIsVisible(!isVisible)}
-                    className="absolute right-2 top-7 h-[20px] w-[20px]"
-                  />
-                  <input
-                    type={isVisible ? 'text' : 'password'}
-                    onChange={(e) => setPassword(e.currentTarget.value)}
-                    className="text-white-p mt-4 h-[40px] w-[300px] border-b border-[#515152] bg-transparent outline-none placeholder:text-gray-300 focus:border-[#5ddaf0]"
-                    placeholder="Password"
-                  ></input>
-                </div>
-              </div>
-            </div>
-            <div className="flex w-full justify-center text-white">
-              <div>
-                <p
-                  onClick={() => router.push('/reset_password/')}
-                  className="mt-3 w-[300px] cursor-pointer text-white hover:text-blue-400"
-                >
-                  Forgot your password ?{' '}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex w-full justify-center">
-              <button
-                onClick={loginPress}
-                className="mt-10 flex h-[50px] w-[200px] items-center justify-center rounded-md bg-blue-500 font-thin text-white hover:bg-blue-600"
-              >
-                {isloading ? (
-                  <div className="mr-3 h-[20px] w-[20px] animate-spin rounded-full border-t-2"></div>
-                ) : (
-                  <BiLogInCircle className="mr-2 h-[25px] w-[25px]" />
-                )}
-                <p className="text-lg">Login</p>
-              </button>
             </div>
           </div>
-        </div>
 
         <ToastContainer
-          position="top-center"
+          position="top-right"
           autoClose={5000}
           hideProgressBar={false}
           newestOnTop={false}
@@ -206,7 +166,6 @@ const Login = () => {
           theme="dark"
         />
       </div>
-    </div>
   )
 }
 

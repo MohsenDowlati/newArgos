@@ -99,7 +99,7 @@ function NavigationBar({ WhichActive }) {
         whichActive={Usermanagement}
         MainColor={'text-green-400'}
         Icon={<BsFillPeopleFill className="   h-[30px] w-[30px]" />}
-        Title={'User managment'}
+        Title={'Groups'}
         onClick={() => router.push('/dashboard/usermanagment')}
         bgColor={'bg-green-500'}
         Details={'Navigate to Usermanagment'}
