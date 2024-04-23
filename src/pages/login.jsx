@@ -15,6 +15,7 @@ import { loginService, registerService } from '@/services/userServices'
 import { BsEye } from 'react-icons/bs'
 import { VerifyUsers } from '@/services/UserManagmentServices'
 import {Register} from "@/services/Register";
+import {UserValidation} from "@/services/Login";
 // Login Page definitions
 const Login = () => {
   // Variable declaration and initialization
@@ -28,23 +29,8 @@ const Login = () => {
 
   const[passwordSignIn , setPasswordSignIn] = useState('');
   const[emailSignIn , setEmailSignIn] = useState('');
-  //useEffect
 
-  useEffect(()=>{
-
-  })
-  //handle API
-  async function sign_up(data) {
-    try{
-      const {data,status} = await Register(data)
-      if (status===201)
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  async function
-
+  const router = useRouter();
   // Function call when the sign-up button pressed
   const handleSignUp = () => {
     if (signUpValidation()) {
@@ -56,8 +42,7 @@ const Login = () => {
         "photo": null,
         "company_name": company,
       };
-      console.log(data)
-
+      sign_up(data);
     }
 
   }
@@ -82,13 +67,41 @@ const Login = () => {
 
   const handleSignIn = () => {
     const data = {
-      "name": passwordSignIn,
+      "password": passwordSignIn,
       "email": emailSignIn,
     }
 
-    console.log(data)
+    sign_in(data)
   }
 
+  //handle API
+  async function sign_up(input) {
+    try{
+      const {data,status} = await Register(input)
+      if (status===201) {
+        await sign_in({"email":input.email,"password":input.password})
+      }
+      else {
+        toast("something went wrong. status:" + status)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  async function sign_in(input) {
+    try {
+      const {data,status} = await UserValidation(input)
+      if (status !== 200){
+        toast("something went wrong. status:" + status)
+      }else {
+        localStorage.setItem('AccessToken', data.token)
+        router.push('/dashboard/uploadVideo')
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
   // Component return
   return (
     <div className="relative flex h-full items-center  justify-center bg-main">

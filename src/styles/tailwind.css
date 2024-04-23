@@ -123,12 +123,12 @@
 
 
 /* Animated Wave Background Style  */
-h1 {
+.container h1 {
   font-weight: bold;
   margin: 0;
 }
 
-p {
+.container p {
   font-size: 14px;
   font-weight: 100;
   line-height: 20px;
@@ -136,11 +136,11 @@ p {
   margin: 20px 0 30px;
 }
 
-span {
+.container span {
   font-size: 12px;
 }
 
-a {
+.container a {
   color: #0e263d;
   font-size: 14px;
   text-decoration: none;
@@ -205,7 +205,7 @@ a {
   transform: scale(101%);
 }
 
-button {
+.container button {
   border-radius: 50px;
   box-shadow: 0 1px 1px ;
   color: #fff;
@@ -217,15 +217,15 @@ button {
   transition: transform 80ms ease-in;
 }
 
-button:active {
+.container button:active {
   transform: scale(.95);
 }
 
-button:focus {
+.container button:focus {
   outline: none;
 }
 
-button.ghost {
+.container button.ghost {
   background: transparent;
   border: 1px solid #fff;
 }

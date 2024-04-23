@@ -3,22 +3,22 @@ import Login from './login';
 import React from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import Dhome from './dashboard/home';
 import { useEffect } from 'react';
+import UploadVideo from "@/pages/dashboard/uploadVideo";
 
 
 export default function Home() {
-  const[hastoken,setHastoken] = useState(false)
+  const[hasToken,setHasToken] = useState(false)
   const router = useRouter()
   
       
   useEffect(() => {
     const token = localStorage.getItem('AccessToken')
     if(token){
-        setHastoken(true)
-        router.replace('/dashboard/home')
+        setHasToken(true)
+        router.replace('/dashboard/uploadVideo')
     }else{
-      setHastoken(false)
+      setHasToken(false)
     }
    
    }, []); 
@@ -26,7 +26,7 @@ export default function Home() {
     return (
       <>
       {
-       hastoken ? <Dhome/> : <Login/>
+       hasToken ? <UploadVideo/> : <Login/>
       }
       </>
        
