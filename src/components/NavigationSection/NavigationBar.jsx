@@ -40,7 +40,7 @@ function NavigationBar({ WhichActive }) {
   }, [WhichActive])
   return (
     <div className="w-[50px] transition-all delay-100 hover:w-[200px]">
-      <NavigationCard
+        { /*<NavigationCard
         whichActive={Home}
         MainColor={'text-blue-500'}
         Icon={<AiOutlineHome className="  h-[30px] w-[30px]" />}
@@ -48,27 +48,28 @@ function NavigationBar({ WhichActive }) {
         hoverColor={'shadow-blue-500'}
         onClick={() => router.push('/dashboard/home')}
         Details={'Navigate to your home'}
-      />
+      /> */}
       
       <NavigationCard
         MainColor={'indigo-400'}
         Icon={<BiCctv className=" h-[30px] w-[30px]" />}
         Title={'Live Stream'}
         whichActive={Camera}
-        onClick={() => router.push('/dashboard/cameras')}
+        onClick={() => router.push('/dashboard/uploadVideo')}
         Details={'Navigate to Cameras'}
         bgColor={'bg-blue-600'}
       />
       <NavigationCard
         MainColor={'indigo-400'}
         Icon={<BiVideo className=" h-[30px] w-[30px]" />}
-        Title={'Video Record'}
+        Title={'Region Selection'}
         whichActive={Record}
-        onClick={() => router.push('/dashboard/record')}
+        onClick={() => router.push('/dashboard/regionSelection')}
         Details={'Navigate to Cameras'}
         bgColor={'bg-blue-600'}
       />
-      <NavigationCard
+
+      {/*<NavigationCard
         MainColor={'text-red-500'}
         whichActive={Metrics}
         Icon={<BiBarChart className="  h-[30px] w-[30px]" />}
@@ -103,7 +104,7 @@ function NavigationBar({ WhichActive }) {
         onClick={() => router.push('/dashboard/usermanagment')}
         bgColor={'bg-green-500'}
         Details={'Navigate to Usermanagment'}
-      />
+      />*/}
       <NavigationCard
         islogout={true}
         MainColor={'green-400'}

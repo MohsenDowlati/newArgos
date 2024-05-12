@@ -8,10 +8,11 @@ import {UploadVideos} from "@/services/UploadVideo";
 
 const UploadVideo = () => {
 
-    //intialize variables
+    //initialize variables
     const router = useRouter();
 
     const [video, setVideo] = useState(null);
+    const [src , setSrc] = useState("");
 
     useEffect(() => {
         const token = localStorage.getItem('AccessToken')
@@ -21,8 +22,8 @@ const UploadVideo = () => {
 
     }, []);
 
-    const handleAnalyze = () => {
-        post_video(video);
+    const handleAnalyze = async () => {
+        await post_video(video);
     }
 
     async function post_video(input) {
@@ -31,7 +32,7 @@ const UploadVideo = () => {
             if (status!==200){
                 toast("something went wrong. status: "+status)
             } else {
-                console.log(data)
+                setSrc(data?.path);
             }
         } catch (e) {
             console.log(e)
@@ -46,6 +47,13 @@ const UploadVideo = () => {
                     <NavigationBar WhichActive={'Camera'} />
                 </div>
                 <div className={"flex items-center justify-center w-full flex-col"}>
+                    <div>
+                        <video width="320" height="240" controls preload="none">
+                            <source src={src} type="video/mp4" />
+
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
                     <p className={"mb-3 font-sans text-lg font-semibold text-white2"}> Upload your video here. </p>
                     <label>
                         <input type="file" placeholder="Upload video" className={"bg-white2 border-0 rounded-[50px] py-[12px] px-[15px] my-[8px] w-full text-center"} onChange={(e)=>setVideo(e.target.files[0])}/>

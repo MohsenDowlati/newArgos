@@ -66,12 +66,16 @@ const Login = () => {
   }
 
   const handleSignIn = () => {
-    const data = {
-      "password": passwordSignIn,
-      "email": emailSignIn,
-    }
+    if (passwordSignIn === '' || emailSignIn === ''){
+      toast("Please fill all text fields.")
+    } else{
+      const data = {
+        "password": passwordSignIn,
+        "email": emailSignIn,
+      }
 
-    sign_in(data)
+      sign_in(data)
+    }
   }
 
   //handle API
